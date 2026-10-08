@@ -17,6 +17,8 @@
     .shell{width:100%;height:100dvh;min-height:100dvh;margin:0;border:0;border-radius:0;overflow:hidden}
     .topbar{position:relative;top:auto;z-index:20;box-shadow:0 1px 0 var(--line)}
     .content{height:calc(100dvh - 72px);overflow-y:auto}
+    .mobile-menu,.drawer,.drawer-backdrop{display:none}
+    @media(max-width:950px){.mobile-menu{display:inline-flex}.drawer{display:block;position:fixed;z-index:50;top:0;left:0;width:282px;height:100dvh;padding:24px 15px;background:#f9fcfd;box-shadow:18px 0 50px #19363825;transform:translateX(-105%);transition:transform .22s}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:27px}.drawer .brand{font-size:23px}.drawer-nav{display:grid;gap:5px}.drawer-nav button{height:44px;border:0;border-radius:10px;background:transparent;color:#526467;padding:0 12px;text-align:left;font:600 13px 'DM Sans';display:flex;align-items:center;gap:10px}.drawer-nav button:hover,.drawer-nav button.active{background:#e3f2f2;color:var(--teal)}.drawer-backdrop.open{display:block;position:fixed;z-index:45;inset:0;background:#1830325e}.topbar{gap:12px}.brand{margin-right:auto}.top-actions{gap:6px}.top-actions .icon-btn{display:none}.top-actions .mobile-menu{display:inline-flex}.profile-link{margin-left:0}}
   </style>
 </head>
 <body>
@@ -31,11 +33,25 @@
         <button data-page="enquiries"><i class="hgi-stroke hgi-message-01"></i>Enquiries</button>
       </nav>
       <div class="top-actions">
+        <button class="icon-btn mobile-menu" title="Open navigation" onclick="toggleDrawer()"><i class="hgi-stroke hgi-menu-01"></i></button>
         <button class="icon-btn" title="Gallery theme" onclick="go('theme')"><i class="hgi-stroke hgi-paint-board"></i></button>
         <button class="icon-btn" title="Settings" onclick="go('settings')"><i class="hgi-stroke hgi-settings-01"></i></button>
         <a class="profile-link" href="profile.html"><span class="avatar" id="avatar">AO</span><div><b id="profileName">Adesewa Okafor</b><small>Gallery Director</small></div></a>
       </div>
     </header>
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+    <aside class="drawer" id="drawer">
+      <div class="drawer-head"><div class="brand"><i class="hgi-stroke hgi-sparkles"></i>anansi</div><button class="icon-btn" title="Close navigation" onclick="toggleDrawer(false)"><i class="hgi-stroke hgi-cancel-01"></i></button></div>
+      <nav class="drawer-nav">
+        <button data-page="overview"><i class="hgi-stroke hgi-home-01"></i>Overview</button>
+        <button data-page="exhibitions"><i class="hgi-stroke hgi-grid-view"></i>Exhibitions</button>
+        <button data-page="artists"><i class="hgi-stroke hgi-user-group"></i>Artists</button>
+        <button data-page="artworks"><i class="hgi-stroke hgi-image-01"></i>Artworks</button>
+        <button data-page="enquiries"><i class="hgi-stroke hgi-message-01"></i>Collector enquiries</button>
+        <button data-page="theme"><i class="hgi-stroke hgi-paint-board"></i>Gallery theme</button>
+        <button data-page="settings"><i class="hgi-stroke hgi-settings-01"></i>Settings</button>
+      </nav>
+    </aside>
     <main class="content">
       <section class="view" id="overview"></section><section class="view" id="exhibitions"></section><section class="view" id="artists"></section><section class="view" id="artworks"></section><section class="view" id="enquiries"></section><section class="view" id="theme"></section><section class="view" id="settings"></section>
     </main>
@@ -47,7 +63,8 @@
     let data=JSON.parse(localStorage.getItem('anansiData')||'null')||initial; let page=location.hash.slice(1)||'overview'; const $=x=>document.querySelector(x); const persist=()=>localStorage.setItem('anansiData',JSON.stringify(data));
     const escape=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     function toast(message){const t=$('#toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
-    function go(next){location.hash=next}
+    function toggleDrawer(force){const open=typeof force==='boolean'?force:!$('#drawer').classList.contains('open');$('#drawer').classList.toggle('open',open);$('#drawerBackdrop').classList.toggle('open',open)}
+    function go(next){toggleDrawer(false);location.hash=next}
     function setProfile(){const p=JSON.parse(localStorage.getItem('anansiProfile')||'{}');const name=p.name||'Adesewa Okafor';$('#profileName').textContent=name;$('#avatar').textContent=name.split(' ').map(x=>x[0]).slice(0,2).join('')}
     const action=(label,js,variant='primary')=>'<button class="btn '+variant+'" onclick="'+js+'">'+label+'</button>';
     function rows(type){const arr=type==='artist'?data.artists:type==='work'?data.works:type==='lead'?data.leads:data.shows;if(!arr.length)return '<div class="row"><small>No records yet.</small></div>';return arr.map((x,i)=>{if(type==='artist')return '<div class="row"><div><b>'+escape(x.name)+'</b><small>'+x.works+' works in catalogue</small></div>'+action('Edit','editArtist('+i+')','small')+'</div>';if(type==='work')return '<div class="row"><div><b>'+escape(x.name)+'</b><small>'+escape(x.artist)+' · '+escape(x.price)+'</small></div><span class="tag">'+x.status+'</span>'+action('View','openArtwork('+i+')','small')+'</div>';if(type==='lead')return '<div class="row"><span class="tiny-av">'+escape(x.name.slice(0,1))+'</span><div><b>'+escape(x.name)+'</b><small>'+escape(x.interest)+'</small></div>'+action(x.status,'advanceLead('+i+')','small')+'</div>';return '<div class="row"><div><b>'+escape(x.title)+'</b><small>'+x.works+' works</small></div><span class="tag">'+x.status+'</span></div>'}).join('')}
