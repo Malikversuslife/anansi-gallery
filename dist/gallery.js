@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { Reflector } from 'three/addons/objects/Reflector.js';
 
 const $ = id => document.getElementById(id);
 const esc = value => String(value || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -43,26 +45,60 @@ function surfaceTexture(tiles=false){
   const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(tiles?15:3,tiles?22:3);t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return t;
 }
 const concreteMap=surfaceTexture(),floorMap=surfaceTexture(true);
+const textureLoader=new THREE.TextureLoader();
+const stoneMap=textureLoader.load('assets/limestone-albedo.jpg');stoneMap.colorSpace=THREE.SRGBColorSpace;stoneMap.wrapS=stoneMap.wrapT=THREE.RepeatWrapping;stoneMap.repeat.set(10,14.67);stoneMap.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
 const concrete=new THREE.MeshStandardMaterial({color:'#eeece5',map:concreteMap,bumpMap:concreteMap,bumpScale:.015,roughness:.82});
+const panelCanvas=document.createElement('canvas');panelCanvas.width=panelCanvas.height=512;
+const panelContext=panelCanvas.getContext('2d');panelContext.fillStyle='#d1d0ca';panelContext.fillRect(0,0,512,512);
+for(let i=0;i<7000;i++){const x=(i*137)%512,y=(i*211)%512;panelContext.fillStyle=i%2?'rgba(80,75,67,.025)':'rgba(255,255,255,.1)';panelContext.fillRect(x,y,1+i%3,1);}
+panelContext.strokeStyle='#bab9b2';panelContext.lineWidth=1;panelContext.strokeRect(.5,.5,511,511);
+for(const x of [80,432])for(const y of [80,432]){panelContext.fillStyle='#aaa9a2';panelContext.beginPath();panelContext.arc(x,y,2.8,0,Math.PI*2);panelContext.fill();panelContext.fillStyle='#e5e4dd';panelContext.fillRect(x-1,y+2,3,1);}
+const panelMap=new THREE.CanvasTexture(panelCanvas);panelMap.colorSpace=THREE.SRGBColorSpace;panelMap.wrapS=panelMap.wrapT=THREE.RepeatWrapping;panelMap.repeat.set(1,4);
+const structuralConcrete=new THREE.MeshStandardMaterial({map:panelMap,color:'#f3f2ec',roughness:.86,bumpMap:panelMap,bumpScale:.007});
 const white=new THREE.MeshStandardMaterial({color:'#f5f2e9',roughness:.78});
-const floor=new THREE.MeshPhysicalMaterial({color:'#eee9df',map:floorMap,roughness:.3,metalness:0,clearcoat:.25,clearcoatRoughness:.38});
+const floor=new THREE.MeshPhysicalMaterial({color:'#f8f5ec',map:stoneMap,roughness:.38,metalness:0,clearcoat:.18,clearcoatRoughness:.4});
 const metal=new THREE.MeshStandardMaterial({color:'#323b3b',roughness:.3,metalness:.8});
-const glass=new THREE.MeshPhysicalMaterial({color:'#edf6f6',transparent:true,opacity:.12,roughness:.08,metalness:.1,depthWrite:false,side:THREE.DoubleSide});
+const glass=new THREE.MeshPhysicalMaterial(mobile?{color:'#edf6f6',transparent:true,opacity:.12,roughness:.08,depthWrite:false,side:THREE.DoubleSide}:{color:'#f8fcfc',transmission:.96,thickness:.035,ior:1.46,roughness:.055,side:THREE.DoubleSide});
 const dark=new THREE.MeshStandardMaterial({color:'#536862',roughness:.55});
 const colliders=[], targets=[];
 function box(w,h,d,x,y,z,mat=white,collision=false) {
-  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=mat!==glass;m.receiveShadow=true;scene.add(m);
+  const bevel=mat!==glass&&mat!==metal&&Math.min(w,h,d)>.12;
+  const geometry=bevel?new RoundedBoxGeometry(w,h,d,2,Math.min(.025,Math.min(w,h,d)*.12)):new THREE.BoxGeometry(w,h,d);
+  const m=new THREE.Mesh(geometry,mat);m.position.set(x,y,z);m.castShadow=mat!==glass;m.receiveShadow=true;scene.add(m);
   if(collision)colliders.push({minX:x-w/2-.35,maxX:x+w/2+.35,minZ:z-d/2-.35,maxZ:z+d/2+.35,minY:y-h/2,maxY:y+h/2});
   return m;
 }
 // Double-height atrium with glazed frontage, deep painting wing and upper balcony.
-box(30,.3,44,0,-.18,-5,floor); box(30,.4,44,0,8.1,-5,white);
+box(30,.3,44,0,-.18,-5,floor);
+// A central roof lantern gives the atrium a real source of overhead daylight.
+box(7,.4,44,-11.5,8.1,-5,white);box(7,.4,44,11.5,8.1,-5,white);
+box(16,.4,6,0,8.1,14,white);box(16,.4,16,0,8.1,-19,white);
+box(16,.06,22,0,8.22,0,glass);
+for(let z=-10;z<=10;z+=2.5)box(16,.08,.06,0,8.18,z,metal);
+for(const x of [-8,8])box(.07,.1,22,x,8.18,0,metal);
+const cove=new THREE.MeshStandardMaterial({color:'#fff8e8',emissive:'#ffe7ba',emissiveIntensity:.7,roughness:.6});
+for(const x of [-10.55,10.55])box(.07,.05,36,x,4.05,-3,cove);
+// Low-opacity, softly filtered planar reflections ground the architecture.
+// Mobile uses the environment reflections only, avoiding a second full render.
+if(!mobile){
+  const reflectedFloor=new Reflector(new THREE.PlaneGeometry(29.8,43.8),{color:0xa6a6a6,textureWidth:768,textureHeight:512,clipBias:.003,multisample:0});
+  reflectedFloor.rotation.x=-Math.PI/2;reflectedFloor.position.set(0,-.019,-5);
+  reflectedFloor.material.transparent=true;reflectedFloor.material.depthWrite=false;
+  reflectedFloor.material.fragmentShader=reflectedFloor.material.fragmentShader.replace('vec4 base = texture2DProj( tDiffuse, vUv );',`vec2 uv=vUv.xy/vUv.w;
+    vec4 base=texture2D(tDiffuse,uv)*0.4;
+    base+=texture2D(tDiffuse,uv+vec2(.002,0.0))*0.15;
+    base+=texture2D(tDiffuse,uv-vec2(.002,0.0))*0.15;
+    base+=texture2D(tDiffuse,uv+vec2(0.0,.003))*0.15;
+    base+=texture2D(tDiffuse,uv-vec2(0.0,.003))*0.15;`).replace('blendOverlay( base.rgb, color ), 1.0','blendOverlay( base.rgb, color ), 0.18');
+  scene.add(reflectedFloor);
+}
 // Side boundaries are glass; movement bounds keep guests inside the building.
 box(30,8,.3,0,4,-27,white,true);
 for(let z=-26;z<=16;z+=3){box(.065,7.7,.11,-14.72,3.85,z,metal);box(.065,7.7,.11,14.72,3.85,z,metal);}
 box(.04,7.5,41,-14.7,3.8,-5,glass);box(.04,7.5,41,14.7,3.8,-5,glass);
 for(const x of [-14.72,14.72]){box(.09,.075,44,x,.1,-5,metal);box(.09,.075,44,x,4.2,-5,metal);box(.09,.075,44,x,7.7,-5,metal);box(.45,.15,44,x,.04,-5,concrete);}
-for(const x of [-10,-3,10]){box(.85,8,.85,x,4,-5,concrete,true);box(.85,8,.85,x,4,-19,concrete,true);}
+for(const x of [-10,10]){box(.65,8,.65,x,4,-5,concrete,true);box(.65,8,.65,x,4,-19,concrete,true);}
+box(1.45,8,1.2,-3,4,-5,structuralConcrete,true);box(1.1,8,1.1,-3,4,-19,structuralConcrete,true);
 box(30,.35,5,0,4.25,-24,concrete); box(4,.35,36,-12.7,4.25,-3,concrete); box(4,.35,36,12.7,4.25,-3,concrete);
 box(30,1.1,.05,0,4.9,-21.5,glass);box(.05,1.1,36,-10.7,4.9,-3,glass);
 // Leave an opening in the east balustrade where the staircase meets its landing.
@@ -72,10 +108,10 @@ for(const x of [-10.7,10.7])for(let z=-21;z<=15;z+=3){if(x>0&&z>-4&&z<2)continue
 box(30,.04,.04,0,5.48,-21.5,metal);
 for(const x of [-14.45,14.45])box(.06,.12,44,x,.12,-5,white);
 // Dividing walls leave generous passages into the exhibition rooms.
-box(8,3.6,.25,-10,1.8,-10,white,true);box(5,3.6,.25,12.5,1.8,-10,white,true);
-box(.25,3.6,8,-7,1.8,-18,white,true);
+box(7,3.6,.32,-10.5,1.8,-16,white,true);box(5,3.6,.32,12.5,1.8,-16,white,true);
+box(.32,3.6,8,-7,1.8,-22,white,true);
 // Sweeping, sculptural stair with a navigable centre line.
-const stairCentre=new THREE.Vector3(8,0,-1),stairStart=Math.PI/2,stairSweep=Math.PI*1.5;
+const stairCentre=new THREE.Vector3(8,0,-1),stairStart=Math.PI*.75,stairSweep=Math.PI*1.25;
 function curvedBand(inner,outer,start,end,low,high,segments,material){
   const vertices=[],indices=[];
   for(let i=0;i<=segments;i++){
@@ -88,8 +124,8 @@ function curvedBand(inner,outer,start,end,low,high,segments,material){
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));g.setIndex(indices);g.computeVertexNormals();const mesh=new THREE.Mesh(g,material);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;
 }
 // Continuous structural soffit, wedge-shaped treads and thick sculptural parapets.
-curvedBand(2.4,4.8,stairStart,stairStart+stairSweep,t=>t*4.25-.24,t=>t*4.25,96,concrete);
-for(let i=0;i<36;i++){const start=stairStart+i/36*stairSweep,end=start+stairSweep/36,top=(i+1)/36*4.25;curvedBand(2.4,4.8,start,end,()=>top-.15,()=>top,3,white);}
+curvedBand(2.4,4.8,stairStart,stairStart+stairSweep,t=>Math.max(-.02,t*4.25-.32),t=>t*4.25,144,concrete);
+for(let i=0;i<36;i++){const start=stairStart+i/36*stairSweep,end=start+stairSweep/36,top=(i+1)/36*4.25;curvedBand(2.4,4.8,start,end,()=>Math.max(0,i/36*4.25-.1),()=>top,4,white);}
 for(const radius of [2.4,4.8])curvedBand(radius-.065,radius+.065,stairStart,stairStart+stairSweep,t=>t*4.25,t=>t*4.25+1.02,96,white);
 box(3.5,.35,2.4,12,4.25,-1,concrete);
 // Track lights and understated benches.
@@ -98,22 +134,29 @@ for(const x of [-9,6])for(const z of [-23,-14,-3]){const light=new THREE.SpotLig
 const wood=new THREE.MeshStandardMaterial({color:'#8b6242',roughness:.55});
 for(const [x,z] of [[-1,-6],[-10,-23]]){box(3,.18,.8,x,.5,z,wood,true);for(const offset of [-1,1])box(.12,.45,.6,x+offset,.23,z,metal);}
 // Expansion joints, balcony fascia and ceiling reveals add human-scale detail.
-for(let z=-24;z<=15;z+=6)box(29.3,.008,.014,0,-.025,z,new THREE.MeshStandardMaterial({color:'#a6a39b',roughness:1}));
+const joint=new THREE.MeshStandardMaterial({color:'#b8b2a5',roughness:1});
+for(let z=-26;z<=16;z+=3)box(29.3,.008,.009,0,-.014,z,joint);
+for(let x=-12;x<=12;x+=3)box(.009,.008,43,x,-.014,-5,joint);
 for(const x of [-10.67,10.67])box(.035,.06,36,x,4.12,-3,metal);
-for(const x of [-10,-3,10])for(const z of [-5,-19])box(.89,.09,.89,x,.035,z,concrete);
+for(const x of [-10,10])for(const z of [-5,-19])box(.69,.04,.69,x,.02,z,concrete);
 // Landscape beyond the glazing, imagined from the coastal view in the reference.
 box(250,.08,250,0,-.55,-15,new THREE.MeshStandardMaterial({color:'#9da58a',roughness:1}));
 box(230,.05,13,0,-.49,31,new THREE.MeshStandardMaterial({color:'#d8cbb0',roughness:1}));
 const waterMap=surfaceTexture();waterMap.repeat.set(70,35);
 box(250,.04,130,0,-.46,99,new THREE.MeshPhysicalMaterial({color:'#5a9daa',roughness:.22,metalness:.2,bumpMap:waterMap,bumpScale:.035}));
-const foliageMaterials=['#526d4e','#70835d','#87926b'].map(color=>new THREE.MeshStandardMaterial({color,roughness:1}));
-for(let i=0;i<18;i++){
-  const x=(i<9?-1:1)*(22+i%9*3.5),z=-25+i%9*5;
-  box(.32,3.2,.32,x,1,z,wood);
-  for(let j=0;j<5;j++){const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(1.8+(i%3)*.25,1),foliageMaterials[(i+j)%3]);crown.position.set(x+Math.cos(j*2.4)*1.1,3.5+(j%3)*.7,z+Math.sin(j*2.4));crown.scale.set(1,1.15,1);crown.castShadow=true;scene.add(crown);}
-}
-
-const textureLoader=new THREE.TextureLoader();
+// Photographic distant scenery replaces the geometric tree placeholders.
+const coastMap=textureLoader.load('assets/coastal-panorama.jpg');coastMap.colorSpace=THREE.SRGBColorSpace;
+const coastMaterial=new THREE.MeshBasicMaterial({map:coastMap,toneMapped:false,fog:false});
+for(const side of [-1,1]){const backdrop=new THREE.Mesh(new THREE.PlaneGeometry(160,53.33),coastMaterial);backdrop.position.set(side*65,1.7,-5);backdrop.rotation.y=-side*Math.PI/2;scene.add(backdrop);}
+const frontage=new THREE.Mesh(new THREE.PlaneGeometry(160,53.33),coastMaterial);frontage.position.set(0,1.7,77);frontage.rotation.y=Math.PI;scene.add(frontage);
+// Soft local occlusion is a lightweight approximation, not a baked lightmap.
+const shadowCanvas=document.createElement('canvas');shadowCanvas.width=shadowCanvas.height=128;
+const shadowContext=shadowCanvas.getContext('2d'),gradient=shadowContext.createRadialGradient(64,64,8,64,64,64);gradient.addColorStop(0,'rgba(35,27,19,.26)');gradient.addColorStop(.5,'rgba(35,27,19,.12)');gradient.addColorStop(1,'rgba(35,27,19,0)');shadowContext.fillStyle=gradient;shadowContext.fillRect(0,0,128,128);
+const contactMaterial=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false,toneMapped:false});
+function contactShadow(x,z,width,depth){const m=new THREE.Mesh(new THREE.PlaneGeometry(width,depth),contactMaterial);m.rotation.x=-Math.PI/2;m.position.set(x,-.005,z);scene.add(m);}
+for(const x of [-10,10])for(const z of [-5,-19])contactShadow(x,z,2,2);
+contactShadow(-3,-5,3,2.5);contactShadow(-3,-19,2.5,2.5);
+contactShadow(8,-1,10,10);contactShadow(-1,-6,4.5,2);contactShadow(-10,-23,4.5,2);
 function label(text,x,y,z,rotation=0){
   const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
   const ctx=canvas.getContext('2d');ctx.fillStyle='#f6f6ef';ctx.fillRect(0,0,512,128);ctx.fillStyle='#3b4943';ctx.font='24px sans-serif';ctx.fillText(text.slice(0,35),20,48);ctx.fillStyle='#85928b';ctx.font='15px sans-serif';ctx.fillText('ANANSI · SELECT TO EXPLORE',20,82);
@@ -123,8 +166,9 @@ function addPainting(work,index){
   const wall=work.placement||'North wall'; let x,y=2,z,rotation=0;
   if(wall==='West wall'){x=-14.48;z=-13-index*3;rotation=Math.PI/2;}
   else if(wall==='East wall'){x=14.48;z=-14-index*3;rotation=-Math.PI/2;}
-  else if(wall==='South wall'){x=-10+index*4;z=-10.18;rotation=Math.PI;}
+  else if(wall==='South wall'){x=-10+index*4;z=-16.18;rotation=Math.PI;}
   else {x=-11+(index%6)*4;z=-26.78;}
+  if(work.demo){x=-10.5;y=2;z=-15.8;rotation=0;}
   const group=new THREE.Group();group.position.set(x,y,z);group.rotation.y=rotation;scene.add(group);
   const frame=new THREE.Mesh(new THREE.BoxGeometry(2.3,2.7,.12),metal);frame.castShadow=true;frame.receiveShadow=true;group.add(frame);
   const mount=new THREE.Mesh(new THREE.PlaneGeometry(2.2,2.6),white);mount.position.z=.065;group.add(mount);
@@ -138,6 +182,7 @@ function addPainting(work,index){
 function addSculpture(work,index){
   const x=work.placement==='Window plinth'?11:1+index*4,z=-15;
   const plinth=box(1.6,.85,1.6,x,.425,z,white,true);
+  contactShadow(x,z,2.5,2.5);
   const sculpture=new THREE.Mesh(new THREE.TorusKnotGeometry(.62,.14,96,14),new THREE.MeshStandardMaterial({color:'#b99769',metalness:.6,roughness:.32}));
   sculpture.position.set(x,1.55,z);sculpture.castShadow=true;sculpture.userData.work=work;scene.add(sculpture);targets.push(sculpture);
   label(work.name,x,.7,z+.82);plinth.userData.work=work;targets.push(plinth);
@@ -156,7 +201,9 @@ function avatar(person){
   for(const x of [-.12,.12]){const leg=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.5,8),mat);leg.position.set(x,.28,0);group.add(leg);}
   group.position.set(person.position[0],0,person.position[1]);scene.add(group);group.traverse(m=>{if(m.isMesh){m.castShadow=true;m.userData.person=person;targets.push(m);}});person.mesh=group;
 }
-people.forEach(avatar);
+// Hide placeholder people for the architectural preview; artist demo chat
+// remains available from each artwork's details panel.
+people.forEach(p=>{p.mesh=new THREE.Group();p.mesh.position.set(p.position[0],0,p.position[1]);});
 const rooms={atrium:{position:[0,1.7,13],yaw:0,label:'The entrance atrium'},paintings:{position:[0,1.7,-19],yaw:0,label:'The painting room'},sculptures:{position:[2,1.7,-9],yaw:0,label:'The sculpture court'},upper:{position:[-12,6.125,-16],yaw:-Math.PI/2,label:'The upper gallery'}};
 let yaw=0,pitch=0,drag=false,lastX,lastY,moved=0,keys=new Set();
 function visitRoom(key){const r=rooms[key];camera.position.fromArray(r.position);yaw=r.yaw;pitch=0;camera.rotation.set(pitch,yaw,0);$('roomName').textContent=r.label;document.querySelectorAll('[data-room]').forEach(b=>b.classList.toggle('active',b.dataset.room===key));}
@@ -187,8 +234,7 @@ renderer.setAnimationLoop(now=>{
     let r=(keys.has('d')||keys.has('arrowright')||keys.has('right')?1:0)-(keys.has('a')||keys.has('arrowleft')||keys.has('left')?1:0);
     const norm=Math.hypot(f,r)||1,speed=3.1*dt/norm;const dx=(-Math.sin(yaw)*f+Math.cos(yaw)*r)*speed,dz=(-Math.cos(yaw)*f-Math.sin(yaw)*r)*speed;
     walk(dx,0);walk(0,dz);
-    const nearby=people.find(p=>camera.position.distanceTo(p.mesh.position)<4);
-    $('hint').textContent=nearby?'Near '+nearby.name+' · click their avatar to say hello':'Drag to look · WASD / arrows to walk · click artwork · E to inspect';
+    $('hint').textContent='Drag to look · WASD / arrows to walk · click artwork · E to inspect';
   }
   people.forEach((p,i)=>{p.mesh.position.x=p.position[0]+Math.sin(now*.00015+i)*.55;p.mesh.position.z=p.position[1]+Math.cos(now*.00015+i)*.3;p.mesh.rotation.y=Math.sin(now*.00015+i)*.6;});
   renderer.render(scene,camera);
