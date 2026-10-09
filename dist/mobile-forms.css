@@ -1,0 +1,13 @@
+/* Small form text triggers focus zoom on iOS. Keep controls readable without
+   restricting the user's viewport scaling or pinch-to-zoom accessibility. */
+@media (max-width: 950px), (hover: none) and (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  textarea,
+  select {
+    /* Override compact component fonts, including dynamically created forms. */
+    font-size: 16px !important;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.4;
+    min-height: 44px;
+  }
+}
