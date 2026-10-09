@@ -140,8 +140,7 @@ for(let x=-12;x<=12;x+=3)box(.009,.008,43,x,-.014,-5,joint);
 for(const x of [-10.67,10.67])box(.035,.06,36,x,4.12,-3,metal);
 for(const x of [-10,10])for(const z of [-5,-19])box(.69,.04,.69,x,.02,z,concrete);
 // Landscape beyond the glazing, imagined from the coastal view in the reference.
-box(250,.08,250,0,-.55,-15,new THREE.MeshStandardMaterial({color:'#9da58a',roughness:1}));
-box(230,.05,13,0,-.49,31,new THREE.MeshStandardMaterial({color:'#d8cbb0',roughness:1}));
+box(36,.08,54,0,-.55,-5,new THREE.MeshStandardMaterial({color:'#d8cbb0',roughness:1}));
 const waterMap=surfaceTexture();waterMap.repeat.set(70,35);
 box(250,.04,130,0,-.46,99,new THREE.MeshPhysicalMaterial({color:'#5a9daa',roughness:.22,metalness:.2,bumpMap:waterMap,bumpScale:.035}));
 // Photographic distant scenery replaces the geometric tree placeholders.
@@ -258,5 +257,6 @@ $('chatForm').onsubmit=e=>{e.preventDefault();const message=$('chatInput').value
 $('interestForm').onsubmit=e=>{e.preventDefault();const d=stored('anansiData',catalogue);d.leads=d.leads||[];d.leads.push({name:$('collectorName').value.trim(),email:$('collectorEmail').value.trim(),interest:selectedWork.name,message:$('collectorMessage').value.trim(),status:'New'});localStorage.setItem('anansiData',JSON.stringify(d));$('interest').close();toast('Interest saved for the curator in this browser.')};
 $('entryForm').onsubmit=e=>{e.preventDefault();guest={name:$('guestName').value.trim(),color:$('guestColor').value};localStorage.setItem('anansiVisitor',JSON.stringify(guest));$('avatarButton').textContent=guest.name;$('avatarButton').style.borderColor=guest.color;$('welcome').close();started=true;toast('Welcome, '+guest.name+'. Take your time.')};
 $('avatarButton').onclick=()=>{$('guestName').value=guest.name==='Guest'?'':guest.name;$('guestColor').value=guest.color;$('welcome').showModal()};
+$('welcome').querySelector('.note').textContent='Architectural preview: visitor figures are hidden while the gallery is refined. Artist chats are simulated. Your saved interests stay in this browser.';
 $('worksButton').onclick=()=>{ $('detailContent').innerHTML='<button class="close" id="closeDetail" aria-label="Close collection">×</button><div class="eyebrow">THE COLLECTION</div><h2>Works in this gallery</h2><p>Select a work to read its story or leave your interest.</p>'+works.map((w,i)=>'<button class="btn" style="display:flex;width:100%;margin-top:9px;justify-content:space-between" data-work="'+i+'">'+esc(w.name)+' <span>→</span></button>').join('');$('closeDetail').onclick=()=>$('detail').close();$('detailContent').querySelectorAll('[data-work]').forEach(b=>b.onclick=()=>{$('detail').close();openWork(works[Number(b.dataset.work)])});$('detail').showModal()};
 $('loading').style.display='none';$('guestName').value=guest.name==='Guest'?'':guest.name;$('guestColor').value=guest.color;$('welcome').showModal();
