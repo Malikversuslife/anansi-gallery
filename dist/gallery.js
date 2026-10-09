@@ -65,8 +65,10 @@ for(const x of [-14.72,14.72]){box(.09,.075,44,x,.1,-5,metal);box(.09,.075,44,x,
 for(const x of [-10,-3,10]){box(.85,8,.85,x,4,-5,concrete,true);box(.85,8,.85,x,4,-19,concrete,true);}
 box(30,.35,5,0,4.25,-24,concrete); box(4,.35,36,-12.7,4.25,-3,concrete); box(4,.35,36,12.7,4.25,-3,concrete);
 box(30,1.1,.05,0,4.9,-21.5,glass);box(.05,1.1,36,-10.7,4.9,-3,glass);
-box(.05,1.1,36,10.7,4.9,-3,glass);
-for(const x of [-10.7,10.7]){box(.04,.04,36,x,5.48,-3,metal);for(let z=-21;z<=15;z+=3)box(.035,1.1,.035,x,4.92,z,metal);}
+// Leave an opening in the east balustrade where the staircase meets its landing.
+box(.05,1.1,17,10.7,4.9,-12.5,glass);box(.05,1.1,13,10.7,4.9,8.5,glass);
+box(.04,.04,36,-10.7,5.48,-3,metal);box(.04,.04,17,10.7,5.48,-12.5,metal);box(.04,.04,13,10.7,5.48,8.5,metal);
+for(const x of [-10.7,10.7])for(let z=-21;z<=15;z+=3){if(x>0&&z>-4&&z<2)continue;box(.035,1.1,.035,x,4.92,z,metal);}
 box(30,.04,.04,0,5.48,-21.5,metal);
 for(const x of [-14.45,14.45])box(.06,.12,44,x,.12,-5,white);
 // Dividing walls leave generous passages into the exhibition rooms.
