@@ -1,0 +1,9 @@
+import * as THREE from 'three';
+import {createAvatar,defaultLook} from './real-characters.js';
+export function setupVisitors({scene,targets,chat,toast}){
+ const visitors=[{id:'demo-mira',artist:'Mira · demo visitor',name:'Guest conversation',model:'bob',position:[2.8,0,3.5],guest:true},{id:'demo-tunde',artist:'Tunde · demo visitor',name:'Guest conversation',model:'polo',position:[-2,0,6],guest:true}];
+ const people=visitors.map(visitor=>{const avatar=createAvatar({...defaultLook,model:visitor.model});avatar.position.fromArray(visitor.position);scene.add(avatar);const hit=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,1.8,8),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,colorWrite:false}));hit.position.copy(avatar.position);hit.position.y+=.9;hit.userData.visitor=visitor;scene.add(hit);targets.push(hit);return avatar});
+ const dialog=document.createElement('dialog');dialog.id='visitorProfile';const panel=document.createElement('div');panel.className='panel';dialog.append(panel);document.body.append(dialog);
+ function open(visitor){panel.replaceChildren();const back=document.createElement('button');back.className='btn dialog-back';back.textContent='← Back to gallery';back.onclick=()=>dialog.close();const title=document.createElement('h2');title.textContent=visitor.artist;const note=document.createElement('p');note.textContent='Fictional presentation visitor. Invitations and responses are simulated; no real person receives a message.';const invite=document.createElement('button');invite.className='btn primary';invite.textContent='Send demo chat invitation';invite.onclick=()=>{dialog.close();chat.start(visitor);toast('Demo invitation accepted. Find the conversation in Chats.')};panel.append(back,title,note,invite);dialog.showModal()}
+ return {open,update:dt=>people.forEach(person=>person.userData.mixer?.update(dt))};
+}

@@ -17,6 +17,7 @@
     .content{height:calc(100dvh - 72px);overflow-y:auto}
   </style>
   <link rel="stylesheet" href="mobile-forms.css">
+  <link rel="stylesheet" href="scrollbars.css?v=1">
 </head>
 <body>
   <div class="shell">
@@ -30,11 +31,14 @@
     </main>
   </div>
   <script>
-    let p=JSON.parse(localStorage.getItem('anansiProfile')||'null')||{name:'Adesewa Okafor',role:'Gallery Director',email:'hello@anansi.gallery',enquiries:true,interest:true,report:false};
-    for(const key in p){const el=document.getElementById(key);if(el)el.type==='checkbox'?el.checked=p[key]:el.value=p[key]}
-    function sync(){displayName.textContent=name.value;displayRole.textContent=role.value+' · Anansi Gallery';avatar.textContent=name.value.split(' ').map(x=>x[0]).slice(0,2).join('')}
-    sync();
-    save.onclick=()=>{p={name:name.value,role:role.value,email:email.value,enquiries:enquiries.checked,interest:interest.checked,report:report.checked};localStorage.setItem('anansiProfile',JSON.stringify(p));sync();status.textContent='Profile saved';setTimeout(()=>status.textContent='',1800)}
+    const profileField=id=>document.getElementById(id),profileDefaults={name:'Adesewa Okafor',role:'Gallery Director',email:'',enquiries:true,interest:true,report:false};let p;
+    try{p={...profileDefaults,...JSON.parse(localStorage.getItem('anansiProfile')||'{}')}}catch{p={...profileDefaults}}
+    for(const key in p){const el=profileField(key);if(el)el.type==='checkbox'?el.checked=p[key]:el.value=p[key]}
+    for(const id of ['name','role','email'])profileField(id).previousElementSibling.setAttribute('for',id);
+    function sync(){profileField('displayName').textContent=profileField('name').value;profileField('displayRole').textContent=profileField('role').value+' · Anansi Gallery';profileField('avatar').textContent=profileField('name').value.trim().split(/\s+/).map(x=>x[0]||'').slice(0,2).join('')}
+    sync();document.querySelector('.activity').innerHTML='<li>Presentation profile · no sign-in yet</li><li>Notification preferences saved locally; no live delivery</li>';
+    profileField('status').setAttribute('role','status');
+    profileField('save').onclick=()=>{if(!profileField('name').value.trim()){profileField('status').textContent='Enter a display name.';profileField('name').focus();return}if(!profileField('email').checkValidity()){profileField('email').reportValidity();return}const next={name:profileField('name').value.trim(),role:profileField('role').value.trim(),email:profileField('email').value.trim(),enquiries:profileField('enquiries').checked,interest:profileField('interest').checked,report:profileField('report').checked};try{localStorage.setItem('anansiProfile',JSON.stringify(next));p=next;sync();profileField('status').textContent='Profile saved on this browser'}catch{profileField('status').textContent='Browser storage unavailable. Profile was not saved.'}}
   </script>
 </body>
 </html>

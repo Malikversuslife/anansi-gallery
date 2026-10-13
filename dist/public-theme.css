@@ -1,0 +1,34 @@
+/* Public routes share the homepage's typography, spacing and colour system. */
+body.anansi-public{--paper:#eff3f1;--ink:#101c17;--muted:#667b6e;--line:#d2dbd5;--pale:#e1e9e4;background:var(--paper);color:var(--ink)}
+body.anansi-public .site-header{position:sticky;top:0;z-index:20;background:#eff3f1f5;backdrop-filter:blur(14px);padding:20px 3vw;gap:26px}
+body.anansi-public .site-header nav{font-size:12px}
+body.anansi-public .site-header .visit-link{background:#18271f;color:#e5ece8;border-color:transparent;border-radius:10px}
+body.anansi-public .page-title{max-width:none;padding:80px 3vw 55px;border-bottom:1px solid var(--line);margin-bottom:35px}
+body.anansi-public .page-title h1,body.anansi-public .detail-copy h1{font-family:'DM Sans',Arial,sans-serif;text-transform:uppercase;font-weight:500;letter-spacing:-.045em;line-height:1.04}
+body.anansi-public .page-title h1{font-size:clamp(48px,7vw,100px)}
+body.anansi-public .page-title .eyebrow{color:#667d6e}
+body.anansi-public .section{padding-left:3vw;padding-right:3vw}
+body.anansi-public .filters,body.anansi-public .results-note,body.anansi-public .artist-list,body.anansi-public .exhibition-list{padding-left:3vw;padding-right:3vw}
+body.anansi-public .work-grid{gap:50px 28px}
+body.anansi-public .work-card h3,body.anansi-public .artist-row h3,body.anansi-public .exhibition-row h3{font-family:'DM Sans',Arial,sans-serif;font-weight:500;letter-spacing:-.03em}
+body.anansi-public .artist-row,body.anansi-public .exhibition-row{padding-top:38px;padding-bottom:38px;transition:background .2s}
+body.anansi-public .artist-row:hover,body.anansi-public .exhibition-row:hover{background:#fff8}
+body.anansi-public .detail{padding:65px 3vw 90px;gap:7vw}
+body.anansi-public .detail-copy h1{font-size:clamp(40px,4.5vw,70px)}
+body.anansi-public .editorial{padding-left:3vw;padding-right:3vw}
+body.anansi-public .manifesto{background:#101c17;color:#e5ece8}
+body.anansi-public .manifesto .text-link{border-color:#a7bbae}
+body.anansi-public main .button{background:#18271f;border-color:#18271f;color:#e5ece8;border-radius:10px;min-height:46px}
+body.anansi-public main .button.secondary{background:#fff;border-color:#d2dbd5;color:#18271f}
+body.anansi-public footer{background:#080d0b;color:#dfe7e3;border-color:#36423b;padding:45px 3vw 25px}
+body.anansi-public footer .local-note{color:#a0b4a7}
+body.anansi-public footer .brand span{color:#b5c8bd}
+body.anansi-public footer a:hover{color:#b5c8bd}
+@media(max-width:600px){body.anansi-public .site-header{padding:20px 6vw;gap:16px}body.anansi-public .page-title{padding:50px 6vw 35px}body.anansi-public .page-title h1{font-size:48px}body.anansi-public .section,body.anansi-public .filters,body.anansi-public .results-note,body.anansi-public .artist-list,body.anansi-public .exhibition-list,body.anansi-public .editorial{padding-left:6vw;padding-right:6vw}body.anansi-public .detail{padding:30px 6vw 55px;gap:28px}body.anansi-public .work-grid{gap:30px 16px}body.anansi-public .detail-copy h1{font-size:40px}body.anansi-public footer{padding:35px 6vw 20px}}
+@media(prefers-reduced-motion:reduce){body.anansi-public .artist-row,body.anansi-public .exhibition-row{transition:none}}
+body.anansi-public footer .footer-top{display:grid;grid-template-columns:1fr 1fr;gap:10vw;align-items:start;padding:45px 0 65px;margin-bottom:0}
+body.anansi-public footer h2{font-family:'DM Sans',Arial,sans-serif;font-weight:500;text-transform:uppercase;font-size:clamp(35px,4.6vw,68px);letter-spacing:-.045em;line-height:1.04}
+body.anansi-public .public-footer-invitation .button{margin-top:45px;background:#e4eae7;color:#111c16;border-color:#e4eae7;border-radius:10px;min-width:220px}
+body.anansi-public footer .ref-footer-links p{font-size:10px;letter-spacing:0}
+body.reference-home footer .footer-top{display:none}
+@media(max-width:600px){body.anansi-public footer .footer-top{grid-template-columns:1fr;gap:45px;padding:35px 0 55px}body.anansi-public footer h2{font-size:38px}body.anansi-public .public-footer-invitation .button{margin-top:30px}}

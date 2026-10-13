@@ -1,0 +1,7 @@
+/* Shared modal and nested-panel scrolling: native touch/keyboard behaviour. */
+dialog,.messages,.visitor-actions,.travel-menu .tour,.placement-list{scrollbar-width:thin;scrollbar-color:#78a69e #edf3f1;overscroll-behavior:contain;scrollbar-gutter:stable}
+dialog::-webkit-scrollbar,.messages::-webkit-scrollbar,.visitor-actions::-webkit-scrollbar,.travel-menu .tour::-webkit-scrollbar,.placement-list::-webkit-scrollbar{width:8px;height:8px}
+dialog::-webkit-scrollbar-track,.messages::-webkit-scrollbar-track,.visitor-actions::-webkit-scrollbar-track,.travel-menu .tour::-webkit-scrollbar-track,.placement-list::-webkit-scrollbar-track{background:#edf3f1;border-radius:20px;margin-block:18px}
+dialog::-webkit-scrollbar-thumb,.messages::-webkit-scrollbar-thumb,.visitor-actions::-webkit-scrollbar-thumb,.travel-menu .tour::-webkit-scrollbar-thumb,.placement-list::-webkit-scrollbar-thumb{background:#78a69e;border:2px solid #edf3f1;border-radius:20px;min-height:36px}
+dialog::-webkit-scrollbar-thumb:hover,.messages::-webkit-scrollbar-thumb:hover,.visitor-actions::-webkit-scrollbar-thumb:hover,.travel-menu .tour::-webkit-scrollbar-thumb:hover,.placement-list::-webkit-scrollbar-thumb:hover{background:#347d78}
+@media(forced-colors:active){dialog,.messages,.visitor-actions,.travel-menu .tour,.placement-list{scrollbar-color:auto}}

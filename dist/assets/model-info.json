@@ -1,0 +1,9 @@
+{
+  "source": "anansi-presentation-study-v6.blend",
+  "presentationOnly": true,
+  "blinds": 44,
+  "meshes": 116,
+  "finishedUpperFloor": 4.285,
+  "coordinateMapping": "Blender (x,y,z) -> browser (x,z,-y)",
+  "pbrNote": "Cycles procedural networks replaced with explicit PBR; no baked global illumination yet."
+}

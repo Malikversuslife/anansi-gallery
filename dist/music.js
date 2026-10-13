@@ -1,0 +1,16 @@
+export function setupMusic({stored,save,toast,isCurator=false}){
+  const $=id=>document.getElementById(id),audio=$('galleryAudio');let objectUrl=null;
+  const mute=document.createElement('button');mute.id='muteMusic';mute.className='pill';document.querySelector('.hud').append(mute);audio.muted=stored('anansiListening',{}).muted===true;
+  function syncMute(){const spotify=!!$('spotifyPlayer').querySelector('iframe');mute.textContent=spotify?'Spotify sound controls':audio.muted?'Unmute music':'Mute music';mute.setAttribute('aria-label',spotify?'Open Spotify sound controls':audio.muted?'Unmute gallery music on this device':'Mute gallery music on this device');if(spotify)mute.removeAttribute('aria-pressed');else mute.setAttribute('aria-pressed',String(audio.muted))}
+  mute.onclick=()=>{if($('spotifyPlayer').querySelector('iframe')){$('music').showModal();toast('Spotify controls its own playback. Use the embedded player for sound.');return}audio.muted=!audio.muted;save('anansiListening',{muted:audio.muted});syncMute();toast(audio.muted?'Music muted for you only.':'Music unmuted for you only.')};audio.addEventListener('volumechange',syncMute);syncMute();
+  $('musicButton').hidden=false;$('musicButton').textContent=isCurator?'Music':'Soundtrack';
+  $('musicFile').parentElement.hidden=!isCurator;$('spotifyLink').parentElement.hidden=!isCurator;$('loadSpotify').hidden=!isCurator;
+  if(!isCurator)$('musicStatus').textContent='The curator chooses the soundtrack. Play/pause and volume affect your listening only. No soundtrack is set unless the curator has saved a Spotify link on this browser.';
+  function player(link){let url;try{url=new URL(link)}catch{return false}const match=url.pathname.match(/^\/(playlist|album|track)\/([A-Za-z0-9]+)\/?$/);if(url.protocol!=='https:'||url.hostname!=='open.spotify.com'||!match)return false;audio.pause();const frame=document.createElement('iframe');frame.src='https://open.spotify.com/embed/'+match[1]+'/'+match[2];frame.width='100%';frame.height='152';frame.title='Curator-selected gallery soundtrack';frame.allow='encrypted-media; autoplay';frame.style.border='0';$('spotifyPlayer').replaceChildren(frame);syncMute();return true}
+  $('musicButton').onclick=()=>{const link=stored('anansiMusic',{}).spotify||'';$('spotifyLink').value=link;if(link&&!audio.getAttribute('src')&&!$('spotifyPlayer').querySelector('iframe'))player(link);$('music').showModal()};$('closeMusic').onclick=()=>$('music').close();
+  $('musicFile').onchange=()=>{if(!isCurator)return;const file=$('musicFile').files[0];if(!file)return;if(file.size>30000000){toast('Choose an audio file below 30 MB.');return}audio.pause();$('spotifyPlayer').replaceChildren();if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(file);audio.src=objectUrl;audio.loop=true;syncMute();$('musicStatus').textContent=file.name+' · curator preview on this device; not uploaded or shared'};
+  $('musicVolume').oninput=()=>audio.volume=Number($('musicVolume').value)/100;audio.volume=.35;
+  $('loadSpotify').onclick=()=>{
+    if(!isCurator)return;if(!player($('spotifyLink').value)){toast('Use an HTTPS open.spotify.com playlist, album or track link.');return}save('anansiMusic',{spotify:$('spotifyLink').value.trim()});
+  };
+}
