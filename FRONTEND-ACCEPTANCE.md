@@ -12,7 +12,7 @@ This is a local presentation build, not a production launch or authenticated app
 - Enquiries use display names and pseudonymous visitor IDs, not mandatory email/phone; curator can read messages and update status.
 - Notification-driven simulated chat, invitation accept/decline, block/unblock and clearly labelled local report action.
 - Fictional visitor interaction, personal music mute, seating, room shortcuts and photo composition with exhibition attribution.
-- Personal graphics quality setting, WebGL loading/retry guidance and lightweight catalogue fallback.
+- Personal graphics quality setting, an automatic step-down to Light on slow desktop devices with a way back, WebGL loading/retry guidance and lightweight catalogue fallback.
 - Mobile action and destination menus, modal back controls and themed scrollbars.
 
 ## Verified in this finishing pass

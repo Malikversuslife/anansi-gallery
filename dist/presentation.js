@@ -8,6 +8,7 @@ import { setupMusic } from './music.js';
 import './placement-zones.js';
 import {setupSeating} from './seating.js';
 import {createArtworkLighting} from './artwork-lighting.js';
+import {setupQualityStepDown} from './quality-step-down.js';
 import {resolveWalk} from './visitor-navigation.js';
 import {setupGalleryMenus} from './gallery-menus.js';
 import {setupGalleryChat} from './gallery-chat.js';
@@ -224,6 +225,7 @@ const interact=document.createElement('button');interact.id='interactButton';int
 const floorStatus=document.createElement('span');floorStatus.id='floorStatus';floorStatus.className='floor-status';document.querySelector('.caption').append(floorStatus);
 let interactionTime=0;
 let previous=performance.now();
+let watchFrame=null;
 renderer.setAnimationLoop(now=>{
   const dt=Math.min((now-previous)/1000,.05);previous=now;
   for(const key of ['west','east','day','art'])atmosphere[key]=THREE.MathUtils.damp(atmosphere[key],desired[key],3,dt);
@@ -240,6 +242,7 @@ renderer.setAnimationLoop(now=>{
   }
   interactionTime+=dt;if(interactionTime>.15){interactionTime=0;const hit=pickAt(innerWidth/2,innerHeight/2);interact.hidden=!hit;interact.textContent=hit?(Number.isInteger(hit.object.userData.seat)?'View seating':hit.object.userData.visitor?`Meet ${hit.object.userData.visitor.artist}`:`View ${hit.object.userData.work?.name||'artwork'}`):'';canvas.style.cursor=hit?'pointer':'grab';floorStatus.textContent=seating?.isSeated()?'Seated':footHeight>3.9?'Upper floor':footHeight>.3?'Staircase':'Ground floor';canvas.dataset.cameraPosition=camera.position.toArray().map(n=>n.toFixed(3)).join(',')}
   renderer.render(scene,camera);
+  if(started)watchFrame?.(now);
 });
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 
@@ -293,7 +296,9 @@ seating=setupSeating({scene,camera,targets,toast,setView});
 const galleryChat=setupGalleryChat({getGuest:()=>guest,toast,stored,save});
 visitors=setupVisitors({scene,targets,chat:galleryChat,toast});
 setupMusic({stored,save,toast,isCurator});
-setupGalleryHelp({stored,save,onQuality:quality=>{const light=quality==='light';renderer.setPixelRatio(light?.8:Math.min(devicePixelRatio,mobile?1.15:1.5));renderer.shadowMap.enabled=!light;reflectedFloor.visible=!light&&!mobile;reflectionToggle.checked=reflectedFloor.visible;renderer.setSize(innerWidth,innerHeight)}});
+const galleryHelp=setupGalleryHelp({stored,save,onQuality:quality=>{const light=quality==='light';renderer.setPixelRatio(light?.8:Math.min(devicePixelRatio,mobile?1.15:1.5));renderer.shadowMap.enabled=!light;reflectedFloor.visible=!light&&!mobile;reflectionToggle.checked=reflectedFloor.visible;renderer.setSize(innerWidth,innerHeight)}});
+// Phones are unmeasured, and curators need to see the real exhibition.
+if(!mobile&&!isCurator)watchFrame=setupQualityStepDown({stored,save,toast,setQuality:galleryHelp.setQuality});
 setupGalleryMenus({getName:()=>guest.name,onOpen:()=>keys.clear()});
 for(const id of ['photoBooth','lighting','music','interest']){const button=document.createElement('button');button.type='button';button.className='btn dialog-back';button.textContent=id==='interest'?'← Back to artwork':'← Back to gallery';button.onclick=()=>{$(id).close();if(id==='interest'&&selectedWork)openWork(selectedWork)};$(id).querySelector('.panel').prepend(button)}
 $('loading').style.display='none';$('guestName').value=guest.name==='Guest'?'':guest.name;$('guestColor').value=guest.color;$('welcome').showModal();
