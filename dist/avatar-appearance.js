@@ -14,6 +14,8 @@ const hairlines={
  polo:[[0,.44],[.18,.44],[.23,.35],[.29,.30],[.35,.18],[.44,.17],[.55,.14],[.64,.17],[.71,.30],[.77,.35],[.83,.44],[1,.44]],
  curls:[[0,.43],[.18,.43],[.23,.31],[.29,.29],[.35,.17],[.42,.145],[.52,.12],[.62,.16],[.68,.22],[.72,.30],[.77,.34],[.83,.44],[1,.44]]
 };
+export const skinColourFor=key=>skinColours[key];
+export const hairColourFor=key=>hairColours[key];
 const cached=new WeakMap();
 const atlases=new Map();
 function ramp(a,b,x){const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}

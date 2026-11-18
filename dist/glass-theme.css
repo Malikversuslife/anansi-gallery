@@ -1,0 +1,100 @@
+/* Gallery-wide glass theme: the look studio's frosted panels, white type and glowing selection, applied to every
+   control, panel and dialog in the gallery. Loaded after the older stylesheets, so it wins at equal specificity. */
+:root{
+  --g:rgba(22,28,27,.42);--g-strong:rgba(20,26,25,.66);--g-soft:rgba(255,255,255,.08);
+  --edge:rgba(255,255,255,.26);--edge-strong:rgba(255,255,255,.62);
+  --ink:#fff;--muted:rgba(255,255,255,.72);--faint:rgba(255,255,255,.5);
+  --glow:0 0 0 1.5px rgba(255,255,255,.92),0 0 18px rgba(255,236,214,.45);
+  --lift:inset 0 1px 0 rgba(255,255,255,.14),0 16px 44px rgba(0,0,0,.2);
+  --frost:blur(22px) saturate(1.25)
+}
+
+/* ---------------------------------------------------------------- controls */
+.pill,.btn,.tour button,.mobile-controls button,.dialog-back,.chat-notifications,#visitorMenuButton,.mobile-menu-toggle{
+  background:var(--g);color:var(--ink);border:1px solid var(--edge);border-radius:999px;
+  backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);box-shadow:var(--lift);
+  transition:background .15s,border-color .15s,box-shadow .15s
+}
+.pill:hover,.btn:hover:not(:disabled),.tour button:hover,.mobile-controls button:hover{background:rgba(30,38,37,.55);border-color:var(--edge-strong)}
+.pill i,.btn i{color:inherit}
+.btn{padding:11px 18px}
+.btn:disabled{opacity:.45}
+.primary,.btn.primary,.tour button.active,.pill.active,.pill[aria-pressed=true]{background:rgba(255,255,255,.14);color:#fff;border-color:transparent;box-shadow:var(--glow),var(--lift)}
+.primary:hover,.btn.primary:hover:not(:disabled){background:rgba(255,255,255,.22)}
+.btn.primary{font-weight:600;letter-spacing:.4px}
+.close{color:var(--muted);border-radius:50%;width:38px;height:38px;display:grid;place-items:center;background:var(--g-soft);border:1px solid var(--edge)!important;font-size:20px;line-height:1}
+.close:hover{color:#fff;border-color:var(--edge-strong)!important}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* ---------------------------------------------------------------- the room's overlays */
+.brand,.hud .brand{color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.45)}
+.brand small{color:rgba(255,255,255,.82)}
+#hint{background:var(--g);color:var(--ink);border:1px solid var(--edge);backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);box-shadow:var(--lift)}
+.caption,.floor-status{background:var(--g);color:var(--ink);border:1px solid var(--edge);border-radius:20px;backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);box-shadow:var(--lift)}
+.caption p{color:var(--muted)}
+.eyebrow{color:rgba(255,255,255,.66)}
+#toast{background:var(--g-strong);color:#fff;border:1px solid var(--edge);border-radius:999px;padding:12px 20px;backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);box-shadow:var(--glow),var(--lift)}
+.travel-menu .tour,.visitor-actions{background:var(--g);border:1px solid var(--edge);backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost)}
+.chat-count{background:#fff;color:#1b2422}
+
+/* ---------------------------------------------------------------- dialogs */
+dialog{background:var(--g-strong);color:var(--ink);border:1px solid var(--edge);border-radius:26px;
+  backdrop-filter:blur(28px) saturate(1.3);-webkit-backdrop-filter:blur(28px) saturate(1.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 30px 90px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(9,14,13,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel h1,.panel h2,.panel h3{color:#fff}
+.panel p,.note,#galleryHelp p{color:var(--muted)}
+.fields label,.chat-label,.chat-preference{color:var(--muted)}
+.fields input,.fields textarea,.fields select,.chat-form input,.chat-preference select,.chat-preference input:not([type=checkbox]):not([type=radio]){
+  background:var(--g-soft);color:#fff;border:1px solid var(--edge);border-radius:12px}
+.fields input::placeholder,.chat-form input::placeholder,textarea::placeholder{color:var(--faint)}
+.fields input:focus,.fields select:focus,.fields textarea:focus,.chat-form input:focus{border-color:var(--edge-strong);outline:none;box-shadow:0 0 0 3px rgba(255,255,255,.12)}
+select option{color:#1b2422;background:#f4f6f5}
+input[type=range],input[type=checkbox],input[type=radio],.colors input{accent-color:#fff}
+.art-image{background:var(--g-soft);color:var(--muted);border:1px solid rgba(255,255,255,.1)}
+.meta span{border-color:var(--edge);color:var(--muted);background:var(--g-soft)}
+.messages{background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.08)}
+.message{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.08)}
+.message.you{background:rgba(255,255,255,.2)}
+.message small{color:var(--faint)}
+.collection-work,.placement-list>*{border-color:var(--edge)!important}
+.collection-work small{color:var(--muted)}
+.intro-cover{border-radius:16px;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+#photoPreview{border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 20px 50px rgba(0,0,0,.35)}
+.curator-light-control{color:var(--muted)}
+
+/* Scrollbars inside glass */
+dialog,.messages,.placement-list,.travel-menu .tour,.visitor-actions{scrollbar-color:rgba(255,255,255,.35) transparent}
+dialog::-webkit-scrollbar-thumb,.messages::-webkit-scrollbar-thumb,.placement-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3)!important}
+dialog::-webkit-scrollbar-track,.messages::-webkit-scrollbar-track,.placement-list::-webkit-scrollbar-track{background:transparent!important}
+
+/* ---------------------------------------------------------------- loading screen */
+#loading{background:#141b1a url(assets/gallery-hero.png) center/cover;color:#fff}
+#loading::before{content:'';position:absolute;inset:0;background:rgba(14,20,19,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#loading>*{position:relative}
+#loading p{color:var(--muted)}
+
+/* The room buttons sit straight on the scene (the wrapper is only a panel when the phone menu opens it), and the floor
+   label inside the room card is a small tag, not a second glass layer. */
+@media (min-width:651px){.travel-menu .tour{background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}}
+.floor-status{display:inline-block;margin-top:9px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;font-size:11px}
+.travel-menu .tour.open{border-radius:20px}
+
+/* Inside a dialog the glass is already behind them: buttons are a lighter tint, without a second blur. */
+dialog .btn,dialog .pill,dialog .dialog-back{background:rgba(255,255,255,.08);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+dialog .btn:hover:not(:disabled),dialog .pill:hover{background:rgba(255,255,255,.15)}
+dialog .btn.primary,dialog .primary{background:rgba(255,255,255,.14);box-shadow:var(--glow)}
+dialog .btn+.btn,dialog .btn{margin-top:8px}
+.mobile-controls{background:var(--g)!important;border:1px solid var(--edge);border-radius:22px;backdrop-filter:var(--frost)!important;-webkit-backdrop-filter:var(--frost)!important}
+.mobile-controls button{background:rgba(255,255,255,.1);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;color:#fff}
+
+/* Performance: a live blur over the moving 3D room costs about 15% of the frame rate on a slow laptop. Overlays on the
+   room keep the tinted glass without the blur; dialogs and the look studio (where the room is behind a backdrop) keep it. */
+.hud .pill,.hud .chat-notifications,.tour button,#hint,.caption,.mobile-controls,.mobile-controls button,.travel-menu .tour,.visitor-actions,#toast{
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background-color:rgba(22,28,27,.52)}
+.tour button.active,.hud .pill.active{background-color:rgba(40,48,46,.62)}
+#qualityNote{background:var(--g-strong);color:#fff;border:1px solid var(--edge);border-radius:20px;backdrop-filter:var(--frost);-webkit-backdrop-filter:var(--frost);box-shadow:var(--lift)}
+/* Room buttons sit straight on the scene on wider screens (the tinted panel is only the phone menu); where the top
+   buttons wrap to a second row, the hint moves below them. */
+@media (min-width:651px){.travel-menu .tour{background-color:transparent!important;border:0;box-shadow:none}}
+@media (min-width:651px) and (max-width:1180px){#hint{top:132px}}

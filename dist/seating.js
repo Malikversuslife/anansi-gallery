@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {createAvatar,seatedPose,defaultLook} from './real-characters.js';
+import {createAvatar,seatedPose,defaultLook,a01Trial} from './real-characters.js';
 export function setupSeating({scene,camera,targets,toast,setView}){
  const seats=[{x:-6.35,owner:null},{x:-5.5,owner:null},{x:-4.65,owner:'Demo guest'}];let selected=null;
  const dialog=document.createElement('dialog');dialog.id='seating';const panel=document.createElement('div');panel.className='panel';dialog.append(panel);document.body.append(dialog);
@@ -16,7 +16,8 @@ export function setupSeating({scene,camera,targets,toast,setView}){
   const approach=document.createElement('button');approach.className='btn';approach.textContent='Approach the bench';approach.onclick=()=>{if(selected!==null)standUp();setView([-5.5,1.7,-4.7],0,'By the viewing bench');dialog.close()};panel.append(approach);
  }
  seats.forEach((seat,index)=>{const hit=new THREE.Mesh(new THREE.BoxGeometry(.80,.22,.72),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,colorWrite:false}));hit.position.set(seat.x,.51,-6.9);hit.userData.seat=index;scene.add(hit);targets.push(hit)});
- const occupant=seatedPose(createAvatar({...defaultLook,model:'male'}));occupant.position.x=seats[2].x;occupant.position.z=-6.90;occupant.rotation.y=Math.PI;scene.add(occupant);
+ const occupant=seatedPose(createAvatar({...defaultLook,model:a01Trial?'a01':'male'}));occupant.position.x=seats[2].x;occupant.position.z=-6.90;occupant.rotation.y=Math.PI;scene.add(occupant);
+ if(a01Trial)window.a01Trial={THREE,scene,camera,occupant,seats};
  function request(index){sync();dialog.showModal();if(seats[index]?.owner)toast('This seat is occupied. Select a vacant seat.');}
  open.onclick=()=>request(0);stand.onclick=standUp;sync();
  return {request,isSeated:()=>selected!==null,standUp,release:standUp,seats};
