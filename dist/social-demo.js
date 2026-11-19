@@ -6,7 +6,7 @@ export async function setupSocial({scene,camera,renderer,stored,save,toast,getGu
   const $=id=>document.getElementById(id);
   await loadCharacters();
   // The look designer is the full-screen studio (designer-studio.js); this file keeps the photo booth.
-  const studio=setupStudio({stored,save,toast,getGuest,onEnter});
+  const studio=setupStudio({renderer,stored,save,toast,getGuest,onEnter});
   const getLook=()=>studio.getLook();
   $('customAvatar').onclick=()=>studio.openDesigner(false);
   const photoGroup=new THREE.Group();scene.add(photoGroup);

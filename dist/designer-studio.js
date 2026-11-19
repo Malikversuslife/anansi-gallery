@@ -84,7 +84,7 @@ function categoryNote(cat,look){
  return '';
 }
 
-export function setupStudio({stored,save,toast,getGuest,onEnter}){
+export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
  const $=id=>document.getElementById(id);
  const dialog=$('avatarDesigner');
  dialog.classList.add('studio');
@@ -106,9 +106,11 @@ export function setupStudio({stored,save,toast,getGuest,onEnter}){
 
  // ---------------------------------------------------------------- the stage
  const stage=$('avatarPreview');
- const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.setClearColor(0,0);
- stage.append(renderer.domElement);
+ // The studio borrows the gallery's renderer while it is open (one WebGL context for the page: phones ran out of
+ // memory with two, each holding its own copy of every texture). Its canvas moves into the stage and back.
+ const home=renderer.domElement.parentElement,clear=new THREE.Color();let clearAlpha=1,looping=false;
+ function borrow(){renderer.getClearColor(clear);clearAlpha=renderer.getClearAlpha();renderer.setClearColor(0,0);stage.append(renderer.domElement)}
+ function giveBack(){home.append(renderer.domElement);renderer.setClearColor(clear,clearAlpha);renderer.setSize(innerWidth,innerHeight);window.dispatchEvent(new Event('resize'))}
  const scene=new THREE.Scene();
  const lights=s=>{s.add(new THREE.HemisphereLight('#fffaf2','#6f6457',1.7));const key=new THREE.DirectionalLight('#fff4e6',2.6);key.position.set(1.6,2.8,3.2);s.add(key);const rim=new THREE.DirectionalLight('#cfe3ff',1.4);rim.position.set(-2.5,2.2,-2.4);s.add(rim);const fill=new THREE.DirectionalLight('#ffffff',.6);fill.position.set(-2,1,3);s.add(fill)};
  lights(scene);
@@ -148,7 +150,7 @@ export function setupStudio({stored,save,toast,getGuest,onEnter}){
  }
  function updatePreview(){const token=++previewToken;drawPreview();if(!partsReady(look))ensureParts(look).then(()=>{if(token===previewToken)drawPreview()})}
  let last=performance.now();
- renderer.setAnimationLoop(now=>{const dt=Math.min((now-last)/1000,.05);last=now;if(!dialog.open)return;preview?.userData.mixer?.update(dt);renderer.render(scene,camera)});
+ function frameLoop(now){if(!dialog.open){looping=false;return}const dt=Math.min((now-last)/1000,.05);last=now;preview?.userData.mixer?.update(dt);renderer.render(scene,camera);requestAnimationFrame(frameLoop)}
 
  // Drag the stage to turn the character.
  let drag=null;
@@ -246,7 +248,8 @@ export function setupStudio({stored,save,toast,getGuest,onEnter}){
    const img=document.createElement('img');img.alt='';const cap=document.createElement('span');cap.textContent=label;
    b.append(img,cap);if(why){const w=document.createElement('em');w.textContent=why;b.append(w)}
    b.onclick=()=>set(section.key,value);grid.append(b);
-   thumb({...look,[section.key]:value},section.frame,img);
+   if(section.key==='model'){img.src=`assets/characters/thumbs/${value}.webp`;img.onload=()=>img.classList.add('ready')}   // pre-rendered: opening the studio no longer loads every preset
+   else thumb({...look,[section.key]:value},section.frame,img);
   }
   host.append(grid);
  }
@@ -309,12 +312,12 @@ export function setupStudio({stored,save,toast,getGuest,onEnter}){
   const back=$('studioBack');back.querySelector('b').textContent=entry?'Visit details':'Gallery';
   $('saveAvatar').textContent=entry?'Enter the gallery →':'Save my look';
   $('studioTurn').value=look.turn;current=CATS[0];chip=0;autoView=true;setView('full',true);
-  render();identity();dialog.showModal();requestAnimationFrame(()=>{updatePreview();layout()});
+  borrow();render();identity();dialog.showModal();requestAnimationFrame(()=>{updatePreview();layout();if(!looping){looping=true;last=performance.now();requestAnimationFrame(frameLoop)}});
  }
  $('studioBack').onclick=()=>dialog.close();
  $('closeAvatarDesigner').onclick=()=>dialog.close();
  $('saveAvatar').onclick=()=>{look=normalizeLook(look);if(save('anansiAvatar',look)){savedLook={...look};const enter=entryStep;entryStep=false;dialog.close();if(enter)onEnter();else toast('Your look is saved in this browser.')}};
- dialog.addEventListener('close',()=>{look={...savedLook};if(preview){scene.remove(preview);disposeAvatar(preview);preview=null}queue=[];if(entryStep){entryStep=false;$('welcome').showModal()}});
+ dialog.addEventListener('close',()=>{giveBack();look={...savedLook};if(preview){scene.remove(preview);disposeAvatar(preview);preview=null}queue=[];if(entryStep){entryStep=false;$('welcome').showModal()}});
  dialog.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!/input/i.test(e.target.tagName)){e.preventDefault();(e.shiftKey?$('studioRedo'):$('studioUndo')).click()}});
  return {openDesigner,getLook:()=>({...look})};
 }

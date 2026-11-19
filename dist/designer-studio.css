@@ -127,3 +127,7 @@
 }
 @media (max-width:819px) and (max-height:620px){.studio .st-panel{height:34dvh}.studio .st-rail{bottom:calc(34dvh + 82px)}}
 @media (prefers-reduced-motion:reduce){.studio .st-opt,.studio .st-opt img{transition:none}}
+@media (max-width:819px),(pointer:coarse){
+  #avatarDesigner.studio{--glass:rgba(24,30,29,.78);--glass-strong:rgba(24,30,29,.88)}
+  .studio .st-bg{filter:saturate(.9) brightness(.55)}     /* no blur filter on phones */
+}

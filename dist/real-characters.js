@@ -9,7 +9,7 @@ import {skinOptions,hairOptions,prepareAppearance,applyAppearance,skinColourFor,
 // Without it this file behaves as in source/dist.
 export const a01Trial=new URLSearchParams(location.search).get('a01')!=='0';
 export const characterOptions=[['female','Tied-back hair · tailored jacket'],['male','Short hair · denim jacket'],['bob','Dark bob · sleeveless tunic'],['polo','Short brown hair · polo & shorts'],['curls','Curly hair · hooded jacket'],['covered','Head covering · flowing outfit']];
-export const defaultLook={model:'female',skinTone:'original',hairColor:'original',top:'#ffffff',bottom:'#ffffff',shoeColor:'#ffffff',accessoryColor:'#bfa374',shoes:'original',eyewear:'none',earrings:'none',watch:'none',build:'balanced',outer:'jacket',topStyle:'tee',bottomStyle:'trousers',topPrint:'plain',bottomPrint:'plain',headwear:'none',hairStyle:'default',facialHair:'default',bag:'none',faceShape:0,jaw:0,chin:0,cheeks:0,nose:0,noseLength:0,lips:0,mouth:0,eyes:0,eyeSpacing:0,lipColor:'original',turn:0};
+export const defaultLook={model:a01Trial?'a02':'female',skinTone:'original',hairColor:'original',top:'#ffffff',bottom:'#ffffff',shoeColor:'#ffffff',accessoryColor:'#bfa374',shoes:'original',eyewear:'none',earrings:'none',watch:'none',build:'balanced',outer:'jacket',topStyle:'tee',bottomStyle:'trousers',topPrint:'plain',bottomPrint:'plain',headwear:'none',hairStyle:'default',facialHair:'default',bag:'none',faceShape:0,jaw:0,chin:0,cheeks:0,nose:0,noseLength:0,lips:0,mouth:0,eyes:0,eyeSpacing:0,lipColor:'original',turn:0};
 // Face sliders, -1..1: each drives one of a pair of face morphs (original bodies only).
 export const FACE_SLIDERS=[['faceShape','face_angular','face_soft'],['jaw','jaw_wide','jaw_narrow'],['chin','chin_strong','chin_soft'],['cheeks','cheeks_high','cheeks_flat'],['nose','nose_wide','nose_narrow'],['noseLength','noselen_long','noselen_short'],['lips','lips_full','lips_thin'],['mouth','mouth_wide','mouth_narrow'],['eyes','eyes_large','eyes_small'],['eyeSpacing','spacing_wide','spacing_close']];
 export function normalizeLook(look={}){
@@ -146,11 +146,13 @@ async function loadParts(key){
 // True when every part this look needs is already loaded (always true for the presets).
 export function partsReady(look={}){
  const a=normalizeLook(look),set=parts.get(a.model);
+ if(!presetsNeeded(a).every(k=>library.has(k)))return false;
  return !set||neededFiles(set,a).every(f=>set.files.has(f));
 }
 // Loads every part this look needs; resolves when they are all in.
 export async function ensureParts(look={}){
  const a=normalizeLook(look),set=parts.get(a.model);
+ await Promise.all(presetsNeeded(a).map(loadPreset));
  if(set)await Promise.all(neededFiles(set,a).map(f=>fetchPart(set,a.model,f)));
 }
 // The skin comes in pieces, each tagged with the parts ("slot:style") that cover it. They are merged into one mesh,
@@ -323,23 +325,40 @@ function createA01(a){
  wrapper.userData.dispose=()=>{mixer.stopAllAction();mixer.uncacheRoot(group);owned.forEach(m=>m.dispose())};
  return wrapper;
 }
-export async function loadCharacters(){
- const draco=new DRACOLoader().setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/libs/draco/gltf/');
- const loader=new GLTFLoader().setDRACOLoader(draco);
- try{await Promise.all([...characterOptions.map(([key])=>key).filter(key=>!ORIGINALS[key]),'footwear-sneakers','footwear-boots'].map(async key=>{
-  const asset=await loader.loadAsync(`assets/characters/${key}.glb`);
+// Presets load on demand (each is 1-2.5 MB and about 28 MB of textures on the GPU; phones ran out of memory when all six
+// and both footwear sets loaded at start). Only what the room shows at start is loaded then.
+const presetPending=new Map();
+function loadPreset(key){
+ if(library.has(key))return Promise.resolve();
+ if(!presetPending.has(key))presetPending.set(key,getPartsLoader().loadAsync(`assets/characters/${key}.glb`).then(asset=>{
   asset.scene.traverse(obj=>{if(obj.isMesh)for(const material of Array.isArray(obj.material)?obj.material:[obj.material])prepareAppearance(material,key)});
-  library.set(key,asset);
+  library.set(key,asset);presetPending.delete(key);
  }));
+ return presetPending.get(key);
+}
+function presetsNeeded(a){
+ if(ORIGINALS[a.model])return [];
+ return [a.model,...(a.shoes==='sneakers'||a.shoes==='boots'?['footwear-'+a.shoes]:[])];
+}
+export async function loadCharacters(){
+ let saved={};try{saved=JSON.parse(localStorage.getItem('anansiAvatar')||'{}')}catch{}
+ const start=new Set(['bob',...(a01Trial?[]:['female','male']),...(saved.model?presetsNeeded(normalizeLook(saved)):[])]);
+ try{await Promise.all([...start].map(loadPreset));
  if(a01Trial){const started=performance.now();await Promise.all(Object.keys(ORIGINALS).map(key=>loadParts(key)));window.a01TrialLoadMs=Math.round(performance.now()-started);
   // (the private-trial badge was removed when the original bodies went live)
  }
- }finally{draco.dispose()}
+ }finally{}
 }
 export function createAvatar(look={}){
  const a=normalizeLook(look),key=a.model,source=library.get(key);
  if(ORIGINALS[key]&&parts.has(key))return createA01(a);
- if(!source)throw new Error('The detailed character models are not ready.');
+ if(!source){
+  // Not loaded yet: start it, and meanwhile wear a body that is (callers redraw when ensureParts resolves).
+  loadPreset(key);
+  const stand=['a02','a01','female','bob'].find(k=>ORIGINALS[k]?parts.has(k):library.has(k));
+  if(!stand)throw new Error('The detailed character models are not ready.');
+  const avatar=createAvatar({...a,model:stand});avatar.userData.partsPending=['preset:'+key];return avatar;
+ }
  const group=clone(source.scene),owned=new Map();
  group.traverse(obj=>{
   const name=obj.name;

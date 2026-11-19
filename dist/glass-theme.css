@@ -98,3 +98,11 @@ dialog .btn+.btn,dialog .btn{margin-top:8px}
    buttons wrap to a second row, the hint moves below them. */
 @media (min-width:651px){.travel-menu .tour{background-color:transparent!important;border:0;box-shadow:none}}
 @media (min-width:651px) and (max-width:1180px){#hint{top:132px}}
+
+/* Phones and tablets: no live blur anywhere (it is costly on mobile GPUs and made the gallery lag); the glass is more
+   opaque instead, so text stays readable. */
+@media (max-width:819px),(pointer:coarse){
+  *{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  dialog{background:rgba(22,28,27,.94)}
+  .pill,.btn,.tour button,#hint,.caption,#toast,.mobile-controls,.travel-menu .tour.open,.visitor-actions{background-color:rgba(22,28,27,.78)}
+}

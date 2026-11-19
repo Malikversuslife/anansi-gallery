@@ -43,7 +43,9 @@ const works=exhibitionFilter?[...localWorks]:[...demoWorks,...localWorks];
 demoWorks.forEach((work,index)=>work.id=index<3?'demo-panel-'+index:index===3?'demo-sculpture':'demo-placement-'+index);
 const installations=new Map();
 const mobile=matchMedia('(max-width:650px)').matches;
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',preserveDrawingBuffer:true});
+// One WebGL context for the whole page: the look studio borrows this renderer while it is open (alpha lets it show
+// the studio's own backdrop). Photos copy the frame straight after drawing it, so no preserved drawing buffer.
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',alpha:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.15:1.5));renderer.setSize(innerWidth,innerHeight);
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;
@@ -226,6 +228,7 @@ const floorStatus=document.createElement('span');floorStatus.id='floorStatus';fl
 let interactionTime=0;
 let previous=performance.now();
 let watchFrame=null;
+const studioOpen=()=>document.getElementById('avatarDesigner')?.open;
 renderer.setAnimationLoop(now=>{
   const dt=Math.min((now-previous)/1000,.05);previous=now;
   for(const key of ['west','east','day','art'])atmosphere[key]=THREE.MathUtils.damp(atmosphere[key],desired[key],3,dt);
@@ -241,8 +244,8 @@ renderer.setAnimationLoop(now=>{
     const speed=2.5*dt/(Math.hypot(f,r)||1);walk((-Math.sin(yaw)*f+Math.cos(yaw)*r)*speed,(-Math.cos(yaw)*f-Math.sin(yaw)*r)*speed,dt);
   }
   interactionTime+=dt;if(interactionTime>.15){interactionTime=0;const hit=pickAt(innerWidth/2,innerHeight/2);interact.hidden=!hit;interact.textContent=hit?(Number.isInteger(hit.object.userData.seat)?'View seating':hit.object.userData.visitor?`Meet ${hit.object.userData.visitor.artist}`:`View ${hit.object.userData.work?.name||'artwork'}`):'';canvas.style.cursor=hit?'pointer':'grab';floorStatus.textContent=seating?.isSeated()?'Seated':footHeight>3.9?'Upper floor':footHeight>.3?'Staircase':'Ground floor';canvas.dataset.cameraPosition=camera.position.toArray().map(n=>n.toFixed(3)).join(',')}
-  renderer.render(scene,camera);
-  if(started)watchFrame?.(now);
+  if(!studioOpen())renderer.render(scene,camera);   // the studio draws with this renderer while it is open
+  if(started&&!studioOpen())watchFrame?.(now);
 });
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 
