@@ -354,7 +354,7 @@ function loadPreset(key){
  if(!presetPending.has(key))presetPending.set(key,getPartsLoader().loadAsync(`assets/characters/${key}.glb`).then(asset=>{
   shrinkTextures(asset.scene,512);
   asset.scene.traverse(obj=>{if(obj.isMesh)for(const material of Array.isArray(obj.material)?obj.material:[obj.material])prepareAppearance(material,key)});
-  library.set(key,asset);presetPending.delete(key);presetLastUsed.set(key,performance.now());releasePresets();
+  library.set(key,asset);presetPending.delete(key);presetLastUsed.set(key,performance.now());setTimeout(releasePresets,21000);
  }));
  return presetPending.get(key);
 }
@@ -362,7 +362,10 @@ function loadPreset(key){
 const presetUsers=new Map(),presetLastUsed=new Map();
 function presetUse(key,delta){presetUsers.set(key,Math.max(0,(presetUsers.get(key)||0)+delta));presetLastUsed.set(key,performance.now())}
 function releasePresets(){
- const spare=[...library.keys()].filter(k=>!ORIGINALS[k]&&k!=='bob'&&!(presetUsers.get(k)>0)).sort((a,b)=>(presetLastUsed.get(a)||0)-(presetLastUsed.get(b)||0));
+ // A preset loaded or worn in the last 20 seconds stays: one that has only just arrived has no wearer yet (releasing
+ // it then made every preset fall back to A02 on phones).
+ const now=performance.now();
+ const spare=[...library.keys()].filter(k=>!ORIGINALS[k]&&k!=='bob'&&!(presetUsers.get(k)>0)&&now-(presetLastUsed.get(k)||0)>20000).sort((a,b)=>(presetLastUsed.get(a)||0)-(presetLastUsed.get(b)||0));
  const keep=SMALL_GPU?0:3;
  for(const k of spare.slice(0,Math.max(0,spare.length-keep))){disposeAsset(library.get(k).scene);forgetAppearance(k);library.delete(k)}
 }
@@ -413,7 +416,7 @@ export function createAvatar(look={}){
   }
  }
  const dispose=wrapper.userData.dispose;let released=false;
- wrapper.userData.dispose=()=>{dispose?.();freeSkeletons(group);if(!released){released=true;users.forEach(k=>presetUse(k,-1));setTimeout(releasePresets,0)}};
+ wrapper.userData.dispose=()=>{dispose?.();freeSkeletons(group);if(!released){released=true;users.forEach(k=>presetUse(k,-1));setTimeout(releasePresets,21000)}};
  wrapper.userData.model=key;return wrapper;
 }
 // Some morph pairs read subtly at gallery distance; the slider's ends drive them harder (morphs are linear).
