@@ -1,11 +1,11 @@
 {
  "body": "a02",
- "version": "parts-v9",
+ "version": "parts-v10",
  "defaults": {
   "hair": "straight",
   "facialhair": "none"
  },
- "source": "visitor-a02-v14",
+ "source": "visitor-a02-v15",
  "morphs": [
   "build_slim",
   "build_broad"
@@ -40,7 +40,7 @@
  "files": {
   "body": {
    "file": "body.glb",
-   "bytes": 1197328,
+   "bytes": 1197660,
    "triangles": 14620,
    "draw_objects": 93,
    "pieces": [
@@ -50,8 +50,8 @@
      "triangles": 9336
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:court+shoes:kneeboots+shoes:loafers+shoes:trainers+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:court,shoes:kneeboots,shoes:loafers,shoes:trainers,shoes:workboots",
+     "name": "A01 Skin under shoes:boots+shoes:court+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:trainers+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:court,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:trainers,shoes:workboots",
      "triangles": 1095
     },
     {
@@ -95,13 +95,13 @@
      "triangles": 83
     },
     {
-     "name": "A01 Skin under bottoms:trousers+shoes:kneeboots",
-     "hidden_by": "bottoms:trousers,shoes:kneeboots",
+     "name": "A01 Skin under bottoms:trousers+shoes:heelboots+shoes:kneeboots",
+     "hidden_by": "bottoms:trousers,shoes:heelboots,shoes:kneeboots",
      "triangles": 92
     },
     {
-     "name": "A01 Skin under shoes:kneeboots",
-     "hidden_by": "shoes:kneeboots",
+     "name": "A01 Skin under shoes:heelboots+shoes:kneeboots",
+     "hidden_by": "shoes:heelboots,shoes:kneeboots",
      "triangles": 78
     },
     {
@@ -120,8 +120,8 @@
      "triangles": 36
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:kneeboots+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:kneeboots,shoes:workboots",
+     "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:workboots",
      "triangles": 30
     },
     {
@@ -130,8 +130,8 @@
      "triangles": 36
     },
     {
-     "name": "A01 Skin under bottoms:slim+bottoms:trousers+shoes:kneeboots",
-     "hidden_by": "bottoms:slim,bottoms:trousers,shoes:kneeboots",
+     "name": "A01 Skin under bottoms:slim+bottoms:trousers+shoes:heelboots+shoes:kneeboots",
+     "hidden_by": "bottoms:slim,bottoms:trousers,shoes:heelboots,shoes:kneeboots",
      "triangles": 32
     },
     {
@@ -355,8 +355,8 @@
      "triangles": 5
     },
     {
-     "name": "A01 Skin under shoes:kneeboots+shoes:workboots",
-     "hidden_by": "shoes:kneeboots,shoes:workboots",
+     "name": "A01 Skin under shoes:heelboots+shoes:kneeboots+shoes:workboots",
+     "hidden_by": "shoes:heelboots,shoes:kneeboots,shoes:workboots",
      "triangles": 3
     },
     {
@@ -813,7 +813,7 @@
     "id": "hobo",
     "label": "Hobo bag",
     "file": "bag-hobo.glb",
-    "bytes": 25844,
+    "bytes": 25828,
     "triangles": 3120,
     "draw_objects": 2,
     "morphs": false,
@@ -1014,6 +1014,34 @@
     ]
    },
    {
+    "id": "sandals",
+    "label": "Heeled sandals",
+    "file": "shoes-sandals.glb",
+    "bytes": 25236,
+    "triangles": 2448,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Heeled sandals | leather",
+     "A01 Heeled sandals | sole"
+    ],
+    "heel": 28
+   },
+   {
+    "id": "heelboots",
+    "label": "Heeled knee boots",
+    "file": "shoes-heelboots.glb",
+    "bytes": 34068,
+    "triangles": 4546,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Heeled boots | leather",
+     "A01 Heeled boots | sole"
+    ],
+    "heel": 28
+   },
+   {
     "id": "none",
     "label": "None"
    }
@@ -1023,7 +1051,7 @@
     "id": "wrap",
     "label": "Headwrap (wax print)",
     "file": "headwear-wrap.glb",
-    "bytes": 29856,
+    "bytes": 29880,
     "triangles": 3888,
     "draw_objects": 1,
     "morphs": false,

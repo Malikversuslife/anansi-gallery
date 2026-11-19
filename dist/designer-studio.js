@@ -52,7 +52,7 @@ function categories(){
    {key:'outer',label:'Outer layer',frame:'torso',options:[['none','None'],['jacket','Chore jacket'],['zip','Zip jacket'],['leather','Leather jacket'],['harrington','Harrington'],['overcoat','Overcoat'],['cardigan','Cardigan'],['blazer','Blazer'],['longcoat','Long coat'],['bomber','Bomber'],['shearling','Shearling jacket']]},
    {label:'Fabric',groups:[{key:'topPrint',label:'Top',frame:'torso',options:[['plain','Plain'],['wax','Wax print']]},{key:'bottomPrint',label:'Bottoms',frame:'legs',options:[['plain','Plain'],['wax','Wax print']]}]}]},
   {id:'shoes',label:'Shoes',view:'feet',sections:[
-   {key:'shoes',label:'Footwear',frame:'feet',options:[['original','Loafers'],['sneakers','Trainers'],['court','Court sneakers'],['boots','Ankle boots'],['workboots','Work boots'],['kneeboots','Knee boots'],['none','Barefoot']]   /* heels (sandals, heelboots) paused: parts not built yet */},
+   {key:'shoes',label:'Footwear',frame:'feet',options:[['original','Loafers'],['sneakers','Trainers'],['court','Court sneakers'],['boots','Ankle boots'],['workboots','Work boots'],['kneeboots','Knee boots'],['sandals','Heeled sandals'],['heelboots','Heeled knee boots'],['none','Barefoot']]},
    {key:'shoeColor',label:'Footwear colour',tint:true}]},
   {id:'accessories',label:'Accessories',chips:true,sections:[
    {key:'headwear',label:'Headwear',frame:'head',options:[['none','None'],['wrap','Headwrap'],['cap','Baseball cap'],['fedora','Fedora'],['newsboy','Newsboy cap'],['beret','Beret']]},

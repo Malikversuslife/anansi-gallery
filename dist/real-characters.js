@@ -59,7 +59,7 @@ const FABRICS={
  cotton:{file:'cotton.jpg',tile:.07,amp:0.2,weft:0,wash:0.12,fade:0,rough:.9,bend:.8,dark:.35,wear:.1},
  knit:{file:'knit.jpg',tile:.11,amp:0.38,weft:0,wash:0.08,fade:0,rough:.95,bend:.7,dark:.3,wear:.05},
  wool:{file:'wool.jpg',tile:.06,amp:0.28,weft:0,wash:0.12,fade:0,rough:.9,bend:.6,dark:.3,wear:.05},
- twill:{file:'twill.jpg',tile:.12,amp:0.32,weft:0,wash:0.2,fade:.15,rough:.88,bend:.9,dark:.4,wear:.15},
+ twill:{file:'twill.jpg',tile:.12,amp:0.32,weft:0,wash:0.2,fade:.15,rough:.88,bend:.6,dark:.4,wear:.15},
  leather:{file:'leather.jpg',tile:.07,amp:0.07,weft:0,wash:0.06,fade:0,rough:.3,bend:1.1,dark:.4,wear:.2},
  suede:{file:'suede.jpg',tile:.1,amp:0.26,weft:0,wash:0.14,fade:0,rough:.95,bend:.8,dark:.3,wear:.15}};
 // [material name, fabric, folds: [knee, hem, elbow] strength, whiskers]. Materials not listed (zips, buttons, soles,
@@ -304,12 +304,12 @@ function disposeAsset(root){
 }
 function fetchPart(set,key,file){
  if(set.files.has(file))return Promise.resolve();
- if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=18`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
+ if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=21`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
  return set.pending.get(file);
 }
 async function loadParts(key){
- const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=18`)).json();
- const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=18`);
+ const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=21`)).json();
+ const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=21`);
  shrinkTextures(body.scene,1024);   // the skin is 2048 on desktop
  mergeSkin(body.scene);
  // The skin's colour attribute is the lip mask: rename it so nothing treats it as vertex colour.
@@ -487,11 +487,13 @@ function createA01(a){
    const m=o.clone();m.bind(new THREE.Skeleton(o.skeleton.bones.map(b=>bones.get(b.name)),o.skeleton.boneInverses),o.bindMatrix);
    m.userData.slot=slot;host.add(m)});
  }
- group.traverse(o=>{if(o.userData?.anansi_skin_ranges)o.geometry=skinGeometry(set,o.geometry,o.userData.anansi_skin_ranges,worn)});
+ // Open shoes (sandals) leave the foot showing: the split tags the foot skin as covered by every shoe.
+ const OPEN_SHOES=['shoes:sandals'],covering=new Set([...worn].filter(k=>!OPEN_SHOES.includes(k)));
+ group.traverse(o=>{if(o.userData?.anansi_skin_ranges)o.geometry=skinGeometry(set,o.geometry,o.userData.anansi_skin_ranges,covering)});
  const morphs={slim:'build_slim',broad:'build_broad'};
  group.traverse(obj=>{if(!obj.isMesh)return;obj.castShadow=true;obj.receiveShadow=true;
   // Skin under a worn garment is hidden, so it can never show through.
-  const hiddenBy=(obj.userData.anansi_hidden_by||'').split(',').filter(Boolean);if(hiddenBy.some(s=>worn.has(s)))obj.visible=false;
+  const hiddenBy=(obj.userData.anansi_hidden_by||'').split(',').filter(Boolean);if(hiddenBy.some(s=>covering.has(s)))obj.visible=false;
   if(obj.morphTargetDictionary){obj.morphTargetInfluences.fill(0);const k=obj.morphTargetDictionary[morphs[a.build]];if(k!==undefined)obj.morphTargetInfluences[k]=1;faceMorphs(obj,a)}
   const tint=material=>{if(!owned.has(material)){const copy=material.clone();a01Tint(copy,a,ORIGINALS[a.model]);owned.set(material,copy)}return owned.get(material)};
   const woven=m=>{const e=fabricEntry(m.name);if(e&&!m.onBeforeCompile.toString().includes('fab'))fabricShader(m,e[1],obj.scale,false,bodyJoints(set),e[2],e[3]);return m};
