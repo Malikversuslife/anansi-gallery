@@ -184,6 +184,8 @@ function setView(position,angle,label){camera.position.fromArray(position);footH
 function visitRoom(key){seating?.release();const room=rooms[key];setView(room.position,room.yaw,room.label);document.querySelectorAll('[data-room]').forEach(button=>button.classList.toggle('active',button.dataset.room===key))}
 visitRoom('atrium');document.querySelectorAll('[data-room]').forEach(button=>button.onclick=()=>visitRoom(button.dataset.room));
 const canvas=renderer.domElement,raycaster=new THREE.Raycaster();
+// If the graphics session comes back, start afresh rather than drawing with lost textures (they came back black).
+canvas.addEventListener('webglcontextrestored',()=>location.reload());
 canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();keys.clear();renderer.setAnimationLoop(null);$('loading').style.display='grid';$('loadMessage').textContent='The graphics session stopped. Retry loading or continue in the lightweight gallery.'});
 canvas.addEventListener('pointerdown',event=>{if(document.querySelector('dialog[open]'))return;drag=true;moved=0;lastX=event.clientX;lastY=event.clientY;canvas.setPointerCapture(event.pointerId)});
 canvas.addEventListener('pointermove',event=>{if(!drag)return;const dx=event.clientX-lastX,dy=event.clientY-lastY;moved+=Math.abs(dx)+Math.abs(dy);yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch-dy*.003,-1.2,1.2);lastX=event.clientX;lastY=event.clientY;camera.rotation.set(pitch,yaw,0)});

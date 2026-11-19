@@ -3,7 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 import {clone} from 'three/addons/utils/SkeletonUtils.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-import {skinOptions,hairOptions,prepareAppearance,applyAppearance,skinColourFor,hairColourFor} from './avatar-appearance.js';
+import {skinOptions,hairOptions,prepareAppearance,applyAppearance,forgetAppearance,skinColourFor,hairColourFor} from './avatar-appearance.js';
 // The original bodies, A01 (male) and A02 (female), assembled from parts. On for every visitor (owner, 2026-11-18);
 // ?a01=0 leaves them out (presets only).
 // Without it this file behaves as in source/dist.
@@ -127,14 +127,33 @@ function neededFiles(set,a){
  const choice=partChoice(a,set.manifest);
  return [...new Set(Object.entries(choice).map(([slot,id])=>set.manifest.slots[slot]?.find(e=>e.id===id)?.file).filter(Boolean))];
 }
+// Phones and tablets get smaller textures: iPhone Safari gives a page little graphics memory, and running out of it
+// lost the 3D context (the page restarted, then drew characters black). Shrunk once, before anything reads them.
+const SMALL_GPU=matchMedia('(max-width:819px),(pointer:coarse)').matches;
+function shrinkTextures(root,max){
+ if(!SMALL_GPU)return;
+ const seen=new Set();
+ root.traverse(o=>{if(!o.isMesh)return;for(const m of [].concat(o.material))for(const k of ['map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','alphaMap','specularMap']){
+  const t=m[k];if(!t||seen.has(t))continue;seen.add(t);const img=t.image,w=img?.width,h=img?.height;
+  if(!w||!h||Math.max(w,h)<=max)continue;
+  const k2=max/Math.max(w,h),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k2));c.height=Math.max(1,Math.round(h*k2));
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);img.close?.();t.image=c;t.needsUpdate=true}});
+}
+function freeSkeletons(root){const seen=new Set();root.traverse(o=>{if(o.isSkinnedMesh&&o.skeleton&&!seen.has(o.skeleton)){seen.add(o.skeleton);o.skeleton.dispose()}})}
+function disposeAsset(root){
+ const textures=new Set();
+ root.traverse(o=>{if(!o.isMesh)return;o.geometry?.dispose();for(const m of [].concat(o.material)){for(const v of Object.values(m))if(v?.isTexture)textures.add(v);m.dispose()}});
+ textures.forEach(t=>t.dispose());
+}
 function fetchPart(set,key,file){
  if(set.files.has(file))return Promise.resolve();
- if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=18`).then(g=>{mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
+ if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=18`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
  return set.pending.get(file);
 }
 async function loadParts(key){
  const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=18`)).json();
  const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=18`);
+ shrinkTextures(body.scene,1024);   // the skin is 2048 on desktop
  mergeSkin(body.scene);
  // The skin's colour attribute is the lip mask: rename it so nothing treats it as vertex colour.
  body.scene.traverse(o=>{const g=o.geometry;if(o.userData?.anansi_skin_ranges&&g?.attributes.color){g.setAttribute('lipMask',g.attributes.color);g.deleteAttribute('color')}});
@@ -322,7 +341,9 @@ function createA01(a){
  heelPose(wrapper,group,set.manifest.slots.shoes?.find(e=>e.id===choice.shoes)?.heel);
  a01Pose(wrapper,'A01_Idle');
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)mixer.timeScale=0;else mixer.setTime(Math.random()*6);
- wrapper.userData.dispose=()=>{mixer.stopAllAction();mixer.uncacheRoot(group);owned.forEach(m=>m.dispose())};
+ // Each skinned part has its own skeleton, and each skeleton its own bone texture on the GPU: free them with the
+ // avatar (leaving them made every rebuild leak about 17 textures, and the iPhone ran out of graphics memory).
+ wrapper.userData.dispose=()=>{mixer.stopAllAction();mixer.uncacheRoot(group);owned.forEach(m=>m.dispose());freeSkeletons(group)};
  return wrapper;
 }
 // Presets load on demand (each is 1-2.5 MB and about 28 MB of textures on the GPU; phones ran out of memory when all six
@@ -331,10 +352,19 @@ const presetPending=new Map();
 function loadPreset(key){
  if(library.has(key))return Promise.resolve();
  if(!presetPending.has(key))presetPending.set(key,getPartsLoader().loadAsync(`assets/characters/${key}.glb`).then(asset=>{
+  shrinkTextures(asset.scene,512);
   asset.scene.traverse(obj=>{if(obj.isMesh)for(const material of Array.isArray(obj.material)?obj.material:[obj.material])prepareAppearance(material,key)});
-  library.set(key,asset);presetPending.delete(key);
+  library.set(key,asset);presetPending.delete(key);presetLastUsed.set(key,performance.now());releasePresets();
  }));
  return presetPending.get(key);
+}
+// Presets nobody is wearing are released (oldest first), keeping a few on desktop and none on phones; Mira's stays.
+const presetUsers=new Map(),presetLastUsed=new Map();
+function presetUse(key,delta){presetUsers.set(key,Math.max(0,(presetUsers.get(key)||0)+delta));presetLastUsed.set(key,performance.now())}
+function releasePresets(){
+ const spare=[...library.keys()].filter(k=>!ORIGINALS[k]&&k!=='bob'&&!(presetUsers.get(k)>0)).sort((a,b)=>(presetLastUsed.get(a)||0)-(presetLastUsed.get(b)||0));
+ const keep=SMALL_GPU?0:3;
+ for(const k of spare.slice(0,Math.max(0,spare.length-keep))){disposeAsset(library.get(k).scene);forgetAppearance(k);library.delete(k)}
 }
 function presetsNeeded(a){
  if(ORIGINALS[a.model])return [];
@@ -360,6 +390,7 @@ export function createAvatar(look={}){
   const avatar=createAvatar({...a,model:stand});avatar.userData.partsPending=['preset:'+key];return avatar;
  }
  const group=clone(source.scene),owned=new Map();
+ const users=[key,...(a.shoes==='sneakers'||a.shoes==='boots'?['footwear-'+a.shoes]:[])];users.forEach(k=>presetUse(k,1));
  group.traverse(obj=>{
   const name=obj.name;
   if(name.startsWith('accessory_'))obj.visible=name.startsWith('accessory_'+a.eyewear)||name.startsWith('accessory_'+a.earrings)||name.startsWith('accessory_'+a.watch);
@@ -381,6 +412,8 @@ export function createAvatar(look={}){
    const desired=wrapper.matrixWorld.clone().setPosition(point);item.matrix.copy(bone.matrixWorld.clone().invert().multiply(desired));item.matrixAutoUpdate=false;bone.add(item);
   }
  }
+ const dispose=wrapper.userData.dispose;let released=false;
+ wrapper.userData.dispose=()=>{dispose?.();freeSkeletons(group);if(!released){released=true;users.forEach(k=>presetUse(k,-1));setTimeout(releasePresets,0)}};
  wrapper.userData.model=key;return wrapper;
 }
 // Some morph pairs read subtly at gallery distance; the slider's ends drive them harder (morphs are linear).

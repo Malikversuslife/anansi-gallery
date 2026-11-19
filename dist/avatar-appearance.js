@@ -81,6 +81,8 @@ export function prepareAppearance(material,model){
  const result={mask,reference,model};cached.set(material,result);atlases.set(atlasKey,result);return result;
 }
 
+// Frees a released preset's recolour masks (full-size data textures) so they don't outlive it.
+export function forgetAppearance(model){for(const [key,value] of [...atlases])if(key.startsWith(model+'/')){value.mask.dispose();atlases.delete(key)}}
 export function applyAppearance(copy,original,look){
  const prepared=cached.get(original);if(!prepared)return;
  const skin=skinColours[look.skinTone],hair=hairColours[look.hairColor];
