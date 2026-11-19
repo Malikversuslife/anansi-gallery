@@ -42,6 +42,150 @@ varying float vLip;`).replace('#include <map_fragment>',`#include <map_fragment>
  };
  copy.customProgramCacheKey=()=>'anansi-lip';
 }
+// Woven fabric (pilot: denim on the jeans and the chore jacket). A greyscale weave tile from a CC0 photo scan
+// (assets/characters/fabrics) is projected onto the garment from three sides in its rest pose, so the weave moves with
+// the cloth and needs no UVs. It shades the garment's own colour (so the colour picker still works) and whitens the
+// brightest threads as on real denim. (The weave itself is not bumped: at gallery distance it is under a pixel, and a
+// screen-space bump from it broke up into squares.)
+// tile: metres per repeat; amp: weave contrast; weft: whitening of the brightest threads; wash: streaky fading along the
+// warp; fade: lightening where the cloth faces forward (thighs, knees, chest), as worn denim does.
+// Folds: cloth bunches where the body bends. Rings of creases round each knee and elbow and stacked folds above the
+// ankle, placed from the body's own joints (so they fit A01 and A02), plus worn "whiskers" fanning from the crotch on
+// jeans. They bend the lighting (the cloth's outline stays smooth) and darken the valleys; ridges and whiskers wear
+// lighter. bend: fold relief; dark: valley shading; wear: lightening of ridges and whiskers.
+const FABRICS={denim:{file:'denim.jpg',tile:.16,amp:.24,weft:.5,wash:.45,fade:.8,rough:.92,bend:1,dark:.45,wear:.35}};
+// [material name, fabric, whiskers]
+const FABRIC_OF=[[/^A01 Jeans \| denim/,'denim',true],[/^A01 Jacket \| ink/,'denim',false]];
+// ?fabric=0 shows the garments without it, for comparison; ?folds=0 without the folds.
+const QS=new URLSearchParams(location.search);
+const fabricEntry=name=>QS.get('fabric')!=='0'&&FABRIC_OF.find(([re])=>re.test(name||''));
+const fabricOf=name=>fabricEntry(name)?.[1];
+const fabricTex=new Map();
+function fabricTexture(kind){
+ if(!fabricTex.has(kind)){const t=new THREE.TextureLoader().load(`assets/characters/fabrics/${FABRICS[kind].file}?v=1`);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.NoColorSpace;t.anisotropy=4;fabricTex.set(kind,t)}
+ return fabricTex.get(kind);
+}
+// Where the folds go, from the body's skeleton in its rest pose: per joint its centre, the limb's direction and
+// (depth in metres, half-length along the limb, reach from the limb's axis, fold spacing).
+function bodyJoints(set){
+ if(set.joints)return set.joints;
+ let sk=null;set.body.scene.traverse(o=>{if(!sk&&o.isSkinnedMesh)sk=o.skeleton});
+ const at=name=>{const i=sk.bones.findIndex(b=>b.name===name);return i<0?null:new THREE.Vector3().setFromMatrixPosition(sk.boneInverses[i].clone().invert())};
+ const J=[],A=[],K=[];
+ const add=(c,from,to,k)=>{if(!c||!from||!to)return;J.push(c);A.push(to.clone().sub(from).normalize());K.push(new THREE.Vector4(...k))};
+ for(const s of ['l','r']){
+  const thigh=at('thigh_'+s),calf=at('calf_'+s),foot=at('foot_'+s),up=at('upperarm_'+s),low=at('lowerarm_'+s),hand=at('hand_'+s);
+  add(calf,thigh,foot,[.0026,.10,.2,.055]);                                                   // knee
+  add(foot&&foot.clone().add(new THREE.Vector3(0,.13,0)),calf,foot,[.003,.12,.22,.048]);   // stacked above the hem
+  add(low,up,hand,[.003,.075,.1,.034]);                                                      // elbow
+ }
+ while(J.length<6){J.push(new THREE.Vector3());A.push(new THREE.Vector3(0,1,0));K.push(new THREE.Vector4())}
+ const t=[at('thigh_l'),at('thigh_r')].filter(Boolean),crotch=t.length?new THREE.Vector3(0,(t[0].y+(t[1]||t[0]).y)/2-.06,0):new THREE.Vector3(0,.9,0);
+ return set.joints={J,A,K,crotch};
+}
+function fabricShader(copy,kind,scale,masked,joints,whiskers){
+ const f=FABRICS[kind],folds=!!joints&&QS.get('folds')!=='0';
+ const u={fabMap:{value:fabricTexture(kind)},fabScale:{value:new THREE.Vector3().copy(scale).divideScalar(f.tile)}};
+ if(folds)Object.assign(u,{fabJ:{value:joints.J},fabA:{value:joints.A},fabK:{value:joints.K},fabC:{value:joints.crotch},fabWh:{value:whiskers?.0007:0}});
+ copy.roughness=Math.max(copy.roughness,f.rough);
+ copy.defines={...copy.defines,...(masked?{FAB_MASK:''}:{}),...(folds?{FAB_FOLDS:''}:{})};
+ copy.onBeforeCompile=sh=>{
+  Object.assign(sh.uniforms,u);
+  sh.vertexShader=sh.vertexShader.replace('#include <common>',`#include <common>
+uniform vec3 fabScale;
+varying vec3 vFabP;varying vec3 vFabN;varying float vFabM;
+#ifdef FAB_FOLDS
+varying mat3 vFabR;
+#endif
+#ifdef FAB_MASK
+attribute float fabricMask;
+#endif`).replace('#include <begin_vertex>',`#include <begin_vertex>
+vFabP=position*fabScale;vFabN=normal;
+#ifdef FAB_MASK
+vFabM=fabricMask;
+#else
+vFabM=1.;
+#endif`).replace('#include <defaultnormal_vertex>',`#include <defaultnormal_vertex>
+#ifdef FAB_FOLDS
+#ifdef USE_SKINNING
+vFabR=normalMatrix*mat3(skinMatrix);   // rest pose to view, to bend the lighting by the folds
+#else
+vFabR=normalMatrix;
+#endif
+#endif`);
+  sh.fragmentShader=sh.fragmentShader.replace('#include <common>',`#include <common>
+uniform sampler2D fabMap;uniform vec3 fabScale;
+varying vec3 vFabP;varying vec3 vFabN;varying float vFabM;
+float fabHash(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float fabNoise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
+ return mix(mix(mix(fabHash(i),fabHash(i+vec3(1,0,0)),f.x),mix(fabHash(i+vec3(0,1,0)),fabHash(i+vec3(1,1,0)),f.x),f.y),
+  mix(mix(fabHash(i+vec3(0,0,1)),fabHash(i+vec3(1,0,1)),f.x),mix(fabHash(i+vec3(0,1,1)),fabHash(i+vec3(1,1,1)),f.x),f.y),f.z);}
+#ifdef FAB_FOLDS
+uniform vec3 fabJ[6];uniform vec3 fabA[6];uniform vec4 fabK[6];uniform vec3 fabC;uniform float fabWh;
+varying mat3 vFabR;
+// Fold height in metres (x) and wear (y) at rest-pose point p; front: how much the cloth faces forward.
+// Creases are narrow valleys between broad, slightly worn ridges.
+vec2 fabFold(vec3 p,float front){
+ float h=0.,wear=0.,nz=fabNoise(p*14.);
+ for(int i=0;i<6;i++){
+  vec4 k=fabK[i];if(k.x<=0.)continue;
+  vec3 d=p-fabJ[i];float t=dot(d,fabA[i]);vec3 r=d-t*fabA[i];
+  float win=(1.-smoothstep(k.y*.35,k.y,abs(t)))*(1.-smoothstep(k.z*.6,k.z,length(r)));
+  if(win<=0.)continue;
+  // Patches, not rings: each fold runs part way round the limb and fades, at uneven spacing.
+  win*=smoothstep(.28,.62,fabNoise(p*vec3(19.,7.,19.)+float(i)*3.1));
+  float ph=t/k.w*6.2832+3.4*nz+1.6*sin(atan(r.x,r.z)*1.5+float(i))+1.2*fabNoise(p*31.);
+  float c=pow(abs(sin(ph*.5)),.7);
+  h+=k.x*win*(c-.65);wear+=win*smoothstep(.9,1.,c)*.4;
+ }
+ // Whiskers: a few short pale creases fanning up and out from the crotch, each its own length, fading at both ends.
+ float ax=abs(p.x-fabC.x),sd=sign(p.x-fabC.x);
+ if(fabWh>0.){
+  // Each line gets its own tilt, length and gaps along it, and the two legs differ.
+  float c0=(p.y-fabC.y)-.30*ax,line=floor(c0/.026);
+  float r1=fabHash(vec3(line,sd,7.)),r2=fabHash(vec3(line,sd,13.));
+  float c=c0-(r1-.5)*.25*ax,len=.04+.08*r2;
+  float wwin=front*smoothstep(.02,.04,ax)*(1.-smoothstep(len*.5,len,ax-.02))*smoothstep(-.005,.01,c)*(1.-smoothstep(.05,.075,c));
+  wwin*=smoothstep(.18,.5,fabNoise(vec3(ax*60.,line,sd)));
+  float v=1.-pow(abs(sin((c/.026+.25*nz)*3.1416)),.4);
+  h-=fabWh*wwin*v;wear+=wwin*v*3.2;
+ }
+ return vec2(h,wear);
+}
+#endif`).replace('#include <color_fragment>',`#include <color_fragment>
+vec3 fabW=pow(abs(normalize(vFabN)),vec3(4.));fabW/=fabW.x+fabW.y+fabW.z;
+float fabT=texture2D(fabMap,vFabP.yz).r*fabW.x+texture2D(fabMap,vFabP.zx).r*fabW.y+texture2D(fabMap,vFabP.xy).r*fabW.z;
+fabT=mix(.502,fabT,vFabM);
+vec3 fabG=vec3(0.);
+{float d=(fabT-.502)/.165;diffuseColor.rgb*=max(0.,1.+d*${f.amp.toFixed(3)});
+ vec3 q=vFabP/fabScale;
+ float streak=smoothstep(.25,.85,fabNoise(q*vec3(38.,4.,38.))*.6+fabNoise(q*vec3(90.,9.,90.))*.4);
+ vec3 fn=normalize(vFabN);float front=smoothstep(.6,.98,fn.z)*(.45+1.1*fabNoise(q*vec3(7.,5.,7.)));
+ float lift=vFabM*(${f.wash.toFixed(3)}*(streak-.45)+${f.fade.toFixed(3)}*(front-.25));
+#ifdef FAB_FOLDS
+ // Shade between the legs (inner thighs facing each other, darkest at the crotch), as baked occlusion would.
+ if(fabWh>0.){float side=sign(q.x-fabC.x),inner=smoothstep(.1,.7,-side*fn.x)*(1.-smoothstep(.0,.45,fabC.y-q.y));
+  float crotch=1.-smoothstep(.02,.13,length(vec2(q.x-fabC.x,(q.y-fabC.y)*.7)));
+  diffuseColor.rgb*=1.-vFabM*(.32*inner+.3*crotch);}
+ // Folds fade out where they would be under a few pixels (far away), so they never shimmer.
+ float vis=vFabM*(1.-smoothstep(.004,.011,length(fwidth(q))));
+ if(vis>0.){
+  float fr=smoothstep(.1,.6,fn.z),e=.003;vec2 h0=fabFold(q,fr);
+  fabG=(vec3(fabFold(q+vec3(e,0,0),fr).x,fabFold(q+vec3(0,e,0),fr).x,fabFold(q+vec3(0,0,e),fr).x)-h0.x)/e;
+  fabG=(fabG-dot(fabG,fn)*fn)*vis*${f.bend.toFixed(3)};
+  diffuseColor.rgb*=1.-${f.dark.toFixed(3)}*vis*clamp(-h0.x*260.,0.,1.);
+  lift+=${f.wear.toFixed(3)}*vis*h0.y;
+ }
+#endif
+ vec3 lum=vec3(dot(diffuseColor.rgb,vec3(.299,.587,.114)));
+ diffuseColor.rgb=mix(diffuseColor.rgb,mix(lum,diffuseColor.rgb,.7)*1.6,clamp(lift,-.4,.7));
+ float w=clamp(d-.8,0.,1.)*${f.weft.toFixed(3)};diffuseColor.rgb=mix(diffuseColor.rgb,vec3(dot(diffuseColor.rgb,vec3(.299,.587,.114)))*1.25,w);}`).replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
+#ifdef FAB_FOLDS
+normal=normalize(normal-vFabR*fabG*faceDirection);
+#endif`);
+ };
+ copy.customProgramCacheKey=()=>'anansi-fabric-'+kind+(masked?'-m':'')+(folds?'-f':'');
+}
 function a01Tint(copy,a,base){
  const name=copy.name;
  // The skin's colour attribute is the lip mask, not a colour: GLTFLoader would multiply the skin by it.
@@ -244,6 +388,8 @@ function mergeAlike(scene){
   merged.morphTargetsRelative=main.geometry.morphTargetsRelative;   // mergeGeometries drops it (see mergeSkin)
   merged.computeBoundingSphere();
   let at=0;const sources=group.map(o=>{const count=o.geometry.attributes.position.count,s={material:o.material,start:at,count};at+=count;return s});
+  // Woven fabric covers only the cloth's own vertices, not the buttons or stitching merged in with it.
+  if(sources.some(s=>fabricOf(s.material.name))){const mask=new Float32Array(at);sources.forEach(s=>{if(fabricOf(s.material.name))mask.fill(1,s.start,s.start+s.count)});merged.setAttribute('fabricMask',new THREE.BufferAttribute(mask,1))}
   const mesh=new THREE.SkinnedMesh(merged,main.material);
   mesh.name=main.name;mesh.userData={...main.userData};
   mesh.position.copy(main.position);mesh.quaternion.copy(main.quaternion);mesh.scale.copy(main.scale);
@@ -325,6 +471,7 @@ function createA01(a){
   const hiddenBy=(obj.userData.anansi_hidden_by||'').split(',').filter(Boolean);if(hiddenBy.some(s=>worn.has(s)))obj.visible=false;
   if(obj.morphTargetDictionary){obj.morphTargetInfluences.fill(0);const k=obj.morphTargetDictionary[morphs[a.build]];if(k!==undefined)obj.morphTargetInfluences[k]=1;faceMorphs(obj,a)}
   const tint=material=>{if(!owned.has(material)){const copy=material.clone();a01Tint(copy,a,ORIGINALS[a.model]);owned.set(material,copy)}return owned.get(material)};
+  const woven=m=>{const e=fabricEntry(m.name);if(e&&!m.onBeforeCompile.toString().includes('fab'))fabricShader(m,e[1],obj.scale,false,bodyJoints(set),e[2]);return m};
   const info=mergedInfo.get(obj.geometry);
   if(info){
    // A merged mesh: each source keeps its own (tinted) colour as vertex colours; the main material's map, normal map
@@ -332,9 +479,10 @@ function createA01(a){
    const colors=info.sources.map(s=>tint(s.material).color);
    obj.geometry=coloredGeometry(obj.geometry,info,colors);
    const m=tint(info.sources[0].material).clone();m.color.setRGB(1,1,1);m.vertexColors=true;owned.set(Symbol(),m);
+   const e=info.sources.map(s=>fabricEntry(s.material.name)).find(Boolean);if(e)fabricShader(m,e[1],obj.scale,true,bodyJoints(set),e[2]);
    obj.material=m;return;
   }
-  obj.material=Array.isArray(obj.material)?obj.material.map(tint):tint(obj.material)});
+  obj.material=Array.isArray(obj.material)?obj.material.map(tint):woven(tint(obj.material))});
  const wrapper=new THREE.Group();wrapper.add(group);
  const mixer=new THREE.AnimationMixer(group);wrapper.userData={mixer,clips:set.body.animations,model:a.model,a01:true,parts:choice,partsPending:missing};
  // A slow looping idle, paused for visitors who ask for reduced motion. Each A01 starts at its own point in the loop.
