@@ -43,9 +43,10 @@ const works=exhibitionFilter?[...localWorks]:[...demoWorks,...localWorks];
 demoWorks.forEach((work,index)=>work.id=index<3?'demo-panel-'+index:index===3?'demo-sculpture':'demo-placement-'+index);
 const installations=new Map();
 const mobile=matchMedia('(max-width:650px)').matches;
-// One WebGL context for the whole page: the look studio borrows this renderer while it is open (alpha lets it show
-// the studio's own backdrop). Photos copy the frame straight after drawing it, so no preserved drawing buffer.
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance',alpha:true});
+// One WebGL context for the whole page: the look studio borrows this renderer while it is open and draws its own
+// backdrop (a transparent canvas came out as dark silhouettes on iPhone Safari, so the canvas stays opaque). Pictures
+// are rendered off-screen (snapshot.js), so no preserved drawing buffer.
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.15:1.5));renderer.setSize(innerWidth,innerHeight);
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1;

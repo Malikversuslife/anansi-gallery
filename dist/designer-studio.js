@@ -114,6 +114,23 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
  function borrow(){renderer.getClearColor(clear);clearAlpha=renderer.getClearAlpha();renderer.setClearColor(0,0);stage.append(renderer.domElement)}
  function giveBack(){home.append(renderer.domElement);renderer.setClearColor(clear,clearAlpha);renderer.setSize(innerWidth,innerHeight);window.dispatchEvent(new Event('resize'))}
  const scene=new THREE.Scene();
+ // The backdrop is drawn in the scene, not seen through a transparent canvas: Safari on iPhone composited the
+ // transparent canvas wrongly and the characters came out as dark silhouettes. The atrium photo is drawn small (so it
+ // is soft when stretched), darkened like the CSS backdrop, and cropped to fill the stage.
+ const backdropImg=new Image();backdropImg.src='assets/gallery-hero.png';
+ const backdropCanvas=document.createElement('canvas');const backdrop=new THREE.CanvasTexture(backdropCanvas);backdrop.colorSpace=THREE.SRGBColorSpace;
+ let backdropKey='';
+ function paintBackdrop(w,h){
+  const bw=Math.max(32,Math.round(w/7)),bh=Math.max(32,Math.round(h/7)),key=bw+'x'+bh+backdropImg.complete;
+  if(key===backdropKey)return;backdropKey=key;
+  backdropCanvas.width=bw;backdropCanvas.height=bh;const c=backdropCanvas.getContext('2d');
+  c.fillStyle='#1b2220';c.fillRect(0,0,bw,bh);
+  if(backdropImg.complete&&backdropImg.naturalWidth){const iw=backdropImg.naturalWidth,ih=backdropImg.naturalHeight,k=Math.max(bw/iw,bh/ih),dw=iw*k,dh=ih*k;c.globalAlpha=.5;c.drawImage(backdropImg,(bw-dw)/2,(bh-dh)*.4,dw,dh);c.globalAlpha=1}
+  const glow=c.createRadialGradient(bw/2,bh*.58,0,bw/2,bh*.58,Math.max(bw,bh)*.55);glow.addColorStop(0,'rgba(255,244,228,.16)');glow.addColorStop(1,'rgba(255,244,228,0)');c.fillStyle=glow;c.fillRect(0,0,bw,bh);
+  const fade=c.createLinearGradient(0,0,0,bh);fade.addColorStop(0,'rgba(10,16,15,.35)');fade.addColorStop(.3,'rgba(10,16,15,0)');fade.addColorStop(1,'rgba(10,16,15,.55)');c.fillStyle=fade;c.fillRect(0,0,bw,bh);
+  backdrop.needsUpdate=true;scene.background=backdrop;
+ }
+ backdropImg.onload=()=>{backdropKey='';if(dialog.open)layout()};
  const lights=s=>{s.add(new THREE.HemisphereLight('#fffaf2','#6f6457',1.7));const key=new THREE.DirectionalLight('#fff4e6',2.6);key.position.set(1.6,2.8,3.2);s.add(key);const rim=new THREE.DirectionalLight('#cfe3ff',1.4);rim.position.set(-2.5,2.2,-2.4);s.add(rim);const fill=new THREE.DirectionalLight('#ffffff',.6);fill.position.set(-2,1,3);s.add(fill)};
  lights(scene);
  // A soft contact shadow under the feet.
@@ -128,7 +145,7 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
  function frameFor(kind,m){const H=m.h;return {full:[H*.5,H*1.12],face:[m.head-.02,.6],head:[m.head-.01,.44],torso:[H*.69,H*.56],legs:[H*.32,H*.72],feet:[.1,.42],wrist:[H*.52,H*.5]}[kind]}
  function layout(){
   const w=stage.clientWidth||innerWidth,h=stage.clientHeight||innerHeight;
-  renderer.setSize(w,h,false);camera.aspect=w/h;
+  renderer.setSize(w,h,false);camera.aspect=w/h;paintBackdrop(w,h);
   const mobile=w<820;
   // Centre the character in the space the panels leave free.
   // The free band: below the top bar, above the bottom row (desktop) or the rail over the sheet (phones).
