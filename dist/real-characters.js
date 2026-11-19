@@ -53,16 +53,36 @@ varying float vLip;`).replace('#include <map_fragment>',`#include <map_fragment>
 // ankle, placed from the body's own joints (so they fit A01 and A02), plus worn "whiskers" fanning from the crotch on
 // jeans. They bend the lighting (the cloth's outline stays smooth) and darken the valleys; ridges and whiskers wear
 // lighter. bend: fold relief; dark: valley shading; wear: lightening of ridges and whiskers.
-const FABRICS={denim:{file:'denim.jpg',tile:.16,amp:.24,weft:.5,wash:.45,fade:.8,rough:.92,bend:1,dark:.45,wear:.35}};
-// [material name, fabric, whiskers]
-const FABRIC_OF=[[/^A01 Jeans \| denim/,'denim',true],[/^A01 Jacket \| ink/,'denim',false]];
+// rough: the least roughness the finish may have (leather keeps its own shine).
+const FABRICS={
+ denim:{file:'denim.jpg',tile:.16,amp:.24,weft:.5,wash:.45,fade:.8,rough:.92,bend:1,dark:.45,wear:.35},
+ cotton:{file:'cotton.jpg',tile:.07,amp:0.2,weft:0,wash:0.12,fade:0,rough:.9,bend:.8,dark:.35,wear:.1},
+ knit:{file:'knit.jpg',tile:.11,amp:0.38,weft:0,wash:0.08,fade:0,rough:.95,bend:.7,dark:.3,wear:.05},
+ wool:{file:'wool.jpg',tile:.06,amp:0.28,weft:0,wash:0.12,fade:0,rough:.9,bend:.6,dark:.3,wear:.05},
+ twill:{file:'twill.jpg',tile:.12,amp:0.32,weft:0,wash:0.2,fade:.15,rough:.88,bend:.9,dark:.4,wear:.15},
+ leather:{file:'leather.jpg',tile:.07,amp:0.07,weft:0,wash:0.06,fade:0,rough:.3,bend:1.1,dark:.4,wear:.2},
+ suede:{file:'suede.jpg',tile:.1,amp:0.26,weft:0,wash:0.14,fade:0,rough:.95,bend:.8,dark:.3,wear:.15}};
+// [material name, fabric, folds: [knee, hem, elbow] strength, whiskers]. Materials not listed (zips, buttons, soles,
+// metal, fleece, the wax print headwrap) keep their plain finish.
+const LEGS=[1,1,0],ARMS=[0,0,1],NONE=[0,0,0];
+const FABRIC_OF=[
+ [/^A01 Jeans \| denim/,'denim',LEGS,true],[/^A01 Jacket \| ink/,'denim',ARMS],
+ [/^A01 (Tee|Sleeveless top|V-neck blouse)/,'cotton',[0,0,.6]],[/^A01 (Dress|Midi dress)/,'cotton',NONE],
+ [/^A01 (Knit \| oat|Turtleneck \| knit|Quarter-zip \| charcoal|Cardigan \| oat)/,'knit',ARMS],[/^A01 (Off-shoulder dress \| knit|Bomber \| rib)/,'knit',NONE],
+ [/^A01 (Blazer \| wool|Overcoat \| camel|Long coat \| wool)/,'wool',ARMS],[/^A01 Wide trousers \| navy/,'wool',[.8,1,0]],
+ [/^A01 (Overcoat \| camel skirt|Long coat \| skirt|Pencil skirt \| wool|Newsboy|Beret|Fedora \| felt)/,'wool',NONE],
+ [/^A01 (Trousers|Slim trousers|Shorts)/,'twill',[1,1,0],true],[/^A01 (Harrington \| red|Zip jacket \| olive)/,'twill',ARMS],
+ [/^A01 (Skirt|Mini skirt|Cap \| slate|Trainers \| canvas)/,'twill',NONE],
+ [/^A01 (Leather jacket \| black|Shearling jacket \| leather)/,'leather',ARMS],
+ [/^A01 (Bag \| leather|Hobo bag \| leather|Loafers \| oxblood|Ankle boots \| black|Court sneakers \| leather|Knee boots \| leather|Heeled (sandals|boots) \| leather)/,'leather',NONE],
+ [/^A01 Bomber \| suede/,'suede',ARMS],[/^A01 Work boots \| nubuck/,'suede',NONE]];
 // ?fabric=0 shows the garments without it, for comparison; ?folds=0 without the folds.
 const QS=new URLSearchParams(location.search);
 const fabricEntry=name=>QS.get('fabric')!=='0'&&FABRIC_OF.find(([re])=>re.test(name||''));
 const fabricOf=name=>fabricEntry(name)?.[1];
 const fabricTex=new Map();
 function fabricTexture(kind){
- if(!fabricTex.has(kind)){const t=new THREE.TextureLoader().load(`assets/characters/fabrics/${FABRICS[kind].file}?v=1`);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.NoColorSpace;t.anisotropy=4;fabricTex.set(kind,t)}
+ if(!fabricTex.has(kind)){const t=new THREE.TextureLoader().load(`assets/characters/fabrics/${FABRICS[kind].file}?v=4`);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.NoColorSpace;t.anisotropy=4;fabricTex.set(kind,t)}
  return fabricTex.get(kind);
 }
 // Where the folds go, from the body's skeleton in its rest pose: per joint its centre, the limb's direction and
@@ -83,10 +103,10 @@ function bodyJoints(set){
  const t=[at('thigh_l'),at('thigh_r')].filter(Boolean),crotch=t.length?new THREE.Vector3(0,(t[0].y+(t[1]||t[0]).y)/2-.06,0):new THREE.Vector3(0,.9,0);
  return set.joints={J,A,K,crotch};
 }
-function fabricShader(copy,kind,scale,masked,joints,whiskers){
- const f=FABRICS[kind],folds=!!joints&&QS.get('folds')!=='0';
+function fabricShader(copy,kind,scale,masked,joints,gain=NONE,whiskers=false){
+ const f=FABRICS[kind],folds=!!joints&&QS.get('folds')!=='0'&&(whiskers||gain.some(Boolean));
  const u={fabMap:{value:fabricTexture(kind)},fabScale:{value:new THREE.Vector3().copy(scale).divideScalar(f.tile)}};
- if(folds)Object.assign(u,{fabJ:{value:joints.J},fabA:{value:joints.A},fabK:{value:joints.K},fabC:{value:joints.crotch},fabWh:{value:whiskers?.0007:0}});
+ if(folds)Object.assign(u,{fabJ:{value:joints.J},fabA:{value:joints.A},fabK:{value:joints.K},fabC:{value:joints.crotch},fabWh:{value:whiskers?.0007:0},fabGain:{value:new THREE.Vector3(...gain)}});
  copy.roughness=Math.max(copy.roughness,f.rough);
  copy.defines={...copy.defines,...(masked?{FAB_MASK:''}:{}),...(folds?{FAB_FOLDS:''}:{})};
  copy.onBeforeCompile=sh=>{
@@ -94,9 +114,6 @@ function fabricShader(copy,kind,scale,masked,joints,whiskers){
   sh.vertexShader=sh.vertexShader.replace('#include <common>',`#include <common>
 uniform vec3 fabScale;
 varying vec3 vFabP;varying vec3 vFabN;varying float vFabM;
-#ifdef FAB_FOLDS
-varying mat3 vFabR;
-#endif
 #ifdef FAB_MASK
 attribute float fabricMask;
 #endif`).replace('#include <begin_vertex>',`#include <begin_vertex>
@@ -105,13 +122,6 @@ vFabP=position*fabScale;vFabN=normal;
 vFabM=fabricMask;
 #else
 vFabM=1.;
-#endif`).replace('#include <defaultnormal_vertex>',`#include <defaultnormal_vertex>
-#ifdef FAB_FOLDS
-#ifdef USE_SKINNING
-vFabR=normalMatrix*mat3(skinMatrix);   // rest pose to view, to bend the lighting by the folds
-#else
-vFabR=normalMatrix;
-#endif
 #endif`);
   sh.fragmentShader=sh.fragmentShader.replace('#include <common>',`#include <common>
 uniform sampler2D fabMap;uniform vec3 fabScale;
@@ -121,20 +131,21 @@ float fabNoise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
  return mix(mix(mix(fabHash(i),fabHash(i+vec3(1,0,0)),f.x),mix(fabHash(i+vec3(0,1,0)),fabHash(i+vec3(1,1,0)),f.x),f.y),
   mix(mix(fabHash(i+vec3(0,0,1)),fabHash(i+vec3(1,0,1)),f.x),mix(fabHash(i+vec3(0,1,1)),fabHash(i+vec3(1,1,1)),f.x),f.y),f.z);}
 #ifdef FAB_FOLDS
-uniform vec3 fabJ[6];uniform vec3 fabA[6];uniform vec4 fabK[6];uniform vec3 fabC;uniform float fabWh;
-varying mat3 vFabR;
+uniform vec3 fabJ[6];uniform vec3 fabA[6];uniform vec4 fabK[6];uniform vec3 fabC;uniform float fabWh;uniform vec3 fabGain;
 // Fold height in metres (x) and wear (y) at rest-pose point p; front: how much the cloth faces forward.
 // Creases are narrow valleys between broad, slightly worn ridges.
 vec2 fabFold(vec3 p,float front){
  float h=0.,wear=0.,nz=fabNoise(p*14.);
  for(int i=0;i<6;i++){
-  vec4 k=fabK[i];if(k.x<=0.)continue;
+  vec4 k=fabK[i];int jt=i-3*(i/3);k.x*=jt==0?fabGain.x:jt==1?fabGain.y:fabGain.z;if(k.x<=0.)continue;   // knee, hem, elbow
   vec3 d=p-fabJ[i];float t=dot(d,fabA[i]);vec3 r=d-t*fabA[i];
   float win=(1.-smoothstep(k.y*.35,k.y,abs(t)))*(1.-smoothstep(k.z*.6,k.z,length(r)));
   if(win<=0.)continue;
   // Patches, not rings: each fold runs part way round the limb and fades, at uneven spacing.
-  win*=smoothstep(.28,.62,fabNoise(p*vec3(19.,7.,19.)+float(i)*3.1));
-  float ph=t/k.w*6.2832+3.4*nz+1.6*sin(atan(r.x,r.z)*1.5+float(i))+1.2*fabNoise(p*31.);
+  // (Cheap waves rather than more noise: this runs for every pixel of cloth near a joint.)
+  float fi=float(i),ang=atan(r.x,r.z);
+  win*=smoothstep(.2,.65,.5+.5*sin(ang*2.+t*23.+nz*5.+fi*1.7)*cos(t*9.-ang+fi));
+  float ph=t/k.w*6.2832+3.4*nz+1.6*sin(ang*1.5+fi)+.7*sin(t*40.+ang*3.+fi);
   float c=pow(abs(sin(ph*.5)),.7);
   h+=k.x*win*(c-.65);wear+=win*smoothstep(.9,1.,c)*.4;
  }
@@ -146,9 +157,9 @@ vec2 fabFold(vec3 p,float front){
   float r1=fabHash(vec3(line,sd,7.)),r2=fabHash(vec3(line,sd,13.));
   float c=c0-(r1-.5)*.25*ax,len=.04+.08*r2;
   float wwin=front*smoothstep(.02,.04,ax)*(1.-smoothstep(len*.5,len,ax-.02))*smoothstep(-.005,.01,c)*(1.-smoothstep(.05,.075,c));
-  wwin*=smoothstep(.18,.5,fabNoise(vec3(ax*60.,line,sd)));
-  float v=1.-pow(abs(sin((c/.026+.25*nz)*3.1416)),.4);
-  h-=fabWh*wwin*v;wear+=wwin*v*3.2;
+  wwin*=smoothstep(-.4,.5,sin(ax*95.+r1*20.)+.6*sin(ax*41.+r2*9.));
+  float v=1.-pow(abs(sin((c/.026+.25*nz)*3.1416)),.6);
+  wear+=wwin*v*3.2*step(0.,fabWh);   // colour only: too thin for relief taken from neighbouring pixels
  }
  return vec2(h,wear);
 }
@@ -156,7 +167,7 @@ vec2 fabFold(vec3 p,float front){
 vec3 fabW=pow(abs(normalize(vFabN)),vec3(4.));fabW/=fabW.x+fabW.y+fabW.z;
 float fabT=texture2D(fabMap,vFabP.yz).r*fabW.x+texture2D(fabMap,vFabP.zx).r*fabW.y+texture2D(fabMap,vFabP.xy).r*fabW.z;
 fabT=mix(.502,fabT,vFabM);
-vec3 fabG=vec3(0.);
+float fabH=0.;
 {float d=(fabT-.502)/.165;diffuseColor.rgb*=max(0.,1.+d*${f.amp.toFixed(3)});
  vec3 q=vFabP/fabScale;
  float streak=smoothstep(.25,.85,fabNoise(q*vec3(38.,4.,38.))*.6+fabNoise(q*vec3(90.,9.,90.))*.4);
@@ -170,9 +181,10 @@ vec3 fabG=vec3(0.);
  // Folds fade out where they would be under a few pixels (far away), so they never shimmer.
  float vis=vFabM*(1.-smoothstep(.004,.011,length(fwidth(q))));
  if(vis>0.){
-  float fr=smoothstep(.1,.6,fn.z),e=.003;vec2 h0=fabFold(q,fr);
-  fabG=(vec3(fabFold(q+vec3(e,0,0),fr).x,fabFold(q+vec3(0,e,0),fr).x,fabFold(q+vec3(0,0,e),fr).x)-h0.x)/e;
-  fabG=(fabG-dot(fabG,fn)*fn)*vis*${f.bend.toFixed(3)};
+  // Evaluated once; the slope for the lighting comes from neighbouring pixels (folds are drawn only when they span
+  // several pixels, so this is exact enough, and the shader stays small enough to compile quickly on phones).
+  float fr=smoothstep(.1,.6,fn.z);vec2 h0=fabFold(q,fr);
+  fabH=h0.x*vis*${f.bend.toFixed(3)};
   diffuseColor.rgb*=1.-${f.dark.toFixed(3)}*vis*clamp(-h0.x*260.,0.,1.);
   lift+=${f.wear.toFixed(3)}*vis*h0.y;
  }
@@ -181,7 +193,8 @@ vec3 fabG=vec3(0.);
  diffuseColor.rgb=mix(diffuseColor.rgb,mix(lum,diffuseColor.rgb,.7)*1.6,clamp(lift,-.4,.7));
  float w=clamp(d-.8,0.,1.)*${f.weft.toFixed(3)};diffuseColor.rgb=mix(diffuseColor.rgb,vec3(dot(diffuseColor.rgb,vec3(.299,.587,.114)))*1.25,w);}`).replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
 #ifdef FAB_FOLDS
-normal=normalize(normal-vFabR*fabG*faceDirection);
+{vec3 fp=-vViewPosition,sx=dFdx(fp),sy=dFdy(fp),r1=cross(sy,normal),r2=cross(normal,sx);float det=dot(sx,r1)*faceDirection;
+ vec2 dh=vec2(dFdx(fabH),dFdy(fabH));normal=normalize(abs(det)*normal-sign(det)*(dh.x*r1+dh.y*r2));}
 #endif`);
  };
  copy.customProgramCacheKey=()=>'anansi-fabric-'+kind+(masked?'-m':'')+(folds?'-f':'');
@@ -389,7 +402,7 @@ function mergeAlike(scene){
   merged.computeBoundingSphere();
   let at=0;const sources=group.map(o=>{const count=o.geometry.attributes.position.count,s={material:o.material,start:at,count};at+=count;return s});
   // Woven fabric covers only the cloth's own vertices, not the buttons or stitching merged in with it.
-  if(sources.some(s=>fabricOf(s.material.name))){const mask=new Float32Array(at);sources.forEach(s=>{if(fabricOf(s.material.name))mask.fill(1,s.start,s.start+s.count)});merged.setAttribute('fabricMask',new THREE.BufferAttribute(mask,1))}
+  const kind0=sources.map(s=>fabricOf(s.material.name)).find(Boolean);if(kind0){const mask=new Float32Array(at);sources.forEach(s=>{if(fabricOf(s.material.name)===kind0)mask.fill(1,s.start,s.start+s.count)});merged.setAttribute('fabricMask',new THREE.BufferAttribute(mask,1))}
   const mesh=new THREE.SkinnedMesh(merged,main.material);
   mesh.name=main.name;mesh.userData={...main.userData};
   mesh.position.copy(main.position);mesh.quaternion.copy(main.quaternion);mesh.scale.copy(main.scale);
@@ -439,6 +452,16 @@ function partChoice(a,manifest){
   // Facial hair: 'default' is the body's own (A01's goatee, none for A02).
   facialhair:(()=>{const want=a.facialHair==='default'?(manifest.defaults?.facialhair||'none'):a.facialHair;return want==='none'||!ids('facialhair').includes(want)?'none':want})()};
 }
+// Shader programs: three.js deletes a program once no material uses it, so every avatar built after another was thrown
+// away (each studio picture, each change of look) compiled all its shaders again, about 60 per row of studio pictures.
+// One material per kind of program is kept (not disposed), so its program stays and the next avatar reuses it. The kept
+// materials are small and share their textures with the loaded parts.
+const programKeepers=new Map();
+function keepOrDispose(m){
+ const k=[m.type,m.customProgramCacheKey?.(),JSON.stringify(m.defines||{}),...['map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','alphaMap'].map(n=>!!m[n]),m.vertexColors,m.transparent,m.alphaTest>0,m.side].join('|');
+ if(!programKeepers.has(k)&&programKeepers.size<128){programKeepers.set(k,m);return}
+ m.dispose();
+}
 function createA01(a){
  const set=parts.get(a.model),group=clone(set.body.scene),owned=new Map(),bones=new Map();
  group.traverse(o=>{if(o.isBone)bones.set(o.name,o)});
@@ -471,7 +494,7 @@ function createA01(a){
   const hiddenBy=(obj.userData.anansi_hidden_by||'').split(',').filter(Boolean);if(hiddenBy.some(s=>worn.has(s)))obj.visible=false;
   if(obj.morphTargetDictionary){obj.morphTargetInfluences.fill(0);const k=obj.morphTargetDictionary[morphs[a.build]];if(k!==undefined)obj.morphTargetInfluences[k]=1;faceMorphs(obj,a)}
   const tint=material=>{if(!owned.has(material)){const copy=material.clone();a01Tint(copy,a,ORIGINALS[a.model]);owned.set(material,copy)}return owned.get(material)};
-  const woven=m=>{const e=fabricEntry(m.name);if(e&&!m.onBeforeCompile.toString().includes('fab'))fabricShader(m,e[1],obj.scale,false,bodyJoints(set),e[2]);return m};
+  const woven=m=>{const e=fabricEntry(m.name);if(e&&!m.onBeforeCompile.toString().includes('fab'))fabricShader(m,e[1],obj.scale,false,bodyJoints(set),e[2],e[3]);return m};
   const info=mergedInfo.get(obj.geometry);
   if(info){
    // A merged mesh: each source keeps its own (tinted) colour as vertex colours; the main material's map, normal map
@@ -479,7 +502,7 @@ function createA01(a){
    const colors=info.sources.map(s=>tint(s.material).color);
    obj.geometry=coloredGeometry(obj.geometry,info,colors);
    const m=tint(info.sources[0].material).clone();m.color.setRGB(1,1,1);m.vertexColors=true;owned.set(Symbol(),m);
-   const e=info.sources.map(s=>fabricEntry(s.material.name)).find(Boolean);if(e)fabricShader(m,e[1],obj.scale,true,bodyJoints(set),e[2]);
+   const e=info.sources.map(s=>fabricEntry(s.material.name)).find(Boolean);if(e)fabricShader(m,e[1],obj.scale,true,bodyJoints(set),e[2],e[3]);
    obj.material=m;return;
   }
   obj.material=Array.isArray(obj.material)?obj.material.map(tint):woven(tint(obj.material))});
@@ -491,7 +514,7 @@ function createA01(a){
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)mixer.timeScale=0;else mixer.setTime(Math.random()*6);
  // Each skinned part has its own skeleton, and each skeleton its own bone texture on the GPU: free them with the
  // avatar (leaving them made every rebuild leak about 17 textures, and the iPhone ran out of graphics memory).
- wrapper.userData.dispose=()=>{mixer.stopAllAction();mixer.uncacheRoot(group);owned.forEach(m=>m.dispose());freeSkeletons(group)};
+ wrapper.userData.dispose=()=>{mixer.stopAllAction();mixer.uncacheRoot(group);owned.forEach(keepOrDispose);freeSkeletons(group)};
  return wrapper;
 }
 // Presets load on demand (each is 1-2.5 MB and about 28 MB of textures on the GPU; phones ran out of memory when all six
