@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {createAvatar,defaultLook,loadCharacters,disposeAvatar,a01Trial,ensureParts} from './real-characters.js';
 import {setupStudio} from './designer-studio.js';
+import {snapshot} from './snapshot.js';
 
 export async function setupSocial({scene,camera,renderer,stored,save,toast,getGuest,onEnter,getPhotoContext=()=>({exhibition:'Exhibition not assigned'}),photoWorks=[],getPhotoPose}){
   const $=id=>document.getElementById(id);
@@ -34,7 +35,7 @@ export async function setupSocial({scene,camera,renderer,stored,save,toast,getGu
     const ctx=output.getContext('2d');ctx.fillStyle='#fcfaf3';ctx.fillRect(0,0,1200,1450);
     // Render a square photograph rather than cropping the narrow phone viewport.
     const viewport=renderer.getSize(new THREE.Vector2()),aspect=camera.aspect;
-    try{renderer.setSize(1060,1060,false);camera.aspect=1;camera.updateProjectionMatrix();renderer.render(scene,camera);const source=renderer.domElement;ctx.drawImage(source,0,0,source.width,source.height,70,70,1060,1060)}finally{renderer.setSize(viewport.x,viewport.y,false);camera.aspect=aspect;camera.updateProjectionMatrix();renderer.render(scene,camera)}
+    {const aspect=camera.aspect;try{camera.aspect=1;camera.updateProjectionMatrix();ctx.drawImage(snapshot(renderer,scene,camera,1060,1060,1),70,70,1060,1060)}finally{camera.aspect=aspect;camera.updateProjectionMatrix()}}   // off-screen: reading the visible canvas gave black photos on some phones
     ctx.fillStyle='#263e37';ctx.font='38px sans-serif';ctx.fillText('anansi',70,1185);
     ctx.font='30px sans-serif';ctx.fillText('a place for things that remain',70,1230);
     const context=getPhotoContext($('photoWork').value);

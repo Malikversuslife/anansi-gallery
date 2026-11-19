@@ -2,8 +2,9 @@
 // A category rail on the left, the options for that category on the right (picture cards rendered from the guest's
 // own avatar), face sliders, undo / redo / reset, and a save button. The look object is the same one the gallery saves.
 import * as THREE from 'three';
-import {createAvatar,disposeAvatar,characterOptions,normalizeLook,a01Trial,partsReady,ensureParts,setFace,FACE_SLIDERS} from './real-characters.js';
+import {createAvatar,disposeAvatar,characterOptions,normalizeLook,defaultLook,a01Trial,partsReady,ensureParts,setFace,FACE_SLIDERS} from './real-characters.js';
 import {skinOptions,hairOptions,skinColourFor,hairColourFor} from './avatar-appearance.js';
+import {snapshot as renderSnapshot} from './snapshot.js';
 
 const svg=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const ICON={
@@ -88,7 +89,7 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
  const $=id=>document.getElementById(id);
  const dialog=$('avatarDesigner');
  dialog.classList.add('studio');
- dialog.innerHTML=`<div class="st-bg"></div><div class="st-stage" id="avatarPreview"></div>
+ dialog.innerHTML=`<div class="st-bg"></div><div class="st-stage" id="avatarPreview"></div><div class="st-loading" id="studioLoading" hidden>Loading this character…</div>
  <header class="st-top"><div class="st-brand">anansi<span>Create your look</span></div>
   <div class="st-tabs" role="tablist" aria-label="Camera">${[['full','Full look'],['face','Face'],['feet','Shoes']].map(([v,l])=>`<button type="button" role="tab" data-view="${v}">${l}</button>`).join('')}</div>
   <div class="st-icons"><button type="button" class="st-icon st-back" id="studioBack"><span>${ICON.back}</span><b>Back</b></button><button type="button" class="st-icon" id="closeAvatarDesigner" aria-label="Close the designer">${ICON.close}</button></div></header>
@@ -101,7 +102,8 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
 
  const CATS=categories();
  const previous=stored('anansiAvatar',{});
- let look=normalizeLook(previous.model?previous:{model:previous.body==='masculine'?'male':'female'});
+ // A first visit starts on the gallery's default body (A02), not a preset that would have to download first.
+ let look=normalizeLook(previous.model?previous:previous.body==='masculine'?{model:a01Trial?'a01':'male'}:{model:defaultLook.model});
  let savedLook={...look},entryStep=false,current=CATS[0],chip=0,view='full',autoView=true,past=[],future=[];
 
  // ---------------------------------------------------------------- the stage
@@ -148,7 +150,14 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
   preview=createAvatar(look);preview.rotation.y=Number(look.turn)*Math.PI/180;scene.add(preview);
   const m=measure(preview);height=m.h;headY=m.head;layout();
  }
- function updatePreview(){const token=++previewToken;drawPreview();if(!partsReady(look))ensureParts(look).then(()=>{if(token===previewToken)drawPreview()})}
+ // A look whose parts or preset are still downloading keeps the current character on screen, with a note, and is drawn
+ // when they arrive (drawing a stand-in body made it look as if the wrong character had been picked).
+ function updatePreview(){
+  const token=++previewToken;
+  if(partsReady(look)||!preview){$('studioLoading').hidden=true;drawPreview();if(partsReady(look))return}
+  else $('studioLoading').hidden=false;
+  ensureParts(look).then(()=>{if(token===previewToken){$('studioLoading').hidden=true;drawPreview()}})
+ }
  let last=performance.now();
  function frameLoop(now){if(!dialog.open){looping=false;return}const dt=Math.min((now-last)/1000,.05);last=now;preview?.userData.mixer?.update(dt);renderer.render(scene,camera);requestAnimationFrame(frameLoop)}
 
@@ -165,12 +174,8 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
  // and the stage is drawn again in the same task, so the corner never shows.
  const snapCanvas=document.createElement('canvas');snapCanvas.width=T_W;snapCanvas.height=T_H;const snapCtx=snapCanvas.getContext('2d');
  function snap(){
-  const pr=renderer.getPixelRatio(),c=renderer.domElement,w=T_W/pr,h=T_H/pr;
-  renderer.setScissorTest(true);renderer.setViewport(0,0,w,h);renderer.setScissor(0,0,w,h);
-  renderer.render(thumbScene,thumbCamera);
-  snapCtx.clearRect(0,0,T_W,T_H);snapCtx.drawImage(c,0,c.height-T_H,T_W,T_H,0,0,T_W,T_H);
-  renderer.setScissorTest(false);renderer.setViewport(0,0,c.width/pr,c.height/pr);renderer.render(scene,camera);
-  return snapCanvas.toDataURL('image/webp',.85);
+  // Off-screen, not read back from the visible canvas (that returned black pictures on some phones).
+  return renderSnapshot(renderer,thumbScene,thumbCamera,T_W,T_H,1.5).toDataURL('image/webp',.85);
  }
  const thumbScene=new THREE.Scene();lights(thumbScene);
  const thumbCamera=new THREE.PerspectiveCamera(26,T_W/T_H,.05,30);
@@ -187,7 +192,6 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
     const av=createAvatar(job.look);av.rotation.y=job.frame==='head'?-.35:-.3;av.userData.mixer?.setTime?.(0);av.userData.mixer?.update(0);thumbScene.add(av);
     const m=measure(av),[y,vh]=frameFor(job.frame,m);const d=(vh/2)/Math.tan(THREE.MathUtils.degToRad(thumbCamera.fov/2));
     thumbCamera.position.set(job.frame==='wrist'?.25:0,y+.02,d);thumbCamera.lookAt(job.frame==='wrist'?.12:0,y,0);
-    while(dialog.open&&(renderer.domElement.width<T_W||renderer.domElement.height<T_H))await new Promise(r=>setTimeout(r,100));
     if(!dialog.open){thumbScene.remove(av);disposeAvatar(av);break}
     const url=snap();
     thumbScene.remove(av);disposeAvatar(av);

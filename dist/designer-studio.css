@@ -131,3 +131,6 @@
   #avatarDesigner.studio{--glass:rgba(24,30,29,.78);--glass-strong:rgba(24,30,29,.88)}
   .studio .st-bg{filter:saturate(.9) brightness(.55)}     /* no blur filter on phones */
 }
+
+.studio .st-loading{position:absolute;z-index:3;left:50%;top:76px;transform:translateX(-50%);padding:8px 16px;border-radius:999px;background:rgba(24,30,29,.78);border:1px solid var(--edge);color:#fff;font-size:12px;letter-spacing:.4px}
+.studio .st-loading[hidden]{display:none}
