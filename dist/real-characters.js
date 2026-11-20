@@ -15,7 +15,7 @@ export const FACE_SLIDERS=[['faceShape','face_angular','face_soft'],['jaw','jaw_
 export function normalizeLook(look={}){
  const a={...defaultLook,...look};if(!characterOptions.some(([key])=>key===a.model))a.model='female';
  for(const key of ['top','bottom','shoeColor','accessoryColor'])if(!/^#[0-9a-f]{6}$/i.test(a[key]))a[key]=defaultLook[key];
- for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret']],['hairStyle',['default','coils','straight','buzz']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
+ for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret']],['hairStyle',['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','bald']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
  for(const [key,options] of [['skinTone',skinOptions],['hairColor',hairOptions]])if(!options.some(([value])=>value===a[key]))a[key]='original';
  // Original bodies are assembled from parts: outer layer, footwear (loafers or barefoot) and earrings are independent slots.
  if(ORIGINALS[a.model]){if(!['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','none'].includes(a.shoes))a.shoes='original'}else{a.headwear='none';a.bag='none';if(!['original','sneakers','boots'].includes(a.shoes))a.shoes='original';if(a.earrings==='links')a.earrings='hoops';a.outer='jacket'}if(a.model==='covered')a.earrings='none';if(a.model==='female')a.shoes='original';a.turn=Math.max(-180,Math.min(180,Number(a.turn)||0));if(!ORIGINALS[a.model]||!/^#[0-9a-f]{6}$/i.test(a.lipColor))a.lipColor='original';for(const [key] of FACE_SLIDERS)a[key]=ORIGINALS[a.model]?Math.round(Math.max(-1,Math.min(1,Number(a[key])||0))*100)/100:0;return a;
@@ -220,7 +220,7 @@ function a01Tint(copy,a,base){
  else if(name.startsWith('A01 Trousers'))replace(a.bottom);
  else if(name.startsWith('A01 Loafers | oxblood'))replace(a.shoeColor);
  else if(name.startsWith('A01 Earring'))copy.color.set(a.accessoryColor);
- else if(name.startsWith('A01 Skin')&&skinColourFor(a.skinTone))copy.color.multiply(gain(skinColourFor(a.skinTone),base.skin));
+ else if((name.startsWith('A01 Skin')||name.startsWith('A01 Scalp'))&&skinColourFor(a.skinTone))copy.color.multiply(gain(skinColourFor(a.skinTone),base.skin));   // the bald scalp follows the skin tone
  else if((name.startsWith('A01 Hair')||name.startsWith('A01 Brows')||name.startsWith('A01 Facial hair'))&&hairColourFor(a.hairColor))copy.color.multiply(gain(hairColourFor(a.hairColor),base.hair));
 }
 // An original wax-print-style pattern (not a copy of any existing cloth): ochre medallions ringed in cream on
@@ -304,12 +304,12 @@ function disposeAsset(root){
 }
 function fetchPart(set,key,file){
  if(set.files.has(file))return Promise.resolve();
- if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=21`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
+ if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=34`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
  return set.pending.get(file);
 }
 async function loadParts(key){
- const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=21`)).json();
- const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=21`);
+ const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=34`)).json();
+ const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=34`);
  shrinkTextures(body.scene,1024);   // the skin is 2048 on desktop
  mergeSkin(body.scene);
  // The skin's colour attribute is the lip mask: rename it so nothing treats it as vertex colour.
@@ -360,9 +360,13 @@ function sameSkin(a,b){
  const ka=Object.keys(a.morphTargetDictionary||{}).sort().join(),kb=Object.keys(b.morphTargetDictionary||{}).sort().join();
  return ka===kb;
 }
+// A piece with its own texture only joins a mesh drawn with that same texture: merged, the main mesh's material is used
+// for all, so a textured piece joined to an untextured one lost its texture (the puff's sleek hair drew white).
+// Untextured details (buttons, zips) still join textured cloth.
+const sameMap=(main,other)=>!other.material.map||other.material.map===main.material.map;
 function alike(a,b){
  const ma=a.material,mb=b.material;
- return Math.abs((ma.metalness||0)-(mb.metalness||0))<=.3&&Math.abs((ma.roughness??1)-(mb.roughness??1))<=.45&&sameSkin(a,b);
+ return Math.abs((ma.metalness||0)-(mb.metalness||0))<=.3&&Math.abs((ma.roughness??1)-(mb.roughness??1))<=.45&&sameMap(a,b)&&sameSkin(a,b);
 }
 function plainGeometry(mesh,morphOrder){
  // Same attribute set and array types for every source, so they can be merged (Draco may decode them differently).
@@ -393,7 +397,7 @@ function mergeAlike(scene){
   const main=left.shift(),group=[main];
   // Small details (under 15% of the main mesh: zips, clasps, buckles, a watch dial) join whatever their finish; at
   // gallery distance a zip's metallic sheen doesn't show, but its draw call costs the same as a jacket's.
-  for(let i=0;i<left.length;)if(alike(main,left[i])||(tris(left[i])<.15*tris(main)&&sameSkin(main,left[i])))group.push(...left.splice(i,1));else i++;
+  for(let i=0;i<left.length;)if(alike(main,left[i])||(tris(left[i])<.15*tris(main)&&sameMap(main,left[i])&&sameSkin(main,left[i])))group.push(...left.splice(i,1));else i++;
   if(group.length<2)continue;
   const morphOrder=Object.keys(main.morphTargetDictionary||{}).sort((x,y)=>main.morphTargetDictionary[x]-main.morphTargetDictionary[y]);
   const merged=mergeGeometries(group.map(o=>plainGeometry(o,morphOrder)),false);
@@ -441,7 +445,10 @@ function skinGeometry(set,src,ranges,worn){
 function partChoice(a,manifest){
  const ids=slot=>(manifest.slots[slot]||[]).filter(e=>e.file).map(e=>e.id);
  const pick=(slot,want)=>ids(slot).includes(want)?want:ids(slot)[0];
- return {hair:pick('hair',a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle),top:pick('top',a.topStyle),bottoms:pick('bottoms',a.bottomStyle),
+ // A puff of hair can't go under a hat: with one on, it shows as a close crop.
+ const HAT_SWAP={puff:'buzz'},wantHair=a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle;
+ // Bald: no hair part at all (the scalp is plain skin).
+ return {hair:a.hairStyle==='bald'?'none':pick('hair',a.headwear!=='none'&&HAT_SWAP[wantHair]?HAT_SWAP[wantHair]:wantHair),top:pick('top',a.topStyle),bottoms:pick('bottoms',a.bottomStyle),
   outer:a.outer==='none'?'none':pick('outer',a.outer),
   shoes:a.shoes==='none'?'none':pick('shoes',{sneakers:'trainers',original:'loafers'}[a.shoes]||a.shoes),
   earrings:a.earrings==='none'?'none':pick('earrings',a.earrings==='links'?'links':ids('earrings').find(i=>i!=='links')),

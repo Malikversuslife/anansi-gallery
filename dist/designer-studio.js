@@ -43,7 +43,7 @@ function categories(){
    {label:'Features',sliders:[['nose','Nose width','Narrow','Wide'],['noseLength','Nose length','Shorter','Longer'],['lips','Lips','Thinner','Fuller'],['mouth','Mouth width','Narrower','Wider'],['eyes','Eyes','Smaller','Larger'],['eyeSpacing','Eye spacing','Closer','Wider']],reset:true},
    {key:'lipColor',label:'Lip colour',swatch:LIPS}]},
   {id:'hair',label:'Hair',view:'face',sections:[
-   {key:'hairStyle',label:'Hairstyle',frame:'head',options:[['default','This body’s own'],['coils','Short coils'],['straight','Straight, long'],['buzz','Close crop']]},
+   {key:'hairStyle',label:'Hairstyle',frame:'head',options:[['default','This body’s own'],['coils','Short coils'],['straight','Straight, long'],['buzz','Close crop'],['fingerwave','Finger-wave pixie'],['pixie','Textured pixie'],['waves','Waves, faded'],['curltop','Curly top, faded'],['bun','Sleek low bun'],['puff','Afro puff'],['bald','Bald']]},
    {key:'facialHair',label:'Facial hair',frame:'head',options:[['default','This body’s own'],['none','Clean-shaven'],['stubble','Stubble'],['moustache','Moustache'],['goatee','Goatee'],['boxed','Short beard'],['full','Full beard']]},
    {key:'hairColor',label:'Hair colour',swatch:hairOptions.map(([v,l])=>[v,l,v==='original'?null:hairColourFor(v)])}]},
   {id:'outfits',label:'Outfits',chips:true,sections:[
@@ -235,7 +235,7 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
   n.skinTone=pick(skinOptions)[0];n.hairColor=pick(hairOptions)[0];n.build=pick(['slim','balanced','broad']);
   n.top=pick(TINTS)[0];n.bottom=pick(TINTS)[0];n.shoeColor=pick(TINTS)[0];
   if(isOriginal(look)){
-   n.hairStyle=pick(['default','coils','straight','buzz']);n.facialHair=look.model==='a01'?pick(['default','none','stubble','moustache','goatee','boxed','full']):(Math.random()<.85?'none':pick(['stubble','moustache']));n.topStyle=pick(['tee','knit','quarterzip','sleeveless','vneck','dress','mididress']);
+   n.hairStyle=pick(['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','bald']);n.facialHair=look.model==='a01'?pick(['default','none','stubble','moustache','goatee','boxed','full']):(Math.random()<.85?'none':pick(['stubble','moustache']));n.topStyle=pick(['tee','knit','quarterzip','sleeveless','vneck','dress','mididress']);
    n.bottomStyle=pick(['trousers','wide','slim','shorts','skirt','mini']);n.outer=pick(['none','none','jacket','zip','leather','harrington','overcoat','cardigan']);
    n.shoes=pick(['original','sneakers','boots']);n.headwear=Math.random()<.65?'none':pick(['wrap','cap','fedora','newsboy']);
    n.eyewear=Math.random()<.7?'none':pick(['optical','sun']);n.bag=Math.random()<.75?'none':'crossbody';

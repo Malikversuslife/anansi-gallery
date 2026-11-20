@@ -1,11 +1,11 @@
 {
  "body": "a02",
- "version": "parts-v10",
+ "version": "parts-v11",
  "defaults": {
   "hair": "straight",
   "facialhair": "none"
  },
- "source": "visitor-a02-v15",
+ "source": "visitor-a02-v16",
  "morphs": [
   "build_slim",
   "build_broad"
@@ -40,44 +40,44 @@
  "files": {
   "body": {
    "file": "body.glb",
-   "bytes": 1197660,
-   "triangles": 14620,
-   "draw_objects": 93,
+   "bytes": 1194276,
+   "triangles": 14618,
+   "draw_objects": 90,
    "pieces": [
     {
      "name": "A01 Skin",
      "hidden_by": "",
-     "triangles": 9336
+     "triangles": 9484
     },
     {
      "name": "A01 Skin under shoes:boots+shoes:court+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:trainers+shoes:workboots",
      "hidden_by": "shoes:boots,shoes:court,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:trainers,shoes:workboots",
-     "triangles": 1095
+     "triangles": 1051
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:offshoulder+top:quarterzip+top:turtleneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:offshoulder,top:quarterzip,top:turtleneck",
-     "triangles": 271
-    },
-    {
-     "name": "A01 Skin under bottoms:slim+bottoms:trousers",
-     "hidden_by": "bottoms:slim,bottoms:trousers",
-     "triangles": 178
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
-     "triangles": 202
+     "triangles": 241
     },
     {
      "name": "A01 Skin under bottoms:jeans+bottoms:slim+bottoms:trousers+bottoms:wide",
      "hidden_by": "bottoms:jeans,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "triangles": 148
+    },
+    {
+     "name": "A01 Skin under bottoms:slim+bottoms:trousers",
+     "hidden_by": "bottoms:slim,bottoms:trousers",
+     "triangles": 146
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
      "triangles": 152
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:quarterzip+top:turtleneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:quarterzip,top:turtleneck",
-     "triangles": 105
+     "triangles": 113
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck+top:vneck",
@@ -87,52 +87,72 @@
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:sleeveless+top:tee+top:turtleneck+top:vneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:dress,top:knit,top:mididress,top:quarterzip,top:sleeveless,top:tee,top:turtleneck,top:vneck",
-     "triangles": 93
-    },
-    {
-     "name": "A01 Skin under bottoms:slim+bottoms:trousers+top:offshoulder",
-     "hidden_by": "bottoms:slim,bottoms:trousers,top:offshoulder",
      "triangles": 83
     },
     {
      "name": "A01 Skin under bottoms:trousers+shoes:heelboots+shoes:kneeboots",
      "hidden_by": "bottoms:trousers,shoes:heelboots,shoes:kneeboots",
-     "triangles": 92
-    },
-    {
-     "name": "A01 Skin under shoes:heelboots+shoes:kneeboots",
-     "hidden_by": "shoes:heelboots,shoes:kneeboots",
-     "triangles": 78
+     "triangles": 90
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip",
-     "triangles": 64
+     "triangles": 68
+    },
+    {
+     "name": "A01 Skin under shoes:heelboots+shoes:kneeboots",
+     "hidden_by": "shoes:heelboots,shoes:kneeboots",
+     "triangles": 76
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "triangles": 66
     },
     {
      "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
      "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
-     "triangles": 46
+     "triangles": 54
+    },
+    {
+     "name": "A01 Skin under bottoms:slim+bottoms:trousers+top:offshoulder",
+     "hidden_by": "bottoms:slim,bottoms:trousers,top:offshoulder",
+     "triangles": 36
+    },
+    {
+     "name": "A01 Skin under bottoms:skirt+bottoms:slim+bottoms:trousers+top:offshoulder",
+     "hidden_by": "bottoms:skirt,bottoms:slim,bottoms:trousers,top:offshoulder",
+     "triangles": 37
     },
     {
      "name": "A01 Skin under top:turtleneck",
      "hidden_by": "top:turtleneck",
-     "triangles": 36
+     "triangles": 34
     },
     {
      "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:workboots",
      "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:workboots",
-     "triangles": 30
+     "triangles": 28
     },
     {
-     "name": "A01 Skin under bottoms:slim",
-     "hidden_by": "bottoms:slim",
-     "triangles": 36
+     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "triangles": 40
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "triangles": 26
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:slim+bottoms:trousers",
+     "hidden_by": "bottoms:pencil,bottoms:slim,bottoms:trousers",
+     "triangles": 26
     },
     {
      "name": "A01 Skin under bottoms:slim+bottoms:trousers+shoes:heelboots+shoes:kneeboots",
      "hidden_by": "bottoms:slim,bottoms:trousers,shoes:heelboots,shoes:kneeboots",
-     "triangles": 32
+     "triangles": 28
     },
     {
      "name": "A01 Skin under top:quarterzip+top:turtleneck",
@@ -140,23 +160,33 @@
      "triangles": 20
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 30
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 28
+     "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
+     "triangles": 22
     },
     {
      "name": "A01 Skin under outer:bomber+outer:harrington+outer:leather+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:sleeveless+top:tee+top:turtleneck",
      "hidden_by": "outer:bomber,outer:harrington,outer:leather,outer:shearling,outer:zip,top:dress,top:knit,top:mididress,top:quarterzip,top:sleeveless,top:tee,top:turtleneck",
-     "triangles": 20
+     "triangles": 18
     },
     {
-     "name": "A01 Skin under bottoms:pencil+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:pencil,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:turtleneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:turtleneck",
+     "triangles": 16
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:dress,top:mididress,top:offshoulder",
+     "triangles": 12
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:offshoulder",
+     "triangles": 16
+    },
+    {
+     "name": "A01 Skin under outer:bomber+outer:harrington+outer:zip",
+     "hidden_by": "outer:bomber,outer:harrington,outer:zip",
      "triangles": 12
     },
     {
@@ -165,28 +195,8 @@
      "triangles": 12
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 12
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 16
-    },
-    {
      "name": "A01 Skin under top:mididress+top:tee+top:vneck",
      "hidden_by": "top:mididress,top:tee,top:vneck",
-     "triangles": 10
-    },
-    {
-     "name": "A01 Skin under bottoms:pencil+bottoms:slim+bottoms:trousers+top:offshoulder",
-     "hidden_by": "bottoms:pencil,bottoms:slim,bottoms:trousers,top:offshoulder",
-     "triangles": 12
-    },
-    {
-     "name": "A01 Skin under outer:bomber+outer:harrington+outer:zip",
-     "hidden_by": "outer:bomber,outer:harrington,outer:zip",
      "triangles": 10
     },
     {
@@ -195,24 +205,9 @@
      "triangles": 10
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 10
-    },
-    {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:mididress+top:tee+top:turtleneck+top:vneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:mididress,top:tee,top:turtleneck,top:vneck",
      "triangles": 14
-    },
-    {
-     "name": "A01 Skin under bottoms:shorts+bottoms:slim+bottoms:trousers",
-     "hidden_by": "bottoms:shorts,bottoms:slim,bottoms:trousers",
-     "triangles": 14
-    },
-    {
-     "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
-     "triangles": 12
     },
     {
      "name": "A01 Skin under outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:zip+top:mididress+top:vneck",
@@ -220,19 +215,9 @@
      "triangles": 7
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:tee+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:tee,top:turtleneck",
-     "triangles": 10
-    },
-    {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:turtleneck",
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:quarterzip+top:turtleneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:quarterzip,top:turtleneck",
      "triangles": 6
-    },
-    {
-     "name": "A01 Skin under outer:bomber+outer:harrington+outer:jacket+outer:zip",
-     "hidden_by": "outer:bomber,outer:harrington,outer:jacket,outer:zip",
-     "triangles": 8
     },
     {
      "name": "A01 Skin under outer:bomber+outer:harrington+outer:jacket+outer:zip+top:quarterzip+top:turtleneck",
@@ -245,23 +230,13 @@
      "triangles": 8
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:skirt+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:skirt,bottoms:wide,top:dress,top:mididress,top:offshoulder",
-     "triangles": 8
-    },
-    {
-     "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:dress,top:mididress,top:offshoulder",
-     "triangles": 6
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
      "triangles": 6
     },
     {
@@ -277,36 +252,31 @@
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:dress,top:knit,top:mididress,top:quarterzip,top:tee,top:turtleneck",
-     "triangles": 9
+     "triangles": 7
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:quarterzip+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:quarterzip,top:turtleneck",
-     "triangles": 4
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "triangles": 5
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:quarterzip+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:quarterzip,top:turtleneck",
-     "triangles": 4
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:tee,top:turtleneck",
+     "triangles": 10
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:quarterzip+top:tee+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:quarterzip,top:tee,top:turtleneck",
-     "triangles": 4
+     "name": "A01 Skin under outer:bomber+outer:harrington+outer:jacket+outer:zip",
+     "hidden_by": "outer:bomber,outer:harrington,outer:jacket,outer:zip",
+     "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:wide",
-     "triangles": 4
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:wide",
+     "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
-     "triangles": 4
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:slim,bottoms:trousers,bottoms:wide",
      "triangles": 4
     },
     {
@@ -315,29 +285,29 @@
      "triangles": 4
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:wide+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:wide,top:mididress,top:offshoulder",
-     "triangles": 4
-    },
-    {
      "name": "A01 Skin under outer:harrington",
      "hidden_by": "outer:harrington",
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 8
     },
     {
-     "name": "A01 Skin under bottoms:shorts+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:shorts,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
-     "triangles": 8
+     "name": "A01 Skin under bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "triangles": 6
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:turtleneck+top:vneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:turtleneck,top:vneck",
-     "triangles": 4
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:vneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:vneck",
+     "triangles": 3
+    },
+    {
+     "name": "A01 Skin under outer:bomber+outer:shearling",
+     "hidden_by": "outer:bomber,outer:shearling",
+     "triangles": 3
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:shearling+outer:zip+top:knit+top:quarterzip+top:turtleneck",
@@ -345,9 +315,14 @@
      "triangles": 4
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:turtleneck+top:vneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:turtleneck,top:vneck",
-     "triangles": 4
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:vneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:vneck",
+     "triangles": 3
+    },
+    {
+     "name": "A01 Skin under outer:shearling",
+     "hidden_by": "outer:shearling",
+     "triangles": 3
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:mididress+top:tee+top:vneck",
@@ -375,28 +350,28 @@
      "triangles": 2
     },
     {
-     "name": "A01 Skin under outer:bomber+outer:longcoat+outer:overcoat+outer:shearling",
-     "hidden_by": "outer:bomber,outer:longcoat,outer:overcoat,outer:shearling",
-     "triangles": 2
-    },
-    {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:jacket+outer:longcoat+outer:overcoat+outer:shearling",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:jacket,outer:longcoat,outer:overcoat,outer:shearling",
      "triangles": 2
     },
     {
-     "name": "A01 Skin under bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:skirt+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:skirt,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
      "triangles": 3
     },
     {
-     "name": "A01 Skin under bottoms:shorts+bottoms:slim+bottoms:trousers+top:offshoulder",
-     "hidden_by": "bottoms:shorts,bottoms:slim,bottoms:trousers,top:offshoulder",
+     "name": "A01 Skin under bottoms:trousers",
+     "hidden_by": "bottoms:trousers",
      "triangles": 2
     },
     {
-     "name": "A01 Skin under bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:mididress,top:offshoulder",
+     "triangles": 2
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
      "triangles": 2
     },
     {
@@ -407,11 +382,6 @@
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:sleeveless+top:tee+top:turtleneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:dress,top:knit,top:mididress,top:quarterzip,top:sleeveless,top:tee,top:turtleneck",
-     "triangles": 2
-    },
-    {
-     "name": "A01 Skin under outer:longcoat+outer:overcoat+outer:shearling",
-     "hidden_by": "outer:longcoat,outer:overcoat,outer:shearling",
      "triangles": 2
     },
     {
@@ -430,11 +400,6 @@
      "triangles": 3
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:tee,top:turtleneck",
-     "triangles": 4
-    },
-    {
      "name": "A01 Skin under top:dress+top:sleeveless",
      "hidden_by": "top:dress,top:sleeveless",
      "triangles": 3
@@ -450,9 +415,29 @@
      "triangles": 4
     },
     {
-     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck",
-     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:tee,top:turtleneck",
+     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 4
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "triangles": 4
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:slim+bottoms:trousers+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:slim,bottoms:trousers,top:offshoulder",
+     "triangles": 4
+    },
+    {
+     "name": "A01 Skin under bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+top:offshoulder",
+     "hidden_by": "bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,top:offshoulder",
+     "triangles": 4
+    },
+    {
+     "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:quarterzip+top:turtleneck",
+     "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:quarterzip,top:turtleneck",
+     "triangles": 2
     },
     {
      "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
@@ -470,24 +455,24 @@
      "triangles": 1
     },
     {
+     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "triangles": 1
+    },
+    {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:harrington+outer:leather+outer:longcoat+outer:shearling+outer:zip",
      "hidden_by": "outer:blazer,outer:bomber,outer:harrington,outer:leather,outer:longcoat,outer:shearling,outer:zip",
-     "triangles": 1
-    },
-    {
-     "name": "A01 Skin under outer:bomber+outer:shearling",
-     "hidden_by": "outer:bomber,outer:shearling",
-     "triangles": 1
-    },
-    {
-     "name": "A01 Skin under outer:shearling",
-     "hidden_by": "outer:shearling",
      "triangles": 1
     },
     {
      "name": "A01 Skin under top:knit+top:quarterzip+top:turtleneck",
      "hidden_by": "top:knit,top:quarterzip,top:turtleneck",
      "triangles": 1
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "triangles": 2
     }
    ]
   }
@@ -498,8 +483,8 @@
     "id": "coils",
     "label": "Short coils",
     "file": "hair-coils.glb",
-    "bytes": 107272,
-    "triangles": 9998,
+    "bytes": 115692,
+    "triangles": 9991,
     "draw_objects": 1,
     "morphs": false,
     "materials": [
@@ -523,12 +508,90 @@
     "id": "buzz",
     "label": "Close crop",
     "file": "hair-buzz.glb",
-    "bytes": 119976,
+    "bytes": 120168,
     "triangles": 1392,
     "draw_objects": 1,
     "morphs": false,
     "materials": [
      "A01 Hair buzz | espresso"
+    ]
+   },
+   {
+    "id": "fingerwave",
+    "label": "Finger-wave pixie",
+    "file": "hair-fingerwave.glb",
+    "bytes": 122188,
+    "triangles": 8080,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Hair fingerwave | espresso"
+    ]
+   },
+   {
+    "id": "pixie",
+    "label": "Textured pixie",
+    "file": "hair-pixie.glb",
+    "bytes": 723992,
+    "triangles": 9916,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Hair pixie | strands",
+     "A01 Hair pixie | espresso"
+    ]
+   },
+   {
+    "id": "waves",
+    "label": "Waves, faded",
+    "file": "hair-waves.glb",
+    "bytes": 341980,
+    "triangles": 3648,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Hair waves | espresso"
+    ]
+   },
+   {
+    "id": "curltop",
+    "label": "Curly top, faded",
+    "file": "hair-curltop.glb",
+    "bytes": 622204,
+    "triangles": 12136,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Hair curltop | coils",
+     "A01 Hair curltop | fade"
+    ]
+   },
+   {
+    "id": "bun",
+    "label": "Sleek low bun",
+    "file": "hair-bun.glb",
+    "bytes": 726068,
+    "triangles": 17298,
+    "draw_objects": 3,
+    "morphs": false,
+    "materials": [
+     "A01 Hair bun | strands",
+     "A01 Hair bun | espresso",
+     "A01 Hair bun | knot strands"
+    ]
+   },
+   {
+    "id": "puff",
+    "label": "Afro puff",
+    "file": "hair-puff.glb",
+    "bytes": 740068,
+    "triangles": 22422,
+    "draw_objects": 3,
+    "morphs": false,
+    "materials": [
+     "A01 Hair puff | strands",
+     "A01 Hair puff | coils",
+     "A01 Hair puff | sleek"
     ]
    }
   ],
@@ -537,8 +600,8 @@
     "id": "tee",
     "label": "Crewneck tee",
     "file": "top-tee.glb",
-    "bytes": 181272,
-    "triangles": 2199,
+    "bytes": 181548,
+    "triangles": 2200,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -549,7 +612,7 @@
     "id": "knit",
     "label": "Long-sleeve knit",
     "file": "top-knit.glb",
-    "bytes": 193832,
+    "bytes": 194360,
     "triangles": 2800,
     "draw_objects": 1,
     "morphs": true,
@@ -561,7 +624,7 @@
     "id": "quarterzip",
     "label": "Quarter-zip knit",
     "file": "top-quarterzip.glb",
-    "bytes": 199132,
+    "bytes": 199720,
     "triangles": 2948,
     "draw_objects": 2,
     "morphs": true,
@@ -574,8 +637,8 @@
     "id": "sleeveless",
     "label": "Sleeveless top",
     "file": "top-sleeveless.glb",
-    "bytes": 177488,
-    "triangles": 1997,
+    "bytes": 177916,
+    "triangles": 1999,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -586,8 +649,8 @@
     "id": "dress",
     "label": "Dress",
     "file": "top-dress.glb",
-    "bytes": 98056,
-    "triangles": 3598,
+    "bytes": 98048,
+    "triangles": 3599,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -601,7 +664,7 @@
     "id": "vneck",
     "label": "V-neck blouse",
     "file": "top-vneck.glb",
-    "bytes": 185336,
+    "bytes": 185980,
     "triangles": 2389,
     "draw_objects": 1,
     "morphs": true,
@@ -613,8 +676,8 @@
     "id": "mididress",
     "label": "Midi dress",
     "file": "top-mididress.glb",
-    "bytes": 105132,
-    "triangles": 3987,
+    "bytes": 105316,
+    "triangles": 3986,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -659,7 +722,7 @@
     "id": "jacket",
     "label": "Chore jacket",
     "file": "outer-jacket.glb",
-    "bytes": 232336,
+    "bytes": 233044,
     "triangles": 4356,
     "draw_objects": 3,
     "morphs": true,
@@ -673,8 +736,8 @@
     "id": "zip",
     "label": "Zip jacket",
     "file": "outer-zip.glb",
-    "bytes": 218740,
-    "triangles": 3894,
+    "bytes": 219096,
+    "triangles": 3896,
     "draw_objects": 2,
     "morphs": true,
     "materials": [
@@ -686,8 +749,8 @@
     "id": "leather",
     "label": "Leather jacket",
     "file": "outer-leather.glb",
-    "bytes": 215992,
-    "triangles": 3749,
+    "bytes": 216332,
+    "triangles": 3750,
     "draw_objects": 2,
     "morphs": true,
     "materials": [
@@ -699,7 +762,7 @@
     "id": "harrington",
     "label": "Harrington jacket",
     "file": "outer-harrington.glb",
-    "bytes": 228084,
+    "bytes": 228452,
     "triangles": 4226,
     "draw_objects": 2,
     "morphs": true,
@@ -712,8 +775,8 @@
     "id": "overcoat",
     "label": "Overcoat",
     "file": "outer-overcoat.glb",
-    "bytes": 272748,
-    "triangles": 6417,
+    "bytes": 272900,
+    "triangles": 6418,
     "draw_objects": 3,
     "morphs": true,
     "materials": [
@@ -726,7 +789,7 @@
     "id": "cardigan",
     "label": "Cardigan",
     "file": "outer-cardigan.glb",
-    "bytes": 223608,
+    "bytes": 224252,
     "triangles": 4018,
     "draw_objects": 2,
     "morphs": true,
@@ -752,7 +815,7 @@
     "id": "longcoat",
     "label": "Long coat",
     "file": "outer-longcoat.glb",
-    "bytes": 300436,
+    "bytes": 300440,
     "triangles": 7792,
     "draw_objects": 3,
     "morphs": true,
@@ -832,8 +895,8 @@
     "id": "trousers",
     "label": "Pressed trousers",
     "file": "bottoms-trousers.glb",
-    "bytes": 174604,
-    "triangles": 1999,
+    "bytes": 174744,
+    "triangles": 2000,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -844,8 +907,8 @@
     "id": "shorts",
     "label": "Shorts",
     "file": "bottoms-shorts.glb",
-    "bytes": 159724,
-    "triangles": 1300,
+    "bytes": 159740,
+    "triangles": 1298,
     "draw_objects": 1,
     "morphs": true,
     "materials": [
@@ -856,8 +919,8 @@
     "id": "wide",
     "label": "Wide pleated trousers",
     "file": "bottoms-wide.glb",
-    "bytes": 193216,
-    "triangles": 2777,
+    "bytes": 193240,
+    "triangles": 2778,
     "draw_objects": 2,
     "morphs": true,
     "materials": [
@@ -881,7 +944,7 @@
     "id": "mini",
     "label": "Mini skirt",
     "file": "bottoms-mini.glb",
-    "bytes": 41592,
+    "bytes": 41668,
     "triangles": 1280,
     "draw_objects": 1,
     "morphs": true,
@@ -893,7 +956,7 @@
     "id": "slim",
     "label": "Slim cropped trousers",
     "file": "bottoms-slim.glb",
-    "bytes": 170132,
+    "bytes": 170240,
     "triangles": 1798,
     "draw_objects": 1,
     "morphs": true,
@@ -905,7 +968,7 @@
     "id": "pencil",
     "label": "Pencil skirt",
     "file": "bottoms-pencil.glb",
-    "bytes": 157492,
+    "bytes": 158852,
     "triangles": 1252,
     "draw_objects": 3,
     "morphs": true,
@@ -948,7 +1011,7 @@
     "id": "trainers",
     "label": "Trainers",
     "file": "shoes-trainers.glb",
-    "bytes": 23448,
+    "bytes": 23440,
     "triangles": 2100,
     "draw_objects": 2,
     "morphs": false,
@@ -1051,7 +1114,7 @@
     "id": "wrap",
     "label": "Headwrap (wax print)",
     "file": "headwear-wrap.glb",
-    "bytes": 29880,
+    "bytes": 29856,
     "triangles": 3888,
     "draw_objects": 1,
     "morphs": false,
@@ -1066,7 +1129,7 @@
     "id": "cap",
     "label": "Baseball cap",
     "file": "headwear-cap.glb",
-    "bytes": 29664,
+    "bytes": 29652,
     "triangles": 4164,
     "draw_objects": 1,
     "morphs": false,
@@ -1091,7 +1154,7 @@
     "id": "newsboy",
     "label": "Newsboy cap",
     "file": "headwear-newsboy.glb",
-    "bytes": 26904,
+    "bytes": 26900,
     "triangles": 3724,
     "draw_objects": 1,
     "morphs": false,
@@ -1103,7 +1166,7 @@
     "id": "beret",
     "label": "Beret",
     "file": "headwear-beret.glb",
-    "bytes": 24712,
+    "bytes": 24696,
     "triangles": 3168,
     "draw_objects": 1,
     "morphs": false,
