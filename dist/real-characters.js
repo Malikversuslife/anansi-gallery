@@ -15,10 +15,10 @@ export const FACE_SLIDERS=[['faceShape','face_angular','face_soft'],['jaw','jaw_
 export function normalizeLook(look={}){
  const a={...defaultLook,...look};if(!characterOptions.some(([key])=>key===a.model))a.model='female';
  for(const key of ['top','bottom','shoeColor','accessoryColor'])if(!/^#[0-9a-f]{6}$/i.test(a[key]))a[key]=defaultLook[key];
- for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret']],['hairStyle',['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','bald']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
+ for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans','jorts']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret','bucket','beanie','cowboy','scarf','headphones','earbeanie','cadet','widebrim']],['hairStyle',['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','topknot','curlypony','quiff','sponge','bald']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun','cateye','oval','square','chunky','rect','rimless','round','slimsun','metalrect','chunkyrect']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
  for(const [key,options] of [['skinTone',skinOptions],['hairColor',hairOptions]])if(!options.some(([value])=>value===a[key]))a[key]='original';
  // Original bodies are assembled from parts: outer layer, footwear (loafers or barefoot) and earrings are independent slots.
- if(ORIGINALS[a.model]){if(!['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','none'].includes(a.shoes))a.shoes='original'}else{a.headwear='none';a.bag='none';if(!['original','sneakers','boots'].includes(a.shoes))a.shoes='original';if(a.earrings==='links')a.earrings='hoops';a.outer='jacket'}if(a.model==='covered')a.earrings='none';if(a.model==='female')a.shoes='original';a.turn=Math.max(-180,Math.min(180,Number(a.turn)||0));if(!ORIGINALS[a.model]||!/^#[0-9a-f]{6}$/i.test(a.lipColor))a.lipColor='original';for(const [key] of FACE_SLIDERS)a[key]=ORIGINALS[a.model]?Math.round(Math.max(-1,Math.min(1,Number(a[key])||0))*100)/100:0;return a;
+ if(ORIGINALS[a.model]){if(!['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','none'].includes(a.shoes))a.shoes='original'}else{a.headwear='none';a.bag='none';if(!['original','sneakers','boots'].includes(a.shoes))a.shoes='original';if(a.earrings==='links')a.earrings='hoops';a.outer='jacket'}if(a.model==='covered')a.earrings='none';if(a.model==='female')a.shoes='original';if(!ORIGINALS[a.model]&&!['none','optical','sun'].includes(a.eyewear))a.eyewear='sun';a.turn=Math.max(-180,Math.min(180,Number(a.turn)||0));if(!ORIGINALS[a.model]||!/^#[0-9a-f]{6}$/i.test(a.lipColor))a.lipColor='original';for(const [key] of FACE_SLIDERS)a[key]=ORIGINALS[a.model]?Math.round(Math.max(-1,Math.min(1,Number(a[key])||0))*100)/100:0;return a;
 }
 if(a01Trial)characterOptions.push(['a01','Original body · A01'],['a02','Original body · A02']);
 const library=new Map();
@@ -66,7 +66,8 @@ const FABRICS={
 // metal, fleece, the wax print headwrap) keep their plain finish.
 const LEGS=[1,1,0],ARMS=[0,0,1],NONE=[0,0,0];
 const FABRIC_OF=[
- [/^A01 Jeans \| denim/,'denim',LEGS,true],[/^A01 Jacket \| ink/,'denim',ARMS],
+ [/^A01 Jeans \| denim/,'denim',LEGS,true],[/^A01 Jacket \| ink/,'denim',ARMS],[/^A01 Jorts \| denim/,'denim',[.6,0,0],true],
+ [/^A01 (Bucket hat|Headscarf)/,'cotton',NONE],[/^A01 (Beanie|Ear beanie|Slides \| sock)/,'knit',NONE],[/^A01 (Cowboy hat|Wide-brim hat) \| felt/,'suede',NONE],[/^A01 Cadet cap/,'twill',NONE],
  [/^A01 (Tee|Sleeveless top|V-neck blouse)/,'cotton',[0,0,.6]],[/^A01 (Dress|Midi dress)/,'cotton',NONE],
  [/^A01 (Knit \| oat|Turtleneck \| knit|Quarter-zip \| charcoal|Cardigan \| oat)/,'knit',ARMS],[/^A01 (Off-shoulder dress \| knit|Bomber \| rib)/,'knit',NONE],
  [/^A01 (Blazer \| wool|Overcoat \| camel|Long coat \| wool)/,'wool',ARMS],[/^A01 Wide trousers \| navy/,'wool',[.8,1,0]],
@@ -211,8 +212,8 @@ function a01Tint(copy,a,base){
  if((a.topPrint==='wax'&&/^A01 (Tee|Knit|Quarter-zip \| charcoal|Sleeveless top|Dress|V-neck blouse|Midi dress|Turtleneck \| knit|Off-shoulder dress \| knit)/.test(name))||(a.bottomPrint==='wax'&&/^A01 (Trousers|Shorts|Wide trousers \| navy|Skirt|Mini skirt|Slim trousers|Pencil skirt \| wool|Jeans \| denim)/.test(name))){copy.map=waxTexture();copy.color.set('#ffffff');return}
  if(name.startsWith('A01 Headwrap')){copy.map=waxTexture();copy.color.set('#ffffff');return}
  if(name.startsWith('A01 Jacket | ink')||name.startsWith('A01 Zip jacket | olive')||name.startsWith('A01 Leather jacket | black')||name.startsWith('A01 Harrington | red')||name.startsWith('A01 Overcoat | camel')||name.startsWith('A01 Dress')||name.startsWith('A01 Midi dress')||name.startsWith('A01 Cardigan | oat')||/^A01 (Turtleneck \| knit|Blazer \| wool|Long coat \| (wool|skirt)|Bomber \| suede|Shearling jacket \| leather|Off-shoulder dress \| knit)/.test(name))replace(a.top);
- else if(name.startsWith('A01 Skirt')||name.startsWith('A01 Mini skirt')||name.startsWith('A01 Slim trousers')||name.startsWith('A01 Pencil skirt | wool')||name.startsWith('A01 Jeans | denim'))replace(a.bottom);
- else if(name.startsWith('A01 Ankle boots | black')||name.startsWith('A01 Court sneakers | leather')||name.startsWith('A01 Work boots | nubuck')||name.startsWith('A01 Knee boots | leather')||name.startsWith('A01 Heeled sandals | leather')||name.startsWith('A01 Heeled boots | leather'))replace(a.shoeColor);
+ else if(name.startsWith('A01 Skirt')||name.startsWith('A01 Mini skirt')||name.startsWith('A01 Slim trousers')||name.startsWith('A01 Pencil skirt | wool')||name.startsWith('A01 Jeans | denim')||name.startsWith('A01 Jorts | denim'))replace(a.bottom);
+ else if(name.startsWith('A01 Ankle boots | black')||name.startsWith('A01 Court sneakers | leather')||name.startsWith('A01 Work boots | nubuck')||name.startsWith('A01 Knee boots | leather')||name.startsWith('A01 Heeled sandals | leather')||name.startsWith('A01 Heeled boots | leather')||name.startsWith('A01 Slides | foam'))replace(a.shoeColor);
  else if(name.startsWith('A01 Wide trousers | navy'))replace(a.bottom);
  else if(name.startsWith('A01 Watch | steel'))copy.color.set(a.accessoryColor);
  else if(name.startsWith('A01 Shorts'))replace(a.bottom);
@@ -245,8 +246,9 @@ function waxTexture(){
 // Heels: after every animation update, each foot turns about the ankle (toes down) by the shoe's angle, the toes turn
 // back flat, and the hips rise until the balls of the feet are on the floor again (not when seated). The bones are put
 // back before the next update, so nothing builds up whether or not a clip drives them.
-function heelPose(wrapper,group,deg){
- if(!deg)return;
+function heelPose(wrapper,group,deg,lift=0){
+ // lift (metres): a sole under the foot; a standing avatar rises by it so the sole, not the foot, meets the floor.
+ deg=deg||0;if(!deg&&!lift)return;
  const bones={};group.traverse(o=>{if(o.isBone)bones[o.name]=o});
  const pel=bones.pelvis,feet=['l','r'].map(s=>[bones['foot_'+s],bones['ball_'+s]]);
  if(!pel||feet.some(([f,b])=>!f||!b))return;
@@ -259,6 +261,7 @@ function heelPose(wrapper,group,deg){
   wrapper.updateMatrixWorld(true);wrapper.getWorldQuaternion(qa);axis.set(1,0,0).applyQuaternion(qa);
   let drop=0;
   for(const [foot,ball] of feet){const before=ball.getWorldPosition(v).y;turn(foot,th);turn(ball,-th);drop=Math.max(drop,before-ball.getWorldPosition(v).y)}
+  drop+=lift;
   if(!wrapper.userData.seated&&drop>0){const p=pel.getWorldPosition(new THREE.Vector3()),a1=pel.parent.worldToLocal(p.clone()),a2=pel.parent.worldToLocal(p.clone().add(new THREE.Vector3(0,drop,0)));pel.position.add(a2.sub(a1));pel.updateMatrixWorld(true)}
  }
  mixer.update=dt=>{if(saved)tracked.forEach((b,i)=>{b.position.copy(saved[i][0]);b.quaternion.copy(saved[i][1])});const r=update(dt);apply();return r};
@@ -304,12 +307,12 @@ function disposeAsset(root){
 }
 function fetchPart(set,key,file){
  if(set.files.has(file))return Promise.resolve();
- if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=34`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
+ if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=43`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
  return set.pending.get(file);
 }
 async function loadParts(key){
- const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=34`)).json();
- const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=34`);
+ const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=43`)).json();
+ const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=43`);
  shrinkTextures(body.scene,1024);   // the skin is 2048 on desktop
  mergeSkin(body.scene);
  // The skin's colour attribute is the lip mask: rename it so nothing treats it as vertex colour.
@@ -446,7 +449,7 @@ function partChoice(a,manifest){
  const ids=slot=>(manifest.slots[slot]||[]).filter(e=>e.file).map(e=>e.id);
  const pick=(slot,want)=>ids(slot).includes(want)?want:ids(slot)[0];
  // A puff of hair can't go under a hat: with one on, it shows as a close crop.
- const HAT_SWAP={puff:'buzz'},wantHair=a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle;
+ const HAT_SWAP={puff:'buzz',topknot:'bun'},wantHair=a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle;
  // Bald: no hair part at all (the scalp is plain skin).
  return {hair:a.hairStyle==='bald'?'none':pick('hair',a.headwear!=='none'&&HAT_SWAP[wantHair]?HAT_SWAP[wantHair]:wantHair),top:pick('top',a.topStyle),bottoms:pick('bottoms',a.bottomStyle),
   outer:a.outer==='none'?'none':pick('outer',a.outer),
@@ -501,7 +504,7 @@ function createA01(a){
  group.traverse(obj=>{if(!obj.isMesh)return;obj.castShadow=true;obj.receiveShadow=true;
   // Skin under a worn garment is hidden, so it can never show through.
   const hiddenBy=(obj.userData.anansi_hidden_by||'').split(',').filter(Boolean);if(hiddenBy.some(s=>covering.has(s)))obj.visible=false;
-  if(obj.morphTargetDictionary){obj.morphTargetInfluences.fill(0);const k=obj.morphTargetDictionary[morphs[a.build]];if(k!==undefined)obj.morphTargetInfluences[k]=1;faceMorphs(obj,a)}
+  if(obj.morphTargetDictionary){obj.morphTargetInfluences.fill(0);const k=obj.morphTargetDictionary[morphs[a.build]];if(k!==undefined)obj.morphTargetInfluences[k]=1;const hk=obj.morphTargetDictionary.under_hat;if(hk!==undefined)obj.morphTargetInfluences[hk]=a.headwear!=='none'?1:0;faceMorphs(obj,a)}   // under_hat: hair pressed flat under any headwear
   const tint=material=>{if(!owned.has(material)){const copy=material.clone();a01Tint(copy,a,ORIGINALS[a.model]);owned.set(material,copy)}return owned.get(material)};
   const woven=m=>{const e=fabricEntry(m.name);if(e&&!m.onBeforeCompile.toString().includes('fab'))fabricShader(m,e[1],obj.scale,false,bodyJoints(set),e[2],e[3]);return m};
   const info=mergedInfo.get(obj.geometry);
@@ -518,7 +521,7 @@ function createA01(a){
  const wrapper=new THREE.Group();wrapper.add(group);
  const mixer=new THREE.AnimationMixer(group);wrapper.userData={mixer,clips:set.body.animations,model:a.model,a01:true,parts:choice,partsPending:missing};
  // A slow looping idle, paused for visitors who ask for reduced motion. Each A01 starts at its own point in the loop.
- heelPose(wrapper,group,set.manifest.slots.shoes?.find(e=>e.id===choice.shoes)?.heel);
+ {const sh=set.manifest.slots.shoes?.find(e=>e.id===choice.shoes);heelPose(wrapper,group,sh?.heel,sh?.lift||0)}
  a01Pose(wrapper,'A01_Idle');
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)mixer.timeScale=0;else mixer.setTime(Math.random()*6);
  // Each skinned part has its own skeleton, and each skeleton its own bone texture on the GPU: free them with the

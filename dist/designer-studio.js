@@ -43,20 +43,20 @@ function categories(){
    {label:'Features',sliders:[['nose','Nose width','Narrow','Wide'],['noseLength','Nose length','Shorter','Longer'],['lips','Lips','Thinner','Fuller'],['mouth','Mouth width','Narrower','Wider'],['eyes','Eyes','Smaller','Larger'],['eyeSpacing','Eye spacing','Closer','Wider']],reset:true},
    {key:'lipColor',label:'Lip colour',swatch:LIPS}]},
   {id:'hair',label:'Hair',view:'face',sections:[
-   {key:'hairStyle',label:'Hairstyle',frame:'head',options:[['default','This body’s own'],['coils','Short coils'],['straight','Straight, long'],['buzz','Close crop'],['fingerwave','Finger-wave pixie'],['pixie','Textured pixie'],['waves','Waves, faded'],['curltop','Curly top, faded'],['bun','Sleek low bun'],['puff','Afro puff'],['bald','Bald']]},
+   {key:'hairStyle',label:'Hairstyle',frame:'head',options:[['default','This body’s own'],['coils','Short coils'],['straight','Straight, long'],['buzz','Close crop'],['fingerwave','Finger-wave pixie'],['pixie','Textured pixie'],['waves','Waves, faded'],['curltop','Curly top, faded'],['bun','Sleek low bun'],['puff','Afro puff'],['topknot','High top knot'],['curlypony','Curly ponytail'],['quiff','Quiff, tapered'],['sponge','Sponge high-top'],['bald','Bald']]},
    {key:'facialHair',label:'Facial hair',frame:'head',options:[['default','This body’s own'],['none','Clean-shaven'],['stubble','Stubble'],['moustache','Moustache'],['goatee','Goatee'],['boxed','Short beard'],['full','Full beard']]},
    {key:'hairColor',label:'Hair colour',swatch:hairOptions.map(([v,l])=>[v,l,v==='original'?null:hairColourFor(v)])}]},
   {id:'outfits',label:'Outfits',chips:true,sections:[
    {key:'topStyle',label:'Tops',frame:'torso',options:[['tee','Crewneck tee'],['knit','Long-sleeve knit'],['quarterzip','Quarter-zip'],['sleeveless','Sleeveless top'],['vneck','V-neck blouse'],['turtleneck','Turtleneck'],['dress','Dress'],['mididress','Midi dress'],['offshoulder','Off-shoulder dress']]},
-   {key:'bottomStyle',label:'Bottoms',frame:'legs',options:[['trousers','Pressed trousers'],['wide','Wide pleated'],['slim','Slim cropped'],['shorts','Shorts'],['skirt','Midi skirt'],['mini','Mini skirt'],['pencil','Pencil skirt'],['jeans','Wide jeans']]},
+   {key:'bottomStyle',label:'Bottoms',frame:'legs',options:[['trousers','Pressed trousers'],['wide','Wide pleated'],['slim','Slim cropped'],['shorts','Shorts'],['skirt','Midi skirt'],['mini','Mini skirt'],['pencil','Pencil skirt'],['jeans','Wide jeans'],['jorts','Baggy denim shorts']]},
    {key:'outer',label:'Outer layer',frame:'torso',options:[['none','None'],['jacket','Chore jacket'],['zip','Zip jacket'],['leather','Leather jacket'],['harrington','Harrington'],['overcoat','Overcoat'],['cardigan','Cardigan'],['blazer','Blazer'],['longcoat','Long coat'],['bomber','Bomber'],['shearling','Shearling jacket']]},
    {label:'Fabric',groups:[{key:'topPrint',label:'Top',frame:'torso',options:[['plain','Plain'],['wax','Wax print']]},{key:'bottomPrint',label:'Bottoms',frame:'legs',options:[['plain','Plain'],['wax','Wax print']]}]}]},
   {id:'shoes',label:'Shoes',view:'feet',sections:[
-   {key:'shoes',label:'Footwear',frame:'feet',options:[['original','Loafers'],['sneakers','Trainers'],['court','Court sneakers'],['boots','Ankle boots'],['workboots','Work boots'],['kneeboots','Knee boots'],['sandals','Heeled sandals'],['heelboots','Heeled knee boots'],['none','Barefoot']]},
+   {key:'shoes',label:'Footwear',frame:'feet',options:[['original','Loafers'],['sneakers','Trainers'],['court','Court sneakers'],['boots','Ankle boots'],['workboots','Work boots'],['kneeboots','Knee boots'],['sandals','Heeled sandals'],['heelboots','Heeled knee boots'],['slides','Slides with socks'],['none','Barefoot']]},
    {key:'shoeColor',label:'Footwear colour',tint:true}]},
   {id:'accessories',label:'Accessories',chips:true,sections:[
-   {key:'headwear',label:'Headwear',frame:'head',options:[['none','None'],['wrap','Headwrap'],['cap','Baseball cap'],['fedora','Fedora'],['newsboy','Newsboy cap'],['beret','Beret']]},
-   {key:'eyewear',label:'Eyewear',frame:'head',options:[['none','None'],['optical','Fine-rim glasses'],['sun','Sunglasses']]},
+   {key:'headwear',label:'Headwear',frame:'head',options:[['none','None'],['wrap','Headwrap'],['cap','Baseball cap'],['fedora','Fedora'],['newsboy','Newsboy cap'],['beret','Beret'],['bucket','Bucket hat'],['beanie','Beanie'],['cowboy','Cowboy hat'],['scarf','Headscarf with bow'],['headphones','Headphones'],['earbeanie','Cat-ear beanie'],['cadet','Cadet cap'],['widebrim','Wide-brim felt hat']]},
+   {key:'eyewear',label:'Eyewear',frame:'head',options:[['none','None'],['optical','Fine-rim glasses'],['sun','Sunglasses'],['cateye','Cat-eye'],['oval','Slim oval'],['square','Oversized square'],['chunky','Chunky oval'],['rect','Slim rectangle'],['rimless','Rimless tinted'],['round','Round metal'],['slimsun','Slim oval sunglasses'],['metalrect','Metal rectangle'],['chunkyrect','Chunky rectangle']]},
    {key:'earrings',label:'Earrings',frame:'head',options:[['none','None'],['hoops','Small hoops'],['links','Link earrings']]},
    {key:'watch',label:'Wrist',frame:'wrist',options:[['none','None'],['watch','Watch']]},
    {key:'bag',label:'Bag',frame:'torso',options:[['none','None'],['crossbody','Crossbody bag'],['hobo','Hobo bag']]}]},
@@ -71,7 +71,8 @@ function disabledReason(key,value,look){
  if(ORIGINAL_ONLY.has(key)&&!orig)return 'Original bodies only';
  if(key==='bottomStyle'&&['dress','mididress','offshoulder'].includes(look.topStyle))return 'A dress replaces the bottoms';
  if(key==='shoes'&&look.model==='female')return 'This outfit has its own boots';
- if(key==='shoes'&&['none','court','workboots','kneeboots','sandals','heelboots'].includes(value)&&!orig)return 'Original bodies only';
+ if(key==='shoes'&&['none','court','workboots','kneeboots','sandals','heelboots','slides'].includes(value)&&!orig)return 'Original bodies only';
+ if(key==='eyewear'&&['cateye','oval','square','chunky','rect','rimless','round','slimsun','metalrect','chunkyrect'].includes(value)&&!orig)return 'Original bodies only';
  if(key==='earrings'&&value==='links'&&!orig)return 'Original bodies only';
  if((key==='hairColor'||key==='earrings')&&look.model==='covered')return 'Not with the head covering';
  return '';
@@ -235,7 +236,7 @@ export function setupStudio({renderer,stored,save,toast,getGuest,onEnter}){
   n.skinTone=pick(skinOptions)[0];n.hairColor=pick(hairOptions)[0];n.build=pick(['slim','balanced','broad']);
   n.top=pick(TINTS)[0];n.bottom=pick(TINTS)[0];n.shoeColor=pick(TINTS)[0];
   if(isOriginal(look)){
-   n.hairStyle=pick(['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','bald']);n.facialHair=look.model==='a01'?pick(['default','none','stubble','moustache','goatee','boxed','full']):(Math.random()<.85?'none':pick(['stubble','moustache']));n.topStyle=pick(['tee','knit','quarterzip','sleeveless','vneck','dress','mididress']);
+   n.hairStyle=pick(['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','topknot','curlypony','quiff','sponge','bald']);n.facialHair=look.model==='a01'?pick(['default','none','stubble','moustache','goatee','boxed','full']):(Math.random()<.85?'none':pick(['stubble','moustache']));n.topStyle=pick(['tee','knit','quarterzip','sleeveless','vneck','dress','mididress']);
    n.bottomStyle=pick(['trousers','wide','slim','shorts','skirt','mini']);n.outer=pick(['none','none','jacket','zip','leather','harrington','overcoat','cardigan']);
    n.shoes=pick(['original','sneakers','boots']);n.headwear=Math.random()<.65?'none':pick(['wrap','cap','fedora','newsboy']);
    n.eyewear=Math.random()<.7?'none':pick(['optical','sun']);n.bag=Math.random()<.75?'none':'crossbody';

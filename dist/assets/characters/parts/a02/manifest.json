@@ -1,11 +1,11 @@
 {
  "body": "a02",
- "version": "parts-v11",
+ "version": "parts-v15",
  "defaults": {
   "hair": "straight",
   "facialhair": "none"
  },
- "source": "visitor-a02-v16",
+ "source": "visitor-a02-v20",
  "morphs": [
   "build_slim",
   "build_broad"
@@ -40,9 +40,9 @@
  "files": {
   "body": {
    "file": "body.glb",
-   "bytes": 1194276,
+   "bytes": 1202056,
    "triangles": 14618,
-   "draw_objects": 90,
+   "draw_objects": 92,
    "pieces": [
     {
      "name": "A01 Skin",
@@ -50,8 +50,8 @@
      "triangles": 9484
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:court+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:trainers+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:court,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:trainers,shoes:workboots",
+     "name": "A01 Skin under shoes:boots+shoes:court+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:slides+shoes:trainers+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:court,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:slides,shoes:trainers,shoes:workboots",
      "triangles": 1051
     },
     {
@@ -60,18 +60,13 @@
      "triangles": 241
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:slim+bottoms:trousers+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:slim,bottoms:trousers,bottoms:wide",
-     "triangles": 148
-    },
-    {
      "name": "A01 Skin under bottoms:slim+bottoms:trousers",
      "hidden_by": "bottoms:slim,bottoms:trousers",
      "triangles": 146
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
      "triangles": 152
     },
     {
@@ -83,6 +78,11 @@
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:knit+top:mididress+top:quarterzip+top:tee+top:turtleneck+top:vneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:cardigan,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:knit,top:mididress,top:quarterzip,top:tee,top:turtleneck,top:vneck",
      "triangles": 94
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "triangles": 92
     },
     {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:cardigan+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:sleeveless+top:tee+top:turtleneck+top:vneck",
@@ -105,13 +105,18 @@
      "triangles": 76
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "name": "A01 Skin under bottoms:jeans+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "triangles": 56
+    },
+    {
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide",
      "triangles": 66
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 54
     },
     {
@@ -130,18 +135,13 @@
      "triangles": 34
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:workboots",
-     "triangles": 28
-    },
-    {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 40
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 26
     },
     {
@@ -163,6 +163,11 @@
      "name": "A01 Skin under bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+top:mididress+top:offshoulder",
      "hidden_by": "bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,top:mididress,top:offshoulder",
      "triangles": 22
+    },
+    {
+     "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:slides+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:slides,shoes:workboots",
+     "triangles": 19
     },
     {
      "name": "A01 Skin under outer:bomber+outer:harrington+outer:leather+outer:shearling+outer:zip+top:dress+top:knit+top:mididress+top:quarterzip+top:sleeveless+top:tee+top:turtleneck",
@@ -215,6 +220,11 @@
      "triangles": 7
     },
     {
+     "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:workboots",
+     "triangles": 9
+    },
+    {
      "name": "A01 Skin under outer:blazer+outer:bomber+outer:harrington+outer:jacket+outer:leather+outer:longcoat+outer:overcoat+outer:shearling+outer:zip+top:quarterzip+top:turtleneck",
      "hidden_by": "outer:blazer,outer:bomber,outer:harrington,outer:jacket,outer:leather,outer:longcoat,outer:overcoat,outer:shearling,outer:zip,top:quarterzip,top:turtleneck",
      "triangles": 6
@@ -230,13 +240,13 @@
      "triangles": 8
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:offshoulder",
      "triangles": 6
     },
     {
@@ -255,8 +265,8 @@
      "triangles": 7
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 5
     },
     {
@@ -270,13 +280,13 @@
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:wide",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:wide",
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:slim+bottoms:trousers+bottoms:wide",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:slim,bottoms:trousers,bottoms:wide",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:slim+bottoms:trousers+bottoms:wide",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:slim,bottoms:trousers,bottoms:wide",
      "triangles": 4
     },
     {
@@ -290,8 +300,8 @@
      "triangles": 6
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 8
     },
     {
@@ -365,8 +375,8 @@
      "triangles": 2
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:slim+bottoms:trousers+bottoms:wide+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:slim,bottoms:trousers,bottoms:wide,top:mididress,top:offshoulder",
      "triangles": 2
     },
     {
@@ -415,13 +425,13 @@
      "triangles": 4
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,top:dress,top:mididress,top:offshoulder",
      "triangles": 4
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 4
     },
     {
@@ -440,13 +450,13 @@
      "triangles": 2
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 4
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:knit+top:mididress+top:offshoulder+top:quarterzip+top:sleeveless+top:tee+top:turtl",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:knit,top:mididress,top:offshoulder,top:quarterzip,top:sleeveless,top:tee,top:turtleneck,top:vneck",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:longcoat+outer:overcoat+top:dress+top:knit+top:mididress+top:offshoulder+top:quarterzip+top:sleeveless+top",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:longcoat,outer:overcoat,top:dress,top:knit,top:mididress,top:offshoulder,top:quarterzip,top:sleeveless,top:tee,top:turtleneck,top:vneck",
      "triangles": 4
     },
     {
@@ -455,8 +465,8 @@
      "triangles": 1
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:pencil+bottoms:shorts+bottoms:skirt+bottoms:slim+bottoms:trousers+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:pencil,bottoms:shorts,bottoms:skirt,bottoms:slim,bottoms:trousers,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 1
     },
     {
@@ -470,8 +480,8 @@
      "triangles": 1
     },
     {
-     "name": "A01 Skin under bottoms:jeans+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
-     "hidden_by": "bottoms:jeans,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
+     "name": "A01 Skin under bottoms:jeans+bottoms:jorts+bottoms:mini+bottoms:pencil+bottoms:skirt+bottoms:wide+outer:overcoat+top:dress+top:mididress+top:offshoulder",
+     "hidden_by": "bottoms:jeans,bottoms:jorts,bottoms:mini,bottoms:pencil,bottoms:skirt,bottoms:wide,outer:overcoat,top:dress,top:mididress,top:offshoulder",
      "triangles": 2
     }
    ]
@@ -483,10 +493,10 @@
     "id": "coils",
     "label": "Short coils",
     "file": "hair-coils.glb",
-    "bytes": 115692,
+    "bytes": 192308,
     "triangles": 9991,
     "draw_objects": 1,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair coils | espresso"
     ]
@@ -495,10 +505,10 @@
     "id": "straight",
     "label": "Straight, long",
     "file": "hair-straight.glb",
-    "bytes": 737724,
+    "bytes": 889172,
     "triangles": 17356,
     "draw_objects": 2,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair straight | strands",
      "A01 Hair straight | espresso"
@@ -508,10 +518,10 @@
     "id": "buzz",
     "label": "Close crop",
     "file": "hair-buzz.glb",
-    "bytes": 120168,
+    "bytes": 128964,
     "triangles": 1392,
     "draw_objects": 1,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair buzz | espresso"
     ]
@@ -520,10 +530,10 @@
     "id": "fingerwave",
     "label": "Finger-wave pixie",
     "file": "hair-fingerwave.glb",
-    "bytes": 122188,
+    "bytes": 175224,
     "triangles": 8080,
     "draw_objects": 1,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair fingerwave | espresso"
     ]
@@ -532,10 +542,10 @@
     "id": "pixie",
     "label": "Textured pixie",
     "file": "hair-pixie.glb",
-    "bytes": 723992,
+    "bytes": 817788,
     "triangles": 9916,
     "draw_objects": 2,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair pixie | strands",
      "A01 Hair pixie | espresso"
@@ -545,10 +555,10 @@
     "id": "waves",
     "label": "Waves, faded",
     "file": "hair-waves.glb",
-    "bytes": 341980,
+    "bytes": 365704,
     "triangles": 3648,
     "draw_objects": 1,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair waves | espresso"
     ]
@@ -557,10 +567,10 @@
     "id": "curltop",
     "label": "Curly top, faded",
     "file": "hair-curltop.glb",
-    "bytes": 622204,
-    "triangles": 12136,
+    "bytes": 736756,
+    "triangles": 14135,
     "draw_objects": 2,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair curltop | coils",
      "A01 Hair curltop | fade"
@@ -570,10 +580,10 @@
     "id": "bun",
     "label": "Sleek low bun",
     "file": "hair-bun.glb",
-    "bytes": 726068,
+    "bytes": 854448,
     "triangles": 17298,
     "draw_objects": 3,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair bun | strands",
      "A01 Hair bun | espresso",
@@ -584,14 +594,68 @@
     "id": "puff",
     "label": "Afro puff",
     "file": "hair-puff.glb",
-    "bytes": 740068,
+    "bytes": 929408,
     "triangles": 22422,
     "draw_objects": 3,
-    "morphs": false,
+    "morphs": true,
     "materials": [
      "A01 Hair puff | strands",
      "A01 Hair puff | coils",
      "A01 Hair puff | sleek"
+    ]
+   },
+   {
+    "id": "topknot",
+    "label": "High top knot",
+    "file": "hair-topknot.glb",
+    "bytes": 910700,
+    "triangles": 19134,
+    "draw_objects": 3,
+    "morphs": true,
+    "materials": [
+     "A01 Hair topknot | strands",
+     "A01 Hair topknot | espresso",
+     "A01 Hair topknot | knot strands"
+    ]
+   },
+   {
+    "id": "curlypony",
+    "label": "Curly ponytail",
+    "file": "hair-curlypony.glb",
+    "bytes": 983016,
+    "triangles": 28770,
+    "draw_objects": 3,
+    "morphs": true,
+    "materials": [
+     "A01 Hair curlypony | strands",
+     "A01 Hair curlypony | coils",
+     "A01 Hair curlypony | sleek"
+    ]
+   },
+   {
+    "id": "quiff",
+    "label": "Quiff, tapered",
+    "file": "hair-quiff.glb",
+    "bytes": 1046584,
+    "triangles": 10858,
+    "draw_objects": 2,
+    "morphs": true,
+    "materials": [
+     "A01 Hair quiff | strands",
+     "A01 Hair quiff | espresso"
+    ]
+   },
+   {
+    "id": "sponge",
+    "label": "Sponge high-top",
+    "file": "hair-sponge.glb",
+    "bytes": 765948,
+    "triangles": 16136,
+    "draw_objects": 2,
+    "morphs": true,
+    "materials": [
+     "A01 Hair sponge | coils",
+     "A01 Hair sponge | fade"
     ]
    }
   ],
@@ -722,7 +786,7 @@
     "id": "jacket",
     "label": "Chore jacket",
     "file": "outer-jacket.glb",
-    "bytes": 233044,
+    "bytes": 233056,
     "triangles": 4356,
     "draw_objects": 3,
     "morphs": true,
@@ -876,7 +940,7 @@
     "id": "hobo",
     "label": "Hobo bag",
     "file": "bag-hobo.glb",
-    "bytes": 25828,
+    "bytes": 25832,
     "triangles": 3120,
     "draw_objects": 2,
     "morphs": false,
@@ -991,6 +1055,20 @@
      "A01 Jeans | belt",
      "A01 Jeans | buckle"
     ]
+   },
+   {
+    "id": "jorts",
+    "label": "Baggy denim shorts",
+    "file": "bottoms-jorts.glb",
+    "bytes": 78276,
+    "triangles": 2592,
+    "draw_objects": 3,
+    "morphs": true,
+    "materials": [
+     "A01 Jorts | denim",
+     "A01 Jorts | belt",
+     "A01 Jorts | buckle"
+    ]
    }
   ],
   "shoes": [
@@ -1019,6 +1097,20 @@
      "A01 Trainers | canvas",
      "A01 Trainers | gum sole"
     ]
+   },
+   {
+    "id": "slides",
+    "label": "Slides with socks",
+    "file": "shoes-slides.glb",
+    "bytes": 45844,
+    "triangles": 6432,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Slides | sock",
+     "A01 Slides | foam"
+    ],
+    "lift": 0.022
    },
    {
     "id": "boots",
@@ -1080,7 +1172,7 @@
     "id": "sandals",
     "label": "Heeled sandals",
     "file": "shoes-sandals.glb",
-    "bytes": 25236,
+    "bytes": 25232,
     "triangles": 2448,
     "draw_objects": 2,
     "morphs": false,
@@ -1088,13 +1180,14 @@
      "A01 Heeled sandals | leather",
      "A01 Heeled sandals | sole"
     ],
-    "heel": 28
+    "heel": 28,
+    "lift": 0.009
    },
    {
     "id": "heelboots",
     "label": "Heeled knee boots",
     "file": "shoes-heelboots.glb",
-    "bytes": 34068,
+    "bytes": 34064,
     "triangles": 4546,
     "draw_objects": 2,
     "morphs": false,
@@ -1102,7 +1195,8 @@
      "A01 Heeled boots | leather",
      "A01 Heeled boots | sole"
     ],
-    "heel": 28
+    "heel": 28,
+    "lift": 0.009
    },
    {
     "id": "none",
@@ -1114,7 +1208,7 @@
     "id": "wrap",
     "label": "Headwrap (wax print)",
     "file": "headwear-wrap.glb",
-    "bytes": 29856,
+    "bytes": 29876,
     "triangles": 3888,
     "draw_objects": 1,
     "morphs": false,
@@ -1129,8 +1223,8 @@
     "id": "cap",
     "label": "Baseball cap",
     "file": "headwear-cap.glb",
-    "bytes": 29652,
-    "triangles": 4164,
+    "bytes": 29736,
+    "triangles": 4172,
     "draw_objects": 1,
     "morphs": false,
     "materials": [
@@ -1141,8 +1235,8 @@
     "id": "fedora",
     "label": "Fedora",
     "file": "headwear-fedora.glb",
-    "bytes": 30052,
-    "triangles": 4396,
+    "bytes": 30048,
+    "triangles": 4324,
     "draw_objects": 2,
     "morphs": false,
     "materials": [
@@ -1154,8 +1248,8 @@
     "id": "newsboy",
     "label": "Newsboy cap",
     "file": "headwear-newsboy.glb",
-    "bytes": 26900,
-    "triangles": 3724,
+    "bytes": 27044,
+    "triangles": 3676,
     "draw_objects": 1,
     "morphs": false,
     "materials": [
@@ -1166,12 +1260,111 @@
     "id": "beret",
     "label": "Beret",
     "file": "headwear-beret.glb",
-    "bytes": 24696,
-    "triangles": 3168,
+    "bytes": 24968,
+    "triangles": 3120,
     "draw_objects": 1,
     "morphs": false,
     "materials": [
      "A01 Beret | wool"
+    ]
+   },
+   {
+    "id": "bucket",
+    "label": "Bucket hat",
+    "file": "headwear-bucket.glb",
+    "bytes": 28544,
+    "triangles": 4224,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Bucket hat | cotton"
+    ]
+   },
+   {
+    "id": "beanie",
+    "label": "Beanie",
+    "file": "headwear-beanie.glb",
+    "bytes": 24336,
+    "triangles": 3072,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Beanie | knit"
+    ]
+   },
+   {
+    "id": "cowboy",
+    "label": "Cowboy hat",
+    "file": "headwear-cowboy.glb",
+    "bytes": 29792,
+    "triangles": 4492,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Cowboy hat | felt",
+     "A01 Cowboy hat | band"
+    ]
+   },
+   {
+    "id": "scarf",
+    "label": "Headscarf with bow",
+    "file": "headwear-scarf.glb",
+    "bytes": 18848,
+    "triangles": 1124,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Headscarf | cotton"
+    ]
+   },
+   {
+    "id": "headphones",
+    "label": "Headphones",
+    "file": "headwear-headphones.glb",
+    "bytes": 22408,
+    "triangles": 1520,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Headphones | shell",
+     "A01 Headphones | cushion"
+    ]
+   },
+   {
+    "id": "earbeanie",
+    "label": "Cat-ear beanie",
+    "file": "headwear-earbeanie.glb",
+    "bytes": 27916,
+    "triangles": 4224,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Ear beanie | knit"
+    ]
+   },
+   {
+    "id": "cadet",
+    "label": "Cadet cap",
+    "file": "headwear-cadet.glb",
+    "bytes": 24776,
+    "triangles": 3256,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Cadet cap | twill"
+    ]
+   },
+   {
+    "id": "widebrim",
+    "label": "Wide-brim felt hat",
+    "file": "headwear-widebrim.glb",
+    "bytes": 29992,
+    "triangles": 4324,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Wide-brim hat | felt",
+     "A01 Wide-brim hat | band"
     ]
    },
    {
@@ -1204,6 +1397,136 @@
     "materials": [
      "A01 Sunglasses | frame",
      "A01 Sunglasses | lens"
+    ]
+   },
+   {
+    "id": "cateye",
+    "label": "Cat-eye",
+    "file": "eyewear-cateye.glb",
+    "bytes": 21220,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Cat-eye glasses | frame",
+     "A01 Cat-eye glasses | lens"
+    ]
+   },
+   {
+    "id": "oval",
+    "label": "Slim oval",
+    "file": "eyewear-oval.glb",
+    "bytes": 20844,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Oval glasses | frame",
+     "A01 Oval glasses | lens"
+    ]
+   },
+   {
+    "id": "square",
+    "label": "Oversized square",
+    "file": "eyewear-square.glb",
+    "bytes": 21304,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Square sunglasses | frame",
+     "A01 Square sunglasses | lens"
+    ]
+   },
+   {
+    "id": "chunky",
+    "label": "Chunky oval",
+    "file": "eyewear-chunky.glb",
+    "bytes": 21248,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Chunky oval glasses | frame",
+     "A01 Chunky oval glasses | lens"
+    ]
+   },
+   {
+    "id": "rect",
+    "label": "Slim rectangle",
+    "file": "eyewear-rect.glb",
+    "bytes": 21268,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Slim rectangle sunglasses | frame",
+     "A01 Slim rectangle sunglasses | lens"
+    ]
+   },
+   {
+    "id": "rimless",
+    "label": "Rimless tinted",
+    "file": "eyewear-rimless.glb",
+    "bytes": 17556,
+    "triangles": 336,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Rimless glasses | frame",
+     "A01 Rimless glasses | lens"
+    ]
+   },
+   {
+    "id": "round",
+    "label": "Round metal",
+    "file": "eyewear-round.glb",
+    "bytes": 20808,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Round glasses | frame",
+     "A01 Round glasses | lens"
+    ]
+   },
+   {
+    "id": "slimsun",
+    "label": "Slim oval sunglasses",
+    "file": "eyewear-slimsun.glb",
+    "bytes": 21096,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Slim oval sunglasses | frame",
+     "A01 Slim oval sunglasses | lens"
+    ]
+   },
+   {
+    "id": "metalrect",
+    "label": "Metal rectangle",
+    "file": "eyewear-metalrect.glb",
+    "bytes": 21028,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Metal rectangle glasses | frame",
+     "A01 Metal rectangle glasses | lens"
+    ]
+   },
+   {
+    "id": "chunkyrect",
+    "label": "Chunky rectangle",
+    "file": "eyewear-chunkyrect.glb",
+    "bytes": 21432,
+    "triangles": 1360,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Chunky rectangle sunglasses | frame",
+     "A01 Chunky rectangle sunglasses | lens"
     ]
    },
    {
