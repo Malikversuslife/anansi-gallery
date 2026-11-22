@@ -15,10 +15,10 @@ export const FACE_SLIDERS=[['faceShape','face_angular','face_soft'],['jaw','jaw_
 export function normalizeLook(look={}){
  const a={...defaultLook,...look};if(!characterOptions.some(([key])=>key===a.model))a.model='female';
  for(const key of ['top','bottom','shoeColor','accessoryColor'])if(!/^#[0-9a-f]{6}$/i.test(a[key]))a[key]=defaultLook[key];
- for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans','jorts']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret','bucket','beanie','cowboy','scarf','headphones','earbeanie','cadet','widebrim']],['hairStyle',['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','topknot','curlypony','quiff','sponge','bald']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun','cateye','oval','square','chunky','rect','rimless','round','slimsun','metalrect','chunkyrect']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
+ for(const [key,values] of [['shoes',['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','foamslides','none']],['outer',['jacket','zip','leather','harrington','overcoat','cardigan','blazer','longcoat','bomber','shearling','none']],['bag',['none','crossbody','hobo']],['topStyle',['tee','knit','quarterzip','sleeveless','dress','vneck','mididress','turtleneck','offshoulder']],['bottomStyle',['trousers','shorts','wide','skirt','mini','slim','pencil','jeans','jorts']],['topPrint',['plain','wax']],['bottomPrint',['plain','wax']],['headwear',['none','wrap','cap','fedora','newsboy','beret','bucket','beanie','cowboy','scarf','headphones','earbeanie','cadet','widebrim','fisherman','backcap']],['hairStyle',['default','coils','straight','buzz','fingerwave','pixie','waves','curltop','bun','puff','topknot','curlypony','quiff','sponge','frenchcrop','sidepart','curlybun','bald']],['facialHair',['default','none','stubble','moustache','goatee','boxed','full']],['eyewear',['none','optical','sun','cateye','oval','square','chunky','rect','rimless','round','slimsun','metalrect','chunkyrect']],['earrings',['none','hoops','links']],['watch',['none','watch']],['build',['slim','balanced','broad']]])if(!values.includes(a[key]))a[key]=defaultLook[key];
  for(const [key,options] of [['skinTone',skinOptions],['hairColor',hairOptions]])if(!options.some(([value])=>value===a[key]))a[key]='original';
  // Original bodies are assembled from parts: outer layer, footwear (loafers or barefoot) and earrings are independent slots.
- if(ORIGINALS[a.model]){if(!['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','none'].includes(a.shoes))a.shoes='original'}else{a.headwear='none';a.bag='none';if(!['original','sneakers','boots'].includes(a.shoes))a.shoes='original';if(a.earrings==='links')a.earrings='hoops';a.outer='jacket'}if(a.model==='covered')a.earrings='none';if(a.model==='female')a.shoes='original';if(!ORIGINALS[a.model]&&!['none','optical','sun'].includes(a.eyewear))a.eyewear='sun';a.turn=Math.max(-180,Math.min(180,Number(a.turn)||0));if(!ORIGINALS[a.model]||!/^#[0-9a-f]{6}$/i.test(a.lipColor))a.lipColor='original';for(const [key] of FACE_SLIDERS)a[key]=ORIGINALS[a.model]?Math.round(Math.max(-1,Math.min(1,Number(a[key])||0))*100)/100:0;return a;
+ if(ORIGINALS[a.model]){if(!['original','sneakers','boots','court','workboots','kneeboots','sandals','heelboots','slides','foamslides','none'].includes(a.shoes))a.shoes='original'}else{a.headwear='none';a.bag='none';if(!['original','sneakers','boots'].includes(a.shoes))a.shoes='original';if(a.earrings==='links')a.earrings='hoops';a.outer='jacket'}if(a.model==='covered')a.earrings='none';if(a.model==='female')a.shoes='original';if(!ORIGINALS[a.model]&&!['none','optical','sun'].includes(a.eyewear))a.eyewear='sun';a.turn=Math.max(-180,Math.min(180,Number(a.turn)||0));if(!ORIGINALS[a.model]||!/^#[0-9a-f]{6}$/i.test(a.lipColor))a.lipColor='original';for(const [key] of FACE_SLIDERS)a[key]=ORIGINALS[a.model]?Math.round(Math.max(-1,Math.min(1,Number(a[key])||0))*100)/100:0;return a;
 }
 if(a01Trial)characterOptions.push(['a01','Original body · A01'],['a02','Original body · A02']);
 const library=new Map();
@@ -67,7 +67,7 @@ const FABRICS={
 const LEGS=[1,1,0],ARMS=[0,0,1],NONE=[0,0,0];
 const FABRIC_OF=[
  [/^A01 Jeans \| denim/,'denim',LEGS,true],[/^A01 Jacket \| ink/,'denim',ARMS],[/^A01 Jorts \| denim/,'denim',[.6,0,0],true],
- [/^A01 (Bucket hat|Headscarf)/,'cotton',NONE],[/^A01 (Beanie|Ear beanie|Slides \| sock)/,'knit',NONE],[/^A01 (Cowboy hat|Wide-brim hat) \| felt/,'suede',NONE],[/^A01 Cadet cap/,'twill',NONE],
+ [/^A01 (Bucket hat|Headscarf)/,'cotton',NONE],[/^A01 (Beanie|Ear beanie|Slides \| sock|Foam slides \| sock)/,'knit',NONE],[/^A01 (Cowboy hat|Wide-brim hat) \| felt/,'suede',NONE],[/^A01 (Cadet cap|Backwards cap)/,'twill',NONE],[/^A01 Fisherman cap/,'wool',NONE],
  [/^A01 (Tee|Sleeveless top|V-neck blouse)/,'cotton',[0,0,.6]],[/^A01 (Dress|Midi dress)/,'cotton',NONE],
  [/^A01 (Knit \| oat|Turtleneck \| knit|Quarter-zip \| charcoal|Cardigan \| oat)/,'knit',ARMS],[/^A01 (Off-shoulder dress \| knit|Bomber \| rib)/,'knit',NONE],
  [/^A01 (Blazer \| wool|Overcoat \| camel|Long coat \| wool)/,'wool',ARMS],[/^A01 Wide trousers \| navy/,'wool',[.8,1,0]],
@@ -213,7 +213,7 @@ function a01Tint(copy,a,base){
  if(name.startsWith('A01 Headwrap')){copy.map=waxTexture();copy.color.set('#ffffff');return}
  if(name.startsWith('A01 Jacket | ink')||name.startsWith('A01 Zip jacket | olive')||name.startsWith('A01 Leather jacket | black')||name.startsWith('A01 Harrington | red')||name.startsWith('A01 Overcoat | camel')||name.startsWith('A01 Dress')||name.startsWith('A01 Midi dress')||name.startsWith('A01 Cardigan | oat')||/^A01 (Turtleneck \| knit|Blazer \| wool|Long coat \| (wool|skirt)|Bomber \| suede|Shearling jacket \| leather|Off-shoulder dress \| knit)/.test(name))replace(a.top);
  else if(name.startsWith('A01 Skirt')||name.startsWith('A01 Mini skirt')||name.startsWith('A01 Slim trousers')||name.startsWith('A01 Pencil skirt | wool')||name.startsWith('A01 Jeans | denim')||name.startsWith('A01 Jorts | denim'))replace(a.bottom);
- else if(name.startsWith('A01 Ankle boots | black')||name.startsWith('A01 Court sneakers | leather')||name.startsWith('A01 Work boots | nubuck')||name.startsWith('A01 Knee boots | leather')||name.startsWith('A01 Heeled sandals | leather')||name.startsWith('A01 Heeled boots | leather')||name.startsWith('A01 Slides | foam'))replace(a.shoeColor);
+ else if(name.startsWith('A01 Ankle boots | black')||name.startsWith('A01 Court sneakers | leather')||name.startsWith('A01 Work boots | nubuck')||name.startsWith('A01 Knee boots | leather')||name.startsWith('A01 Heeled sandals | leather')||name.startsWith('A01 Heeled boots | leather')||name.startsWith('A01 Slides | foam')||name.startsWith('A01 Foam slides | foam'))replace(a.shoeColor);
  else if(name.startsWith('A01 Wide trousers | navy'))replace(a.bottom);
  else if(name.startsWith('A01 Watch | steel'))copy.color.set(a.accessoryColor);
  else if(name.startsWith('A01 Shorts'))replace(a.bottom);
@@ -307,12 +307,12 @@ function disposeAsset(root){
 }
 function fetchPart(set,key,file){
  if(set.files.has(file))return Promise.resolve();
- if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=43`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
+ if(!set.pending.has(file))set.pending.set(file,getPartsLoader().loadAsync(`${PARTS_DIR}${key}/${file}?v=46`).then(g=>{shrinkTextures(g.scene,1024);mergeAlike(g.scene);set.files.set(file,g);set.pending.delete(file);window.a01TrialPartsFetched=(window.a01TrialPartsFetched||0)+1},e=>{set.pending.delete(file);console.warn('Avatar part failed to load:',file,e)}));
  return set.pending.get(file);
 }
 async function loadParts(key){
- const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=43`)).json();
- const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=43`);
+ const manifest=await (await fetch(`${PARTS_DIR}${key}/manifest.json?v=46`)).json();
+ const body=await getPartsLoader().loadAsync(`${PARTS_DIR}${key}/body.glb?v=46`);
  shrinkTextures(body.scene,1024);   // the skin is 2048 on desktop
  mergeSkin(body.scene);
  // The skin's colour attribute is the lip mask: rename it so nothing treats it as vertex colour.
@@ -449,7 +449,7 @@ function partChoice(a,manifest){
  const ids=slot=>(manifest.slots[slot]||[]).filter(e=>e.file).map(e=>e.id);
  const pick=(slot,want)=>ids(slot).includes(want)?want:ids(slot)[0];
  // A puff of hair can't go under a hat: with one on, it shows as a close crop.
- const HAT_SWAP={puff:'buzz',topknot:'bun'},wantHair=a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle;
+ const HAT_SWAP={puff:'buzz',topknot:'bun',curlybun:'bun'},wantHair=a.hairStyle==='default'?manifest.defaults?.hair:a.hairStyle;
  // Bald: no hair part at all (the scalp is plain skin).
  return {hair:a.hairStyle==='bald'?'none':pick('hair',a.headwear!=='none'&&HAT_SWAP[wantHair]?HAT_SWAP[wantHair]:wantHair),top:pick('top',a.topStyle),bottoms:pick('bottoms',a.bottomStyle),
   outer:a.outer==='none'?'none':pick('outer',a.outer),

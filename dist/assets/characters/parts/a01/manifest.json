@@ -1,11 +1,11 @@
 {
  "body": "a01",
- "version": "parts-v15",
+ "version": "parts-v16",
  "defaults": {
   "hair": "coils",
   "facialhair": "goatee"
  },
- "source": "visitor-a01-v29",
+ "source": "visitor-a01-v30",
  "morphs": [
   "build_slim",
   "build_broad"
@@ -40,7 +40,7 @@
  "files": {
   "body": {
    "file": "body.glb",
-   "bytes": 1117880,
+   "bytes": 1117984,
    "triangles": 15340,
    "draw_objects": 82,
    "pieces": [
@@ -50,8 +50,8 @@
      "triangles": 9348
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:court+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:slides+shoes:trainers+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:court,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:slides,shoes:trainers,shoes:workboots",
+     "name": "A01 Skin under shoes:boots+shoes:court+shoes:foamslides+shoes:heelboots+shoes:kneeboots+shoes:loafers+shoes:sandals+shoes:slides+shoes:trainers+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:court,shoes:foamslides,shoes:heelboots,shoes:kneeboots,shoes:loafers,shoes:sandals,shoes:slides,shoes:trainers,shoes:workboots",
      "triangles": 1155
     },
     {
@@ -145,8 +145,8 @@
      "triangles": 28
     },
     {
-     "name": "A01 Skin under shoes:boots+shoes:heelboots+shoes:kneeboots+shoes:slides+shoes:workboots",
-     "hidden_by": "shoes:boots,shoes:heelboots,shoes:kneeboots,shoes:slides,shoes:workboots",
+     "name": "A01 Skin under shoes:boots+shoes:foamslides+shoes:heelboots+shoes:kneeboots+shoes:slides+shoes:workboots",
+     "hidden_by": "shoes:boots,shoes:foamslides,shoes:heelboots,shoes:kneeboots,shoes:slides,shoes:workboots",
      "triangles": 21
     },
     {
@@ -607,6 +607,46 @@
      "A01 Hair sponge | coils",
      "A01 Hair sponge | fade"
     ]
+   },
+   {
+    "id": "frenchcrop",
+    "label": "French crop",
+    "file": "hair-frenchcrop.glb",
+    "bytes": 892180,
+    "triangles": 8760,
+    "draw_objects": 2,
+    "morphs": true,
+    "materials": [
+     "A01 Hair frenchcrop | strands",
+     "A01 Hair frenchcrop | espresso"
+    ]
+   },
+   {
+    "id": "sidepart",
+    "label": "Hard side part",
+    "file": "hair-sidepart.glb",
+    "bytes": 919716,
+    "triangles": 11742,
+    "draw_objects": 2,
+    "morphs": true,
+    "materials": [
+     "A01 Hair sidepart | strands",
+     "A01 Hair sidepart | espresso"
+    ]
+   },
+   {
+    "id": "curlybun",
+    "label": "Curly high bun",
+    "file": "hair-curlybun.glb",
+    "bytes": 942896,
+    "triangles": 23510,
+    "draw_objects": 3,
+    "morphs": true,
+    "materials": [
+     "A01 Hair curlybun | strands",
+     "A01 Hair curlybun | coils",
+     "A01 Hair curlybun | sleek"
+    ]
    }
   ],
   "top": [
@@ -890,7 +930,7 @@
     "id": "hobo",
     "label": "Hobo bag",
     "file": "bag-hobo.glb",
-    "bytes": 25884,
+    "bytes": 25840,
     "triangles": 3120,
     "draw_objects": 2,
     "morphs": false,
@@ -1063,6 +1103,20 @@
     "lift": 0.022
    },
    {
+    "id": "foamslides",
+    "label": "Foam slides with socks",
+    "file": "shoes-foamslides.glb",
+    "bytes": 54304,
+    "triangles": 9376,
+    "draw_objects": 2,
+    "morphs": false,
+    "materials": [
+     "A01 Foam slides | foam",
+     "A01 Foam slides | sock"
+    ],
+    "lift": 0.026
+   },
+   {
     "id": "boots",
     "label": "Ankle boots",
     "file": "shoes-boots.glb",
@@ -1122,7 +1176,7 @@
     "id": "sandals",
     "label": "Heeled sandals",
     "file": "shoes-sandals.glb",
-    "bytes": 25176,
+    "bytes": 25180,
     "triangles": 2448,
     "draw_objects": 2,
     "morphs": false,
@@ -1158,7 +1212,7 @@
     "id": "wrap",
     "label": "Headwrap (wax print)",
     "file": "headwear-wrap.glb",
-    "bytes": 30168,
+    "bytes": 30144,
     "triangles": 3888,
     "draw_objects": 1,
     "morphs": false,
@@ -1173,7 +1227,7 @@
     "id": "cap",
     "label": "Baseball cap",
     "file": "headwear-cap.glb",
-    "bytes": 29880,
+    "bytes": 29884,
     "triangles": 4172,
     "draw_objects": 1,
     "morphs": false,
@@ -1185,7 +1239,7 @@
     "id": "fedora",
     "label": "Fedora",
     "file": "headwear-fedora.glb",
-    "bytes": 30196,
+    "bytes": 30208,
     "triangles": 4324,
     "draw_objects": 2,
     "morphs": false,
@@ -1198,7 +1252,7 @@
     "id": "newsboy",
     "label": "Newsboy cap",
     "file": "headwear-newsboy.glb",
-    "bytes": 27208,
+    "bytes": 27232,
     "triangles": 3676,
     "draw_objects": 1,
     "morphs": false,
@@ -1246,7 +1300,7 @@
     "id": "cowboy",
     "label": "Cowboy hat",
     "file": "headwear-cowboy.glb",
-    "bytes": 29968,
+    "bytes": 29972,
     "triangles": 4416,
     "draw_objects": 2,
     "morphs": false,
@@ -1259,7 +1313,7 @@
     "id": "scarf",
     "label": "Headscarf with bow",
     "file": "headwear-scarf.glb",
-    "bytes": 19084,
+    "bytes": 19064,
     "triangles": 1124,
     "draw_objects": 1,
     "morphs": false,
@@ -1271,7 +1325,7 @@
     "id": "headphones",
     "label": "Headphones",
     "file": "headwear-headphones.glb",
-    "bytes": 22636,
+    "bytes": 22592,
     "triangles": 1520,
     "draw_objects": 2,
     "morphs": false,
@@ -1296,7 +1350,7 @@
     "id": "cadet",
     "label": "Cadet cap",
     "file": "headwear-cadet.glb",
-    "bytes": 24940,
+    "bytes": 24936,
     "triangles": 3256,
     "draw_objects": 1,
     "morphs": false,
@@ -1308,13 +1362,37 @@
     "id": "widebrim",
     "label": "Wide-brim felt hat",
     "file": "headwear-widebrim.glb",
-    "bytes": 30160,
+    "bytes": 30168,
     "triangles": 4324,
     "draw_objects": 2,
     "morphs": false,
     "materials": [
      "A01 Wide-brim hat | felt",
      "A01 Wide-brim hat | band"
+    ]
+   },
+   {
+    "id": "fisherman",
+    "label": "Fisherman cap",
+    "file": "headwear-fisherman.glb",
+    "bytes": 25332,
+    "triangles": 3308,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Fisherman cap | wool"
+    ]
+   },
+   {
+    "id": "backcap",
+    "label": "Backwards cap",
+    "file": "headwear-backcap.glb",
+    "bytes": 26452,
+    "triangles": 3448,
+    "draw_objects": 1,
+    "morphs": false,
+    "materials": [
+     "A01 Backwards cap | twill"
     ]
    },
    {
